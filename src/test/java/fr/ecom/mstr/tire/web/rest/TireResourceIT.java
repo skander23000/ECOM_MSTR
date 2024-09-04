@@ -59,14 +59,14 @@ class TireResourceIT {
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_PRICE = new BigDecimal(1 - 1);
 
-    private static final String DEFAULT_TIRE_WIDTH = "AAAAAAAAAA";
-    private static final String UPDATED_TIRE_WIDTH = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_TIRE_WIDTH = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TIRE_WIDTH = new BigDecimal(2);
 
-    private static final String DEFAULT_TIRE_HEIGHT = "AAAAAAAAAA";
-    private static final String UPDATED_TIRE_HEIGHT = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_TIRE_HEIGHT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TIRE_HEIGHT = new BigDecimal(2);
 
-    private static final String DEFAULT_TIRE_DIAMETER = "AAAAAAAAAA";
-    private static final String UPDATED_TIRE_DIAMETER = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_TIRE_DIAMETER = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TIRE_DIAMETER = new BigDecimal(2);
 
     private static final TireType DEFAULT_TIRE_TYPE = TireType.SUMMER;
     private static final TireType UPDATED_TIRE_TYPE = TireType.WINTER;
@@ -95,6 +95,7 @@ class TireResourceIT {
 
     private static final String ENTITY_API_URL = "/api/tires";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+    private static final Integer DEFAULT_VERSION = 1;
 
     private static Random random = new Random();
     private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
@@ -145,7 +146,8 @@ class TireResourceIT {
             .quantity(DEFAULT_QUANTITY)
             .disable(DEFAULT_DISABLE)
             .disableReason(DEFAULT_DISABLE_REASON)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .version(DEFAULT_VERSION);
     }
 
     /**
@@ -169,7 +171,8 @@ class TireResourceIT {
             .quantity(UPDATED_QUANTITY)
             .disable(UPDATED_DISABLE)
             .disableReason(UPDATED_DISABLE_REASON)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .version(DEFAULT_VERSION);
     }
 
     @BeforeEach
@@ -425,13 +428,13 @@ class TireResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tire.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(insertedTire.getId().intValue())))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
-            .andExpect(jsonPath("$.[*].tireWidth").value(hasItem(DEFAULT_TIRE_WIDTH)))
-            .andExpect(jsonPath("$.[*].tireHeight").value(hasItem(DEFAULT_TIRE_HEIGHT)))
-            .andExpect(jsonPath("$.[*].tireDiameter").value(hasItem(DEFAULT_TIRE_DIAMETER)))
+            .andExpect(jsonPath("$.[*].tireWidth").value(hasItem(sameNumber(DEFAULT_TIRE_WIDTH))))
+            .andExpect(jsonPath("$.[*].tireHeight").value(hasItem(sameNumber(DEFAULT_TIRE_HEIGHT))))
+            .andExpect(jsonPath("$.[*].tireDiameter").value(hasItem(sameNumber(DEFAULT_TIRE_DIAMETER))))
             .andExpect(jsonPath("$.[*].tireType").value(hasItem(DEFAULT_TIRE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].speedIndex").value(hasItem(DEFAULT_SPEED_INDEX.toString())))
@@ -467,16 +470,16 @@ class TireResourceIT {
 
         // Get the tire
         restTireMockMvc
-            .perform(get(ENTITY_API_URL_ID, tire.getId()))
+            .perform(get(ENTITY_API_URL_ID, insertedTire.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(tire.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(insertedTire.getId().intValue()))
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
-            .andExpect(jsonPath("$.tireWidth").value(DEFAULT_TIRE_WIDTH))
-            .andExpect(jsonPath("$.tireHeight").value(DEFAULT_TIRE_HEIGHT))
-            .andExpect(jsonPath("$.tireDiameter").value(DEFAULT_TIRE_DIAMETER))
+            .andExpect(jsonPath("$.tireWidth").value(sameNumber(DEFAULT_TIRE_WIDTH)))
+            .andExpect(jsonPath("$.tireHeight").value(sameNumber(DEFAULT_TIRE_HEIGHT)))
+            .andExpect(jsonPath("$.tireDiameter").value(sameNumber(DEFAULT_TIRE_DIAMETER)))
             .andExpect(jsonPath("$.tireType").value(DEFAULT_TIRE_TYPE.toString()))
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL))
             .andExpect(jsonPath("$.speedIndex").value(DEFAULT_SPEED_INDEX.toString()))
@@ -484,7 +487,8 @@ class TireResourceIT {
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.disable").value(DEFAULT_DISABLE.booleanValue()))
             .andExpect(jsonPath("$.disableReason").value(DEFAULT_DISABLE_REASON))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION));
     }
 
     @Test
@@ -1271,7 +1275,7 @@ class TireResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the tire
-        Tire updatedTire = tireRepository.findById(tire.getId()).orElseThrow();
+        Tire updatedTire = tireRepository.findById(insertedTire.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedTire are not directly saved in db
         em.detach(updatedTire);
         updatedTire
@@ -1368,7 +1372,7 @@ class TireResourceIT {
 
         // Update the tire using partial update
         Tire partialUpdatedTire = new Tire();
-        partialUpdatedTire.setId(tire.getId());
+        partialUpdatedTire.setId(insertedTire.getId());
 
         partialUpdatedTire
             .price(UPDATED_PRICE)
@@ -1377,7 +1381,8 @@ class TireResourceIT {
             .weightIndex(UPDATED_WEIGHT_INDEX)
             .disable(UPDATED_DISABLE)
             .disableReason(UPDATED_DISABLE_REASON)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .version(DEFAULT_VERSION);
 
         restTireMockMvc
             .perform(
@@ -1390,7 +1395,7 @@ class TireResourceIT {
         // Validate the Tire in the database
 
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertTireUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedTire, tire), getPersistedTire(tire));
+        assertTireUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedTire, insertedTire), getPersistedTire(insertedTire));
     }
 
     @Test
@@ -1403,7 +1408,7 @@ class TireResourceIT {
 
         // Update the tire using partial update
         Tire partialUpdatedTire = new Tire();
-        partialUpdatedTire.setId(tire.getId());
+        partialUpdatedTire.setId(insertedTire.getId());
 
         partialUpdatedTire
             .reference(UPDATED_REFERENCE)
@@ -1419,7 +1424,8 @@ class TireResourceIT {
             .quantity(UPDATED_QUANTITY)
             .disable(UPDATED_DISABLE)
             .disableReason(UPDATED_DISABLE_REASON)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .version(DEFAULT_VERSION);
 
         restTireMockMvc
             .perform(
@@ -1505,7 +1511,7 @@ class TireResourceIT {
 
         // Delete the tire
         restTireMockMvc
-            .perform(delete(ENTITY_API_URL_ID, tire.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, insertedTire.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

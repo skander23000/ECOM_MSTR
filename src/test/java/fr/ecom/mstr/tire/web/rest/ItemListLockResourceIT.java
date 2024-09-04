@@ -1,24 +1,15 @@
 package fr.ecom.mstr.tire.web.rest;
 
-import static fr.ecom.mstr.tire.domain.ItemListLockAsserts.*;
-import static fr.ecom.mstr.tire.web.rest.TestUtil.createUpdateProxyForBean;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ecom.mstr.tire.IntegrationTest;
 import fr.ecom.mstr.tire.domain.ItemListLock;
+import fr.ecom.mstr.tire.domain.Tire;
 import fr.ecom.mstr.tire.repository.ItemListLockRepository;
+import fr.ecom.mstr.tire.repository.TireRepository;
+import fr.ecom.mstr.tire.service.ItemListLockService;
 import fr.ecom.mstr.tire.service.dto.ItemListLockDTO;
 import fr.ecom.mstr.tire.service.mapper.ItemListLockMapper;
 import jakarta.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +19,20 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static fr.ecom.mstr.tire.domain.ItemListLockAsserts.*;
+import static fr.ecom.mstr.tire.web.rest.TestUtil.createUpdateProxyForBean;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link ItemListLockResource} REST controller.
@@ -56,7 +61,13 @@ class ItemListLockResourceIT {
     private ObjectMapper om;
 
     @Autowired
+    private TireRepository tireRepository;
+
+    @Autowired
     private ItemListLockRepository itemListLockRepository;
+
+    @Autowired
+    private ItemListLockService itemListLockService;
 
     @Autowired
     private ItemListLockMapper itemListLockMapper;
@@ -73,7 +84,7 @@ class ItemListLockResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -83,7 +94,7 @@ class ItemListLockResourceIT {
 
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -462,6 +473,87 @@ class ItemListLockResourceIT {
 
         // Validate the database contains one less item
         assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+    }
+
+    @Test
+    @Transactional
+    void cleanupLockAndRestock() throws Exception {
+        // Initialize the database
+        Tire tire = TireResourceIT.createEntity();
+        tire.setQuantity(2);
+        tire = tireRepository.saveAndFlush(tire);
+
+        itemListLock.setTire(tire);
+        itemListLock.setQuantity(10);
+        itemListLock.setLockTime(Instant.now().minus(5, ChronoUnit.HOURS));
+        itemListLockRepository.saveAndFlush(itemListLock);
+
+        ItemListLock item = createEntity();
+        item.setQuantity(200);
+        item.setTire(tire);
+        item.setLockTime(Instant.now().plus(5, ChronoUnit.HOURS));
+        itemListLockRepository.saveAndFlush(item);
+
+        int databaseCount = itemListLockRepository.findAll().size();
+        this.itemListLockService.cleanupLockAndRestock();
+
+        Optional<Tire> finalTire = this.tireRepository.findById(tire.getId());
+        int databaseCountFinal = itemListLockRepository.findAll().size();
+
+        assertThat(databaseCount).isGreaterThan(databaseCountFinal);
+        assertThat(databaseCountFinal).isOne();
+        assertThat(finalTire).isPresent();
+        assertThat(finalTire.orElseThrow().getQuantity()).isEqualTo(12);
+    }
+
+    @Test
+    @Transactional
+    void checkTireAvailability() throws Exception {
+        // Initialize the database
+        Tire tire = TireResourceIT.createEntity();
+        tire.setQuantity(2);
+        tire = tireRepository.saveAndFlush(tire);
+        itemListLock.setTire(tire);
+        insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
+        int databaseCount = itemListLockRepository.findAll().size();
+
+        // Check availability for 1 item of an existing lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                itemListLock.getUserUuid().toString() + "&tireId=" + tire.getId() + "&quantity=1"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(true));
+
+        // Check availability for 30 item of an existing lock but without enough stock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                itemListLock.getUserUuid().toString() + "&tireId=" + tire.getId() + "&quantity=30"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(false));
+
+        // Check availability for 30 item of a non-existing lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                UUID.randomUUID().toString() + "&tireId=" + tire.getId() + "&quantity=30"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(false));
+
+        // Check availability for 1 item of a non-existing lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                UUID.randomUUID().toString() + "&tireId=" + tire.getId() + "&quantity=1"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(true));
+        int databaseCountAfter = itemListLockRepository.findAll().size();
+        // 2 lock should be present
+        assertThat(databaseCount + 1).isEqualTo(databaseCountAfter);
+
+        itemListLockRepository.deleteAll();
+        tireRepository.deleteAll();
     }
 
     protected long getRepositoryCount() {
