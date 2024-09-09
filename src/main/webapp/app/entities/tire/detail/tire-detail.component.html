@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tire(); as tireRef) {
+      <div>
+        <h2 data-cy="tireDetailsHeading"><span jhiTranslate="mstrtireApp.tire.detail.title">Tire</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ tireRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.reference">Reference</span></dt>
+          <dd>
+            <span>{{ tireRef.reference }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.name">Name</span></dt>
+          <dd>
+            <span>{{ tireRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.price">Price</span></dt>
+          <dd>
+            <span>{{ tireRef.price }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.tireWidth">Tire Width</span></dt>
+          <dd>
+            <span>{{ tireRef.tireWidth }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.tireHeight">Tire Height</span></dt>
+          <dd>
+            <span>{{ tireRef.tireHeight }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.tireDiameter">Tire Diameter</span></dt>
+          <dd>
+            <span>{{ tireRef.tireDiameter }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.tireType">Tire Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'mstrtireApp.TireType.' + (tireRef.tireType ?? 'null')">{{
+              { null: '', SUMMER: 'SUMMER', WINTER: 'WINTER', ALL_SEASON: 'ALL_SEASON' }[tireRef.tireType ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.imageUrl">Image Url</span></dt>
+          <dd>
+            <span>{{ tireRef.imageUrl }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.speedIndex">Speed Index</span></dt>
+          <dd>
+            <span [jhiTranslate]="'mstrtireApp.SpeedIndex.' + (tireRef.speedIndex ?? 'null')">{{
+              { null: '', A_ONE: '5', A_EIGHT: '40', N: '140', Y: '300' }[tireRef.speedIndex ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.weightIndex">Weight Index</span></dt>
+          <dd>
+            <span [jhiTranslate]="'mstrtireApp.ChargeIndex.' + (tireRef.weightIndex ?? 'null')">{{
+              { null: '', TWENTY: '80', SIXTY: '250', NINETY: '600', ONE_HUNDRED_TWENTY: '1400' }[tireRef.weightIndex ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.quantity">Quantity</span></dt>
+          <dd>
+            <span>{{ tireRef.quantity }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.disable">Disable</span></dt>
+          <dd>
+            <span>{{ tireRef.disable }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.disableReason">Disable Reason</span></dt>
+          <dd>
+            <span>{{ tireRef.disableReason }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.description">Description</span></dt>
+          <dd>
+            <span>{{ tireRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.tire.tireBrand">Tire Brand</span></dt>
+          <dd>
+            @if (tire()!.tireBrand) {
+              <div>
+                <a [routerLink]="['/tire-brand', tire()!.tireBrand?.id, 'view']">{{ tireRef.tireBrand?.name }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tire', tireRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

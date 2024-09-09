@@ -1,0 +1,26 @@
+{
+  "mstrtireApp": {
+    "tireBrand": {
+      "home": {
+        "title": "Tire Brands",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tire Brand",
+        "createOrEditLabel": "Create or edit a Tire Brand",
+        "notFound": "No Tire Brands found"
+      },
+      "created": "A new Tire Brand is created with identifier {{ param }}",
+      "updated": "A Tire Brand is updated with identifier {{ param }}",
+      "deleted": "A Tire Brand is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tire Brand {{ id }}?"
+      },
+      "detail": {
+        "title": "Tire Brand"
+      },
+      "id": "ID",
+      "name": "Name",
+      "logoUrl": "Logo Url",
+      "tires": "Tires"
+    }
+  }
+}

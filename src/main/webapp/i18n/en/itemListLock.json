@@ -1,0 +1,27 @@
+{
+  "mstrtireApp": {
+    "itemListLock": {
+      "home": {
+        "title": "Item List Locks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Item List Lock",
+        "createOrEditLabel": "Create or edit a Item List Lock",
+        "notFound": "No Item List Locks found"
+      },
+      "created": "A new Item List Lock is created with identifier {{ param }}",
+      "updated": "A Item List Lock is updated with identifier {{ param }}",
+      "deleted": "A Item List Lock is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Item List Lock {{ id }}?"
+      },
+      "detail": {
+        "title": "Item List Lock"
+      },
+      "id": "ID",
+      "userUuid": "User Uuid",
+      "quantity": "Quantity",
+      "lockTime": "Lock Time",
+      "tire": "Tire"
+    }
+  }
+}

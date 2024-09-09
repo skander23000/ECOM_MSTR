@@ -1,0 +1,228 @@
+<div>
+  <h2 id="page-heading" data-cy="TireHeading">
+    <span jhiTranslate="mstrtireApp.tire.home.title">Tires</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="mstrtireApp.tire.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tire"
+        [routerLink]="['/tire/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="mstrtireApp.tire.home.createLabel">Créer un nouveau Tire</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (tires?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="mstrtireApp.tire.home.notFound">Aucun Tire trouvé</span>
+    </div>
+  }
+
+  @if (tires && tires.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="reference">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.reference">Reference</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="price">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.price">Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tireWidth">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.tireWidth">Tire Width</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tireHeight">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.tireHeight">Tire Height</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tireDiameter">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.tireDiameter">Tire Diameter</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tireType">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.tireType">Tire Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="imageUrl">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.imageUrl">Image Url</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="speedIndex">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.speedIndex">Speed Index</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="weightIndex">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.weightIndex">Weight Index</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="quantity">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.quantity">Quantity</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="disable">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.disable">Disable</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="disableReason">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.disableReason">Disable Reason</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tireBrand.name">
+              <div class="d-flex">
+                <span jhiTranslate="mstrtireApp.tire.tireBrand">Tire Brand</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tire of tires; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/tire', tire.id, 'view']">{{ tire.id }}</a>
+              </td>
+              <td>{{ tire.reference }}</td>
+              <td>{{ tire.name }}</td>
+              <td>{{ tire.price }}</td>
+              <td>{{ tire.tireWidth }}</td>
+              <td>{{ tire.tireHeight }}</td>
+              <td>{{ tire.tireDiameter }}</td>
+              <td [jhiTranslate]="'mstrtireApp.TireType.' + (tire.tireType ?? 'null')">
+                {{ { null: '', SUMMER: 'SUMMER', WINTER: 'WINTER', ALL_SEASON: 'ALL_SEASON' }[tire.tireType ?? 'null'] }}
+              </td>
+              <td>{{ tire.imageUrl }}</td>
+              <td [jhiTranslate]="'mstrtireApp.SpeedIndex.' + (tire.speedIndex ?? 'null')">
+                {{ { null: '', A_ONE: '5', A_EIGHT: '40', N: '140', Y: '300' }[tire.speedIndex ?? 'null'] }}
+              </td>
+              <td [jhiTranslate]="'mstrtireApp.ChargeIndex.' + (tire.weightIndex ?? 'null')">
+                {{ { null: '', TWENTY: '80', SIXTY: '250', NINETY: '600', ONE_HUNDRED_TWENTY: '1400' }[tire.weightIndex ?? 'null'] }}
+              </td>
+              <td>{{ tire.quantity }}</td>
+              <td>{{ tire.disable }}</td>
+              <td>{{ tire.disableReason }}</td>
+              <td>{{ tire.description }}</td>
+              <td>
+                @if (tire.tireBrand) {
+                  <div>
+                    <a [routerLink]="['/tire-brand', tire.tireBrand.id, 'view']">{{ tire.tireBrand.name }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/tire', tire.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a [routerLink]="['/tire', tire.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(tire)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (tires && tires.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

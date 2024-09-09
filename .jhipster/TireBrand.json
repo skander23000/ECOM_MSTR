@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20240909111741"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "logoUrl",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "TireBrand",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "tire",
+      "otherEntityRelationshipName": "tireBrand",
+      "relationshipName": "tires",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

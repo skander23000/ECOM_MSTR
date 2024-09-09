@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (customer(); as customerRef) {
+      <div>
+        <h2 data-cy="customerDetailsHeading"><span jhiTranslate="mstrtireApp.customer.detail.title">Customer</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ customerRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.firstName">First Name</span></dt>
+          <dd>
+            <span>{{ customerRef.firstName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.lastName">Last Name</span></dt>
+          <dd>
+            <span>{{ customerRef.lastName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.email">Email</span></dt>
+          <dd>
+            <span>{{ customerRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.address">Address</span></dt>
+          <dd>
+            <span>{{ customerRef.address }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.city">City</span></dt>
+          <dd>
+            <span>{{ customerRef.city }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.zipCode">Zip Code</span></dt>
+          <dd>
+            <span>{{ customerRef.zipCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.country">Country</span></dt>
+          <dd>
+            <span>{{ customerRef.country }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.phoneNumber">Phone Number</span></dt>
+          <dd>
+            <span>{{ customerRef.phoneNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.customer.customerOrder">Customer Order</span></dt>
+          <dd>
+            @if (customer()!.customerOrder) {
+              <div>
+                <a [routerLink]="['/customer-order', customer()!.customerOrder?.id, 'view']">{{ customerRef.customerOrder?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/customer', customerRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,267 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-tire-heading" data-cy="TireCreateUpdateHeading" jhiTranslate="mstrtireApp.tire.home.createOrEditLabel">
+        Créer ou éditer un Tire
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="mstrtireApp.tire.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let referenceRef = editForm.get('reference')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_reference" jhiTranslate="mstrtireApp.tire.reference">Reference</label>
+          <input type="text" class="form-control" name="reference" id="field_reference" data-cy="reference" formControlName="reference" />
+          @if (referenceRef.invalid && (referenceRef.dirty || referenceRef.touched)) {
+            <div></div>
+          }
+        </div>
+
+        @let nameRef = editForm.get('name')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="mstrtireApp.tire.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let priceRef = editForm.get('price')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_price" jhiTranslate="mstrtireApp.tire.price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          @if (priceRef.invalid && (priceRef.dirty || priceRef.touched)) {
+            <div>
+              @if (editForm.get('price')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('price')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let tireWidthRef = editForm.get('tireWidth')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tireWidth" jhiTranslate="mstrtireApp.tire.tireWidth">Tire Width</label>
+          <input type="text" class="form-control" name="tireWidth" id="field_tireWidth" data-cy="tireWidth" formControlName="tireWidth" />
+          @if (tireWidthRef.invalid && (tireWidthRef.dirty || tireWidthRef.touched)) {
+            <div>
+              @if (editForm.get('tireWidth')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let tireHeightRef = editForm.get('tireHeight')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tireHeight" jhiTranslate="mstrtireApp.tire.tireHeight">Tire Height</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tireHeight"
+            id="field_tireHeight"
+            data-cy="tireHeight"
+            formControlName="tireHeight"
+          />
+          @if (tireHeightRef.invalid && (tireHeightRef.dirty || tireHeightRef.touched)) {
+            <div>
+              @if (editForm.get('tireHeight')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let tireDiameterRef = editForm.get('tireDiameter')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tireDiameter" jhiTranslate="mstrtireApp.tire.tireDiameter">Tire Diameter</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tireDiameter"
+            id="field_tireDiameter"
+            data-cy="tireDiameter"
+            formControlName="tireDiameter"
+          />
+          @if (tireDiameterRef.invalid && (tireDiameterRef.dirty || tireDiameterRef.touched)) {
+            <div>
+              @if (editForm.get('tireDiameter')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let tireTypeRef = editForm.get('tireType')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tireType" jhiTranslate="mstrtireApp.tire.tireType">Tire Type</label>
+          <select class="form-control" name="tireType" formControlName="tireType" id="field_tireType" data-cy="tireType">
+            <option [ngValue]="null">{{ 'mstrtireApp.TireType.null' | translate }}</option>
+            @for (tireType of tireTypeValues; track $index) {
+              <option [value]="tireType">{{ 'mstrtireApp.TireType.' + tireType | translate }}</option>
+            }
+          </select>
+          @if (tireTypeRef.invalid && (tireTypeRef.dirty || tireTypeRef.touched)) {
+            <div>
+              @if (editForm.get('tireType')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let imageUrlRef = editForm.get('imageUrl')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_imageUrl" jhiTranslate="mstrtireApp.tire.imageUrl">Image Url</label>
+          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
+          @if (imageUrlRef.invalid && (imageUrlRef.dirty || imageUrlRef.touched)) {
+            <div>
+              @if (editForm.get('imageUrl')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let speedIndexRef = editForm.get('speedIndex')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_speedIndex" jhiTranslate="mstrtireApp.tire.speedIndex">Speed Index</label>
+          <select class="form-control" name="speedIndex" formControlName="speedIndex" id="field_speedIndex" data-cy="speedIndex">
+            <option [ngValue]="null">{{ 'mstrtireApp.SpeedIndex.null' | translate }}</option>
+            @for (speedIndex of speedIndexValues; track $index) {
+              <option [value]="speedIndex">{{ 'mstrtireApp.SpeedIndex.' + speedIndex | translate }}</option>
+            }
+          </select>
+          @if (speedIndexRef.invalid && (speedIndexRef.dirty || speedIndexRef.touched)) {
+            <div>
+              @if (editForm.get('speedIndex')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let weightIndexRef = editForm.get('weightIndex')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_weightIndex" jhiTranslate="mstrtireApp.tire.weightIndex">Weight Index</label>
+          <select class="form-control" name="weightIndex" formControlName="weightIndex" id="field_weightIndex" data-cy="weightIndex">
+            <option [ngValue]="null">{{ 'mstrtireApp.ChargeIndex.null' | translate }}</option>
+            @for (chargeIndex of chargeIndexValues; track $index) {
+              <option [value]="chargeIndex">{{ 'mstrtireApp.ChargeIndex.' + chargeIndex | translate }}</option>
+            }
+          </select>
+          @if (weightIndexRef.invalid && (weightIndexRef.dirty || weightIndexRef.touched)) {
+            <div>
+              @if (editForm.get('weightIndex')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let quantityRef = editForm.get('quantity')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_quantity" jhiTranslate="mstrtireApp.tire.quantity">Quantity</label>
+          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          @if (quantityRef.invalid && (quantityRef.dirty || quantityRef.touched)) {
+            <div>
+              @if (editForm.get('quantity')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('quantity')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let disableRef = editForm.get('disable')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_disable" jhiTranslate="mstrtireApp.tire.disable">Disable</label>
+          <input type="checkbox" class="form-check" name="disable" id="field_disable" data-cy="disable" formControlName="disable" />
+          @if (disableRef.invalid && (disableRef.dirty || disableRef.touched)) {
+            <div>
+              @if (editForm.get('disable')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_disableReason" jhiTranslate="mstrtireApp.tire.disableReason">Disable Reason</label>
+          <input
+            type="text"
+            class="form-control"
+            name="disableReason"
+            id="field_disableReason"
+            data-cy="disableReason"
+            formControlName="disableReason"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="mstrtireApp.tire.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tireBrand" jhiTranslate="mstrtireApp.tire.tireBrand">Tire Brand</label>
+          <select
+            class="form-control"
+            id="field_tireBrand"
+            data-cy="tireBrand"
+            name="tireBrand"
+            formControlName="tireBrand"
+            [compareWith]="compareTireBrand"
+          >
+            <option [ngValue]="null"></option>
+            @for (tireBrandOption of tireBrandsSharedCollection; track $index) {
+              <option [ngValue]="tireBrandOption">{{ tireBrandOption.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

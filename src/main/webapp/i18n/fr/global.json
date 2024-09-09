@@ -8,7 +8,12 @@
       "entities": {
         "main": "Entités",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "adminAuthority": "Authority"
+        "tire": "Tire",
+        "tireBrand": "Tire Brand",
+        "customer": "Customer",
+        "customerOrder": "Customer Order",
+        "orderItem": "Order Item",
+        "itemListLock": "Item List Lock"
       },
       "account": {
         "main": "Compte",
