@@ -1,0 +1,48 @@
+// Variables pour personnaliser le style
+$primary-color: black; // Couleur principale (pour la barre et le texte)
+$background-color: #e9f0fa; // Couleur de fond similaire à l'image
+$font-size-logo: 5em; // Taille du texte "ReTire"
+$font-size-cart: 1.5em; // Taille de l'icône du panier
+$line-height: 2px; // Hauteur de la barre
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 colonnes égales */
+  align-items: center; /* Centre verticalement les éléments */
+  padding: 10px 0;
+  background-color: $background-color;
+
+  .logo {
+    grid-column: 1; /* Colonne 1 */
+    justify-self: start; /* Alignement à gauche de la colonne */
+    font-size: $font-size-logo;
+    font-weight: normal;
+    text-decoration: none;
+    color: $primary-color;
+    font-family: 'Arial', sans-serif;
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+
+  .cart {
+    grid-column: 3; /* Colonne 3 */
+    justify-self: end; /* Alignement à droite de la colonne */
+    align-self: center; /* Alignement en haut de la case */
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    text-decoration: none;
+    color: $primary-color;
+    font-size: $font-size-cart;
+
+    .cart-icon {
+      margin-right: 5px;
+    }
+
+    .cart-count {
+      font-weight: bold;
+    }
+  }
+}
