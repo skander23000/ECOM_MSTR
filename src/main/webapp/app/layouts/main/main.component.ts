@@ -7,17 +7,19 @@ import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
+import { MyHeaderComponent } from '../../my-header/my-header.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-main',
   templateUrl: './main.component.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
+  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, MyHeaderComponent],
 })
 export default class MainComponent implements OnInit {
-  private renderer: Renderer2;
+  public isConnected: boolean | null = false;
 
+  private renderer: Renderer2;
   private router = inject(Router);
   private appPageTitleStrategy = inject(AppPageTitleStrategy);
   private accountService = inject(AccountService);
@@ -31,6 +33,9 @@ export default class MainComponent implements OnInit {
   ngOnInit(): void {
     // try to log in automatically
     this.accountService.identity().subscribe();
+    this.isConnected = this.accountService.isAuthenticated();
+    //eslint-disable-next-line
+    console.log(this.isConnected);
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.appPageTitleStrategy.updateTitle(this.router.routerState.snapshot);
