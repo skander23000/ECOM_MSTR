@@ -1,0 +1,39 @@
+{
+  "mstrtireApp": {
+    "tire": {
+      "home": {
+        "title": "Tires",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Tire",
+        "createOrEditLabel": "Créer ou éditer un Tire",
+        "notFound": "Aucun Tire trouvé"
+      },
+      "created": "Un nouveau Tire a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tire avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tire avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Tire {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tire"
+      },
+      "id": "ID",
+      "reference": "Reference",
+      "name": "Name",
+      "price": "Price",
+      "tireWidth": "Tire Width",
+      "tireHeight": "Tire Height",
+      "tireDiameter": "Tire Diameter",
+      "tireType": "Tire Type",
+      "imageUrl": "Image Url",
+      "speedIndex": "Speed Index",
+      "weightIndex": "Weight Index",
+      "quantity": "Quantity",
+      "disable": "Disable",
+      "disableReason": "Disable Reason",
+      "description": "Description",
+      "itemListLocks": "Item List Locks",
+      "tireBrand": "Tire Brand"
+    }
+  }
+}

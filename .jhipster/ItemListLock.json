@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20240909111745"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "userUuid",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lockTime",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "ItemListLock",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "tire",
+      "otherEntityRelationshipName": "itemListLocks",
+      "relationshipName": "tire",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

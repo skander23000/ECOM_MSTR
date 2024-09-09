@@ -1,0 +1,119 @@
+entity Tire {
+  reference String unique,
+  name String required,
+  price BigDecimal required,
+  tireWidth String required,
+  tireHeight String required,
+  tireDiameter String required,
+  tireType TireType required,
+  imageUrl String required,
+  speedIndex SpeedIndex required,
+  weightIndex ChargeIndex required,
+  quantity Integer required,
+  disable Boolean required,
+  disableReason String,
+  description String
+}
+
+entity TireBrand {
+  name String required,
+  logoUrl String required
+}
+
+entity Customer {
+  firstName String required,
+  lastName String required,
+  email String required,
+  address String required,
+  city String required,
+  zipCode String required,
+  country String required,
+  phoneNumber String
+}
+
+entity CustomerOrder {
+  orderDate Instant required,
+  status OrderStatus required,
+  totalAmount BigDecimal required,
+  paymentDate Instant required,
+  paymentMethod PaymentMethod required,
+  paymentStatus PaymentStatus required
+}
+
+entity OrderItem {
+  quantity Integer required,
+  price BigDecimal required
+}
+
+entity ItemListLock {
+  userUuid UUID required,
+  quantity Integer required,
+  lockTime Instant required
+}
+
+enum ChargeIndex{
+  TWENTY("80"),
+  SIXTY("250"),
+  NINETY("600"),
+  ONE_HUNDRED_TWENTY("1400")
+}
+
+enum SpeedIndex{
+  A_ONE("5"),
+  A_EIGHT("40"),
+  N("140"),
+  Y("300")
+}
+
+enum TireType {
+  SUMMER,
+  WINTER,
+  ALL_SEASON
+}
+
+enum OrderStatus {
+  PENDING,
+  COMPLETED,
+  CANCELLED,
+  SHIPPED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD,
+  PAYPAL,
+  BANK_TRANSFER,
+  CASH_ON_DELIVERY
+}
+
+enum PaymentStatus {
+  PENDING,
+  COMPLETED,
+  FAILED
+}
+
+relationship OneToOne {
+  Customer{customerOrder} to CustomerOrder
+}
+
+relationship OneToMany {
+  // Un TireBrand peut avoir plusieurs Tires
+  TireBrand { tires } to Tire { tireBrand(name) },
+  // Un Tire peut être verrouillé dans plusieurs ItemListLocks
+  Tire { itemListLocks } to ItemListLock { tire }
+}
+
+  relationship ManyToOne {
+  OrderItem { customerOrder } to CustomerOrder,
+  OrderItem { tire } to Tire
+}
+
+paginate ItemListLock with pagination
+paginate Tire with pagination
+paginate CustomerOrder with pagination
+paginate Customer with pagination
+paginate OrderItem with pagination
+paginate TireBrand with pagination
+
+service ItemListLock, Tire, CustomerOrder, Customer, OrderItem, TireBrand with serviceClass
+
+dto ItemListLock, Tire, CustomerOrder, Customer, OrderItem, TireBrand with mapstruct

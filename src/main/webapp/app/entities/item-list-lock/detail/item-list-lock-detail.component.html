@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (itemListLock(); as itemListLockRef) {
+      <div>
+        <h2 data-cy="itemListLockDetailsHeading"><span jhiTranslate="mstrtireApp.itemListLock.detail.title">Item List Lock</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ itemListLockRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.itemListLock.userUuid">User Uuid</span></dt>
+          <dd>
+            <span>{{ itemListLockRef.userUuid }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.itemListLock.quantity">Quantity</span></dt>
+          <dd>
+            <span>{{ itemListLockRef.quantity }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.itemListLock.lockTime">Lock Time</span></dt>
+          <dd>
+            <span>{{ itemListLockRef.lockTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="mstrtireApp.itemListLock.tire">Tire</span></dt>
+          <dd>
+            @if (itemListLock()!.tire) {
+              <div>
+                <a [routerLink]="['/tire', itemListLock()!.tire?.id, 'view']">{{ itemListLockRef.tire?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/item-list-lock', itemListLockRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

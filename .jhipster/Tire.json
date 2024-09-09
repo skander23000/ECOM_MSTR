@@ -1,0 +1,101 @@
+{
+  "annotations": {
+    "changelogDate": "20240909111740"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tireWidth",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tireHeight",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tireDiameter",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tireType",
+      "fieldType": "TireType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SUMMER,WINTER,ALL_SEASON"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "speedIndex",
+      "fieldType": "SpeedIndex",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "A_ONE (5),A_EIGHT (40),N (140),Y (300)"
+    },
+    {
+      "fieldName": "weightIndex",
+      "fieldType": "ChargeIndex",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "TWENTY (80),SIXTY (250),NINETY (600),ONE_HUNDRED_TWENTY (1400)"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "disable",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "disableReason",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Tire",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "itemListLock",
+      "otherEntityRelationshipName": "tire",
+      "relationshipName": "itemListLocks",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "tireBrand",
+      "otherEntityRelationshipName": "tires",
+      "relationshipName": "tireBrand",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,10 @@
+{
+  "mstrtireApp": {
+    "TireType": {
+      "null": "",
+      "SUMMER": "SUMMER",
+      "WINTER": "WINTER",
+      "ALL_SEASON": "ALL_SEASON"
+    }
+  }
+}
