@@ -1,0 +1,31 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f1f1; /* Couleur de fond pour le footer */
+  padding: 20px;
+
+  .footer-content {
+    text-align: center;
+
+    .footer-text {
+      margin-bottom: 20px; /* Espacement entre les textes et les zones de texte */
+      a.footer-link {
+        color: black; /* Couleur du lien */
+        text-decoration: underline; /* Souligner le texte */
+        margin: 0 5px; /* Espacement autour des liens */
+
+        &:hover {
+          text-decoration: none; /* Enlever la soulignure au survol */
+        }
+      }
+    }
+
+    .text-zone {
+      margin-bottom: 20px;
+      p {
+        margin: 10px 0;
+      }
+    }
+  }
+}

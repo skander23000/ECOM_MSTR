@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./my-header.component.scss'],
 })
 export class MyHeaderComponent {
-  @Input() cartItemCount = 0; // Variable pour représenter le nombre d'articles dans le panier
+  @Input() cartItemCount = 0; // Variable pour representer le nombre d articles dans le panier
 }

@@ -13,6 +13,7 @@ $line-height: 2px; // Hauteur de la barre
 
   .logo {
     grid-column: 1; /* Colonne 1 */
+    padding-left: 1rem;
     justify-self: start; /* Alignement à gauche de la colonne */
     font-size: $font-size-logo;
     font-weight: normal;
