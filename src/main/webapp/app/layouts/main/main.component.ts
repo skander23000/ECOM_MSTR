@@ -9,14 +9,14 @@ import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 import { MyHeaderComponent } from '../../my-header/my-header.component';
 import { MyFooterComponent } from '../../my-footer/my-footer.component';
-import { FormComponent } from '../../form/form.component';
+import { FormContactAdressComponent } from '../../form-contact-adress/form-contact-adress.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-main',
   templateUrl: './main.component.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, MyHeaderComponent, MyFooterComponent, FormComponent],
+  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, MyHeaderComponent, MyFooterComponent, FormContactAdressComponent],
 })
 export default class MainComponent implements OnInit {
   public isConnected = false;

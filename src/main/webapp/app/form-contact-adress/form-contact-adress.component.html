@@ -1,0 +1,117 @@
+<div class="head-title">Contact et adresse de livraison</div>
+<div>
+  <div class="form-part">
+    <div>
+      <span class="title">Contact</span>
+      <span class="required">* champs requis</span>
+    </div>
+
+    <div class="form-row">
+      <div class="input-container">
+        <label for="lastname">Nom*</label>
+        <input type="text" id="lastname" name="lastname" placeholder="Doe" [(ngModel)]="lastname" #lastnameInput="ngModel" required />
+        <div *ngIf="(lastnameInput.touched || isSubmitted) && !lastnameInput.valid" class="error-message">
+          <span>Le nom est requis.</span>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="firstname">Prénom*</label>
+        <input type="text" id="firstname" name="firstname" placeholder="John" [(ngModel)]="firstname" #firstnameInput="ngModel" required />
+        <div *ngIf="(firstnameInput.touched || isSubmitted) && !firstnameInput.valid" class="error-message">
+          <span>Le prénom est requis.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <label for="phone">Téléphone*</label>
+      <input type="tel" id="phone" name="phone" placeholder="06 12 34 56 78" [(ngModel)]="phoneNumber" #phoneInput="ngModel" required />
+      <div *ngIf="validatePhoneNumber(phoneInput)" class="error-message">
+        <span>Entrez un numéro valide (06 12 34 56 78)</span>
+      </div>
+      <div *ngIf="(phoneInput.touched || isSubmitted) && !phoneInput.valid && !validatePhoneNumber(phoneInput)" class="error-message">
+        <span>Le numéro de téléphone est requis.</span>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <label for="email">Email*</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="exemple@email.com"
+        [(ngModel)]="email"
+        #emailInput="ngModel"
+        required
+        email
+      />
+      <div *ngIf="validateEmail(emailInput)" class="error-message">
+        <span>Entrez un e-mail valide (exemple&#64;email.com)</span>
+      </div>
+      <div *ngIf="(emailInput.touched || isSubmitted) && !emailInput.valid && !validateEmail(emailInput)" class="error-message">
+        <span>Le code postal est requis.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="form-part">
+    <div>
+      <span class="title">Adresse de livraison</span>
+      <span class="required">* champs requis</span>
+    </div>
+    <div class="required warning">La livraison ne s'effectue qu'en France Métropolitaine</div>
+
+    <div class="input-container">
+      <label for="adress">Adresse*</label>
+      <input type="text" id="adress" name="adress" placeholder="18 rue de Paris" [(ngModel)]="address" #addressInput="ngModel" required />
+      <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
+        <span>L'adresse est requise.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="input-container">
+        <label for="post_code">Code postal*</label>
+        <input
+          type="text"
+          id="post_code"
+          name="post_code"
+          placeholder="75000"
+          [(ngModel)]="postCode"
+          #postCodeInput="ngModel"
+          (blur)="validatePostCode(postCodeInput)"
+          required
+        />
+        <div *ngIf="validatePostCode(postCodeInput)" class="error-message">
+          <span>Code postal invalide</span>
+        </div>
+        <div
+          *ngIf="(postCodeInput.touched || isSubmitted) && !postCodeInput.valid && !validatePostCode(postCodeInput)"
+          class="error-message"
+        >
+          <span>Le code postal est requis.</span>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="city">Ville*</label>
+        <input type="text" id="city" name="city" placeholder="Paris" [(ngModel)]="city" #cityInput="ngModel" required />
+        <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
+          <span>La ville est requise.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Boutons -->
+<div class="button-container">
+  <div class="button-row">
+    <button type="button" class="btn btn-back" (click)="goBackToCart()">Retour au panier</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Suivant</button>
+  </div>
+</div>

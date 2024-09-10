@@ -64,3 +64,56 @@
 .warning {
   padding-left: 2rem;
 }
+
+.button-row {
+  display: flex;
+  justify-content: center; /* Centre les boutons horizontalement */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%; /* S'assure que la rangée de boutons prend toute la largeur disponible */
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px; /* Espacement entre les boutons */
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-back {
+  background-color: #f8f9fa; /* Couleur de fond gris clair */
+  color: #000; /* Couleur du texte noire */
+  border: 1px solid #ccc; /* Bordure grise */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px; /* Espacement entre les boutons */
+}
+
+.btn-back:hover {
+  background-color: #e2e6e9; /* Couleur de fond gris plus foncé au survol */
+}
+
+.button-container {
+  width: 50%; /* Limite la largeur à 50% */
+  margin: 0 auto; /* Centre le conteneur horizontalement */
+}
+
+.error-message {
+  padding-left: 6px;
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
