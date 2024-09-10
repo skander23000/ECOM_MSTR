@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+      <div *ngFor="let tire of tires" class="col-md-4" (click)="openDetails(tire)">
+      <div class="card mb-4 shadow-sm" style="border-radius: 50px;">
+        <img [src]="tire.imageUrl" class="image" alt="{{ tire.name }}">
+        <div class="card-body">
+          <div class="card-title-price">
+            <h5 class="card-title">{{ tire.name }}</h5>
+            <h4>{{ tire.price }}€</h4>
+          </div>
+          <p class="card-text">Ref: {{ tire.description }}</p>
+          <div class="card-footer">
+            <div>
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/snowflakes_icon.png">
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png">
+            </div>
+            <div>
+              <a>
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<jhi-detail *ngIf="showModal" [tire]="selectedTire" (closeModal)="closeModal()"></jhi-detail>

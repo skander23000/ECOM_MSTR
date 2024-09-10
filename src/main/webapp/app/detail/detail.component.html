@@ -1,0 +1,73 @@
+<div class="modal-background" (click)="close()">
+  <div class="modal-container" (click)="$event.stopPropagation()"> <!-- Empêche la fermeture quand on clique sur la fenêtre -->
+    <div style="display: flex; justify-content: flex-end;">
+      <button class="close-button" (click)="close()">×</button>
+    </div>
+    <div class="modal-header">
+      <img [src]="tire?.imageUrl" class="product-image" alt="{{ tire?.name }}">
+    </div>
+    <div class="modal-body">
+      <div class="div-gauche">
+        <div style="display: flex; align-items:start">
+          <h3 style=" font-weight: bold;">{{ tire?.name }}</h3>
+          <span style="margin: 0.5rem 1rem"><strong>Ref: </strong>{{ tire?.reference }} </span>
+        </div>
+
+        <p><strong>Description: </strong>{{ tire?.description }}</p>
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+            <tr>
+              <th>Caractéristique</th>
+              <th>Détails</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr >
+              <td>Largeur</td>
+              <td>{{ tire?.tireWidth }}</td>
+
+            </tr>
+            <tr >
+              <td>Hauteur </td>
+              <td>{{ tire?.tireHeight }}</td>
+            </tr>
+            <tr >
+              <td>Diamètre</td>
+              <td>{{ tire?.tireDiameter }}</td>
+            </tr>
+            <tr >
+              <td>Index de vitesse</td>
+              <td>{{ tire?.speedIndex }}</td>
+            </tr>
+            <tr >
+              <td>Index de poids</td>
+              <td>{{ tire?.weightIndex }}</td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="div-droite">
+        <div class="droite-haut">
+            <img class="logos" src="../../content/images/website_icon_pack/icon_pack/snowflakes_icon.png">
+            <img class="logos" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png">
+          <div style="margin: 0.5rem;"><p><strong>Prix: </strong>{{ tire?.price }}€</p></div>
+        </div>
+        <div class="quantity-selector">
+          <div class="plus-moins">
+            <button (click)="decreaseQuantity()">-</button>
+            <input type="text" [value]="quantity" >
+            <button (click)="increaseQuantity()">+</button>
+          </div>
+            <div style="margin: 1rem"><button class="add-to-cart">Ajouter au panier</button></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
