@@ -1,6 +1,6 @@
 import { ITire } from './tire/tire.model';
 
-interface TireContainer {
-  tire: ITire;
-  count: number;
+export interface TireContainer {
+  tire?: ITire;
+  count?: number;
 }

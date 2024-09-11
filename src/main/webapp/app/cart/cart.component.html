@@ -1,0 +1,4 @@
+<div class="head-title" jhiTranslate="cart_header.title"></div>
+@for (cart_item of cart_items; track cart_item.tire?.id) {
+  <jhi-cart-item [cart_item]="cart_item"></jhi-cart-item>
+}
