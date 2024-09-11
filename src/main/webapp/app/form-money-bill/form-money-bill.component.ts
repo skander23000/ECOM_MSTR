@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 export interface PaymentInfo {
@@ -16,7 +16,7 @@ export interface PaymentInfo {
 @Component({
   selector: 'jhi-form-money-bill',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass, TranslateDirective],
+  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage],
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })

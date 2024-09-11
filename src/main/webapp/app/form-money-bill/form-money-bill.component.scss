@@ -46,7 +46,7 @@
   width: 100%;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid $my_grey;
   border-radius: 10px;
   box-sizing: border-box;
 }
@@ -84,8 +84,8 @@
 }
 
 .btn-primary {
-  background-color: #007bff;
-  color: white;
+  background-color: $my_button_primary;
+  color: $text_white;
 }
 
 .btn:hover {
@@ -105,9 +105,9 @@
 }
 
 .btn-back {
-  background-color: #f8f9fa; /* Couleur de fond gris clair */
-  color: #000; /* Couleur du texte noire */
-  border: 1px solid #ccc; /* Bordure grise */
+  background-color: $my_button_secondary; /* Couleur de fond gris clair */
+  color: $text_black; /* Couleur du texte noire */
+  border: 1px solid $my_grey; /* Bordure grise */
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 5px;
@@ -116,7 +116,7 @@
 }
 
 .btn-back:hover {
-  background-color: #e2e6e9; /* Couleur de fond gris plus foncé au survol */
+  background-color: $my_button_hover; /* Couleur de fond gris plus foncé au survol */
 }
 
 .button-container {
@@ -126,15 +126,15 @@
 
 .error-message {
   padding-left: 6px;
-  color: red;
+  color: $text_error;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
 .disabled-field {
-  background-color: #f0f0f0; /* Couleur de fond grise pour les champs désactivés */
-  border: 1px solid #ddd; /* Bordure plus claire pour les champs désactivés */
-  color: #aaa; /* Couleur du texte plus clair pour les champs désactivés */
+  background-color: $desactivate_field_bg; /* Couleur de fond grise pour les champs désactivés */
+  border: 1px solid $desactivate_field_border; /* Bordure plus claire pour les champs désactivés */
+  color: $desactivate_field_text; /* Couleur du texte plus clair pour les champs désactivés */
 }
 
 .checkbox-container {

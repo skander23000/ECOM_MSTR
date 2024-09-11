@@ -1,4 +1,17 @@
-<div class="head-title" jhiTranslate="cart_header.title"></div>
-@for (cart_item of cart_items; track cart_item.tire?.id) {
-  <jhi-cart-item [cart_item]="cart_item"></jhi-cart-item>
+<div class="container">
+  <div class="head-title" jhiTranslate="cart_header.title"></div>
+  <div class="button-box">
+    <button type="button" class="btn btn-primary">
+      <span jhiTranslate="cart_button.empty"></span>
+    </button>
+  </div>
+</div>
+<!-- Affichage de tous les items du panier -->
+@if (cart_items.length === 0) {
+  <div class="alert alert-warning" jhiTranslate="cart_infos.empty"></div>
+  <div class="separator"></div>
+} @else {
+  @for (cart_item of cart_items; track cart_item.tire?.id) {
+    <jhi-cart-item [cart_item]="cart_item"></jhi-cart-item>
+  }
 }

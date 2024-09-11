@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 
 @Component({
   selector: 'jhi-form-contact-adress',
   standalone: true,
-  imports: [FormsModule, NgIf, TranslateDirective],
+  imports: [FormsModule, NgIf, TranslateDirective, NgOptimizedImage],
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
