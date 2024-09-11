@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TireService } from 'app/entities/tire/service/tire.service';
@@ -14,13 +14,15 @@ import { DetailComponent } from 'app/detail/detail.component';
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit {
   tires: any[] = [];
   selectedTire: ITire | null = null;
   showModal = false;
-  constructor (private tireService: TireService,
-     private basket: BasketService)
-     {}
+
+  constructor(
+    private tireService: TireService,
+    private basket: BasketService,
+  ) {}
   ngOnInit(): void {
     this.tireService.query().subscribe(
       (res: HttpResponse<ITire[]>) => {
@@ -53,6 +55,14 @@ export class CatalogueComponent {
   }
 
   setTire(tire: ITire, count: number): void {
-    this.basket.setTire(tire,count);
+    this.basket.setTire(tire, count);
+  }
+
+  getnb(tire: ITire): number {
+    return this.basket.getNumberOfTires(tire);
+  }
+
+  wipe(): void {
+    this.basket.wipe();
   }
 }
