@@ -80,7 +80,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px; /* Espacement entre les boutons */
+  margin: 0 1rem; /* Espacement entre les boutons */
 }
 
 .btn-primary {
@@ -112,7 +112,7 @@
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px; /* Espacement entre les boutons */
+  margin: 0 1rem; /* Espacement entre les boutons */
 }
 
 .btn-back:hover {
@@ -141,4 +141,8 @@
   padding-left: 1rem;
   margin-top: 10px;
   font-size: 0.9rem;
+}
+
+.checkbox-separator {
+  padding-right: 0.5rem;
 }

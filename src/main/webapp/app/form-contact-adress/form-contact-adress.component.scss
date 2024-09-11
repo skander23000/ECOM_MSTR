@@ -23,7 +23,7 @@
 .form-row {
   display: flex;
   justify-content: flex-start;
-  gap: 10px; /* Ajoute un espacement léger entre Nom et Prénom */
+  gap: 1rem; /* Ajoute un espacement léger entre Nom et Prénom */
   width: 48%;
 }
 
@@ -79,7 +79,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px; /* Espacement entre les boutons */
+  margin: 0 1rem; /* Espacement entre les boutons */
 }
 
 .btn-primary {
@@ -99,7 +99,7 @@
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px; /* Espacement entre les boutons */
+  margin: 0 1rem; /* Espacement entre les boutons */
 }
 
 .btn-back:hover {
@@ -109,6 +109,18 @@
 .button-container {
   width: 50%; /* Limite la largeur à 50% */
   margin: 0 auto; /* Centre le conteneur horizontalement */
+}
+
+.btn-primary .icon {
+  width: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  height: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  margin-left: 10px; /* Espacement entre le texte et l'icône */
+  transform: rotate(270deg); /* Pivote l'icône de 90° */
+  transition: transform 0.3s; /* Transition fluide pour la rotation si nécessaire */
+}
+
+.btn-primary:hover .icon {
+  transform: rotate(270deg); /* Assurez-vous que la rotation est appliquée lors du survol */
 }
 
 .error-message {

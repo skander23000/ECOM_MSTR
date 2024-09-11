@@ -1,117 +1,132 @@
-<div class="head-title">Contact et adresse de livraison</div>
-<div>
-  <div class="form-part">
-    <div>
-      <span class="title">Contact</span>
-      <span class="required">* champs requis</span>
-    </div>
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="head-title" jhiTranslate="form_header.contact_address_form.main_title"></div>
+  <div>
+    <div class="form-part">
+      <div>
+        <span class="title" jhiTranslate="form_header.contact_address_form.contact_title"></span>
+        <span class="required" jhiTranslate="form_header.required"></span>
+      </div>
 
-    <div class="form-row">
-      <div class="input-container">
-        <label for="lastname">Nom*</label>
-        <input type="text" id="lastname" name="lastname" placeholder="Doe" [(ngModel)]="lastname" #lastnameInput="ngModel" required />
-        <div *ngIf="(lastnameInput.touched || isSubmitted) && !lastnameInput.valid" class="error-message">
-          <span>Le nom est requis.</span>
+      <div class="form-row">
+        <div class="input-container">
+          <label for="lastname" jhiTranslate="form_input_header.last_name"></label>
+          <input type="text" id="lastname" name="lastname" placeholder="Doe" [(ngModel)]="lastname" #lastnameInput="ngModel" required />
+          <div *ngIf="(lastnameInput.touched || isSubmitted) && !lastnameInput.valid" class="error-message">
+            <span jhiTranslate="form_error.missing_last_name"></span>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <label for="firstname" jhiTranslate="form_input_header.first_name"></label>
+          <input
+            type="text"
+            id="firstname"
+            name="firstname"
+            placeholder="John"
+            [(ngModel)]="firstname"
+            #firstnameInput="ngModel"
+            required
+          />
+          <div *ngIf="(firstnameInput.touched || isSubmitted) && !firstnameInput.valid" class="error-message">
+            <span jhiTranslate="form_error.missing_first_name"></span>
+          </div>
         </div>
       </div>
 
       <div class="input-container">
-        <label for="firstname">Prénom*</label>
-        <input type="text" id="firstname" name="firstname" placeholder="John" [(ngModel)]="firstname" #firstnameInput="ngModel" required />
-        <div *ngIf="(firstnameInput.touched || isSubmitted) && !firstnameInput.valid" class="error-message">
-          <span>Le prénom est requis.</span>
+        <label for="phone" jhiTranslate="form_input_header.phone"></label>
+        <input type="tel" id="phone" name="phone" placeholder="06 12 34 56 78" [(ngModel)]="phoneNumber" #phoneInput="ngModel" required />
+        <div *ngIf="validatePhoneNumber(phoneInput)" class="error-message">
+          <span jhiTranslate="form_error.invalid_phone"></span>
+        </div>
+        <div *ngIf="(phoneInput.touched || isSubmitted) && !phoneInput.valid && !validatePhoneNumber(phoneInput)" class="error-message">
+          <span jhiTranslate="form_error.missing_phone"></span>
         </div>
       </div>
-    </div>
 
-    <div class="input-container">
-      <label for="phone">Téléphone*</label>
-      <input type="tel" id="phone" name="phone" placeholder="06 12 34 56 78" [(ngModel)]="phoneNumber" #phoneInput="ngModel" required />
-      <div *ngIf="validatePhoneNumber(phoneInput)" class="error-message">
-        <span>Entrez un numéro valide (06 12 34 56 78)</span>
-      </div>
-      <div *ngIf="(phoneInput.touched || isSubmitted) && !phoneInput.valid && !validatePhoneNumber(phoneInput)" class="error-message">
-        <span>Le numéro de téléphone est requis.</span>
-      </div>
-    </div>
-
-    <div class="input-container">
-      <label for="email">Email*</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="exemple@email.com"
-        [(ngModel)]="email"
-        #emailInput="ngModel"
-        required
-        email
-      />
-      <div *ngIf="validateEmail(emailInput)" class="error-message">
-        <span>Entrez un e-mail valide (exemple&#64;email.com)</span>
-      </div>
-      <div *ngIf="(emailInput.touched || isSubmitted) && !emailInput.valid && !validateEmail(emailInput)" class="error-message">
-        <span>L'email est requis.</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="separator"></div>
-
-  <div class="form-part">
-    <div>
-      <span class="title">Adresse de livraison</span>
-      <span class="required">* champs requis</span>
-    </div>
-    <div class="required warning">La livraison ne s'effectue qu'en France Métropolitaine</div>
-
-    <div class="input-container">
-      <label for="adress">Adresse*</label>
-      <input type="text" id="adress" name="adress" placeholder="18 rue de Paris" [(ngModel)]="address" #addressInput="ngModel" required />
-      <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
-        <span>L'adresse est requise.</span>
-      </div>
-    </div>
-
-    <div class="form-row">
       <div class="input-container">
-        <label for="post_code">Code postal*</label>
+        <label for="email" jhiTranslate="form_input_header.email"></label>
         <input
-          type="text"
-          id="post_code"
-          name="post_code"
-          placeholder="75000"
-          [(ngModel)]="postCode"
-          #postCodeInput="ngModel"
-          (blur)="validatePostCode(postCodeInput)"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="exemple@email.com"
+          [(ngModel)]="email"
+          #emailInput="ngModel"
           required
+          email
         />
-        <div *ngIf="validatePostCode(postCodeInput)" class="error-message">
-          <span>Code postal invalide</span>
+        <div *ngIf="validateEmail(emailInput)" class="error-message">
+          <span jhiTranslate="form_error.invalid_email"></span>
         </div>
-        <div
-          *ngIf="(postCodeInput.touched || isSubmitted) && !postCodeInput.valid && !validatePostCode(postCodeInput)"
-          class="error-message"
-        >
-          <span>Le code postal est requis.</span>
+        <div *ngIf="(emailInput.touched || isSubmitted) && !emailInput.valid && !validateEmail(emailInput)" class="error-message">
+          <span jhiTranslate="form_error.missing_email"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="form-part">
+      <div>
+        <span class="title" jhiTranslate="form_header.contact_address_form.delivery_title"></span>
+        <span class="required" jhiTranslate="form_header.required"></span>
+      </div>
+      <div class="required warning" jhiTranslate="form_header.delivery_warning"></div>
+
+      <div class="input-container">
+        <label for="adress" jhiTranslate="form_input_header.address"></label>
+        <input type="text" id="adress" name="adress" placeholder="18 rue de Paris" [(ngModel)]="address" #addressInput="ngModel" required />
+        <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
+          <span jhiTranslate="form_error.missing_address"></span>
         </div>
       </div>
 
-      <div class="input-container">
-        <label for="city">Ville*</label>
-        <input type="text" id="city" name="city" placeholder="Paris" [(ngModel)]="city" #cityInput="ngModel" required />
-        <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
-          <span>La ville est requise.</span>
+      <div class="form-row">
+        <div class="input-container">
+          <label for="post_code" jhiTranslate="form_input_header.post_code"></label>
+          <input
+            type="text"
+            id="post_code"
+            name="post_code"
+            placeholder="75000"
+            [(ngModel)]="postCode"
+            #postCodeInput="ngModel"
+            (blur)="validatePostCode(postCodeInput)"
+            required
+          />
+          <div *ngIf="validatePostCode(postCodeInput)" class="error-message">
+            <span jhiTranslate="form_error.invalid_post_code"></span>
+          </div>
+          <div
+            *ngIf="(postCodeInput.touched || isSubmitted) && !postCodeInput.valid && !validatePostCode(postCodeInput)"
+            class="error-message"
+          >
+            <span jhiTranslate="form_error.missing_post_code"></span>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <label for="city" jhiTranslate="form_input_header.city"></label>
+          <input type="text" id="city" name="city" placeholder="Paris" [(ngModel)]="city" #cityInput="ngModel" required />
+          <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
+            <span jhiTranslate="form_error.missing_city"></span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Boutons -->
-<div class="button-container">
-  <div class="button-row">
-    <button type="button" class="btn btn-back" (click)="goBackToCart()">Retour au panier</button>
-    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Suivant</button>
+  <!-- Boutons -->
+  <div class="button-container">
+    <div class="button-row">
+      <button type="button" class="btn btn-back" (click)="goBackToCart()" jhiTranslate="form_button.cancel"></button>
+
+      <button type="submit" class="btn btn-primary">
+        <span jhiTranslate="form_button.next"></span>
+        <!-- Texte traduit ici -->
+        <img src="../../content/images/asset/icons/down_arrow_icon.png" alt="Icône" class="icon" />
+      </button>
+    </div>
   </div>
-</div>
+</form>

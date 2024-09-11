@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
+import TranslateDirective from '../shared/language/translate.directive';
 
 @Component({
   selector: 'jhi-form-money-bill',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass],
+  imports: [FormsModule, NgIf, NgClass, TranslateDirective],
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
@@ -26,6 +27,7 @@ export class FormMoneyBillComponent {
   isSubmitted = false;
 
   toggleAddressFields(): void {
+    this.useDeliveryAddress = !this.useDeliveryAddress;
     if (this.useDeliveryAddress) {
       this.address = this.deliAddress;
       this.postCode = this.deliPostCode;
@@ -44,7 +46,7 @@ export class FormMoneyBillComponent {
 
   validateCardNumber(cardNumber: NgModel): boolean | null {
     const cardNumberPattern = /^\d{13,19}$/; // Numéro de carte de 13 à 19 chiffres
-    return cardNumber.touched && !cardNumberPattern.test(cardNumber.value);
+    return cardNumber.touched && !cardNumberPattern.test(cardNumber.value.replace(/\s+/g, ''));
   }
 
   validateMonth(monthValue: NgModel): boolean | null {
@@ -52,17 +54,43 @@ export class FormMoneyBillComponent {
     return monthValue.touched && !monthPattern.test(monthValue.value);
   }
 
+  // Méthode pour valider la date d'expiration
+  validateIsExpired(monthValue: NgModel): boolean | null {
+    const [inputMonth, inputYear] = monthValue.value.split('/');
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Les mois dans JS sont indexés de 0 à 11
+    const currentYear = currentDate.getFullYear() % 100; // Année sur deux chiffres
+
+    // Comparaison de la date
+    const inputMonthNumber = parseInt(inputMonth, 10);
+    const inputYearNumber = parseInt(inputYear, 10);
+    if (!monthValue.value) {
+      return null;
+    }
+    return monthValue.touched && !(inputYearNumber > currentYear || (inputYearNumber === currentYear && inputMonthNumber >= currentMonth));
+  }
+
   validateSecurityCode(securityCode: NgModel): boolean | null {
     const securityCodePattern = /^\d{3}$/; // Code postal de 5 chiffres
     return securityCode.touched && !securityCodePattern.test(securityCode.value);
   }
 
-  // Méthode pour soumettre le formulaire
-  onSubmit(): void {
-    // Si tout est valide, exécuter la logique de soumission
+  onSubmit(form: NgForm): void {
     this.isSubmitted = true;
-    // eslint-disable-next-line no-console
-    console.log('Formulaire soumis avec succès');
+
+    if (form.valid) {
+      // Si le formulaire est valide, tu peux exécuter la logique de soumission
+      // eslint-disable-next-line no-console
+      console.log('Formulaire soumis avec succès');
+
+      // Logique supplémentaire, comme l'envoi des données au serveur
+    } else {
+      // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
+      const firstInvalidControl = document.querySelector('.ng-invalid');
+      if (firstInvalidControl) {
+        firstInvalidControl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   }
 
   // Méthode pour retourner au panier

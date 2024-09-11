@@ -1,18 +1,23 @@
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-text">
-      <a [routerLink]="['/login']" class="footer-link">Administration</a>
+      <ng-container>
+        <a [routerLink]="['/login']" class="footer-link">
+          <span jhiTranslate="footer_button.admin"></span>
+        </a>
+      </ng-container>
       <span> - </span>
-      <a routerLink="/credits" class="footer-link">Crédits</a>
+      <ng-container>
+        <a routerLink="/credits" class="footer-link">
+          <span jhiTranslate="footer_button.credit"></span>
+        </a>
+      </ng-container>
     </div>
     <div class="text-zone">
-      <p>
-        Les informations de livraison (contact, adresse de livraison, adresse de facturation et carte de crédit ne sont pas stockés
-        durablement par notre service
-      </p>
+      <p jhiTranslate="footer_infos.data"></p>
     </div>
     <div class="text-zone">
-      <p>Le paiement s'effectue uniquement en carte bancaire et nous livrons qu'en France Métropolitaine</p>
+      <p jhiTranslate="footer_infos.payment"></p>
     </div>
   </div>
 </footer>

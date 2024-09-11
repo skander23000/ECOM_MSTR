@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import TranslateDirective from '../shared/language/translate.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'jhi-my-header',
   standalone: true,
-  imports: [],
+  imports: [TranslateDirective, RouterLink],
   templateUrl: './my-header.component.html',
   styleUrls: ['./my-header.component.scss'],
 })
