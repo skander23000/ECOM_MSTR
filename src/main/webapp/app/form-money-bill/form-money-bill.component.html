@@ -1,0 +1,182 @@
+<div class="head-title">Adresse de facturation et paiement</div>
+
+<div class="form-part">
+  <div>
+    <span class="title">Adresse de facturation</span>
+    <span class="required">* champs requis</span>
+  </div>
+
+  <div class="checkbox-container">
+    <label>
+      <input type="checkbox" [(ngModel)]="useDeliveryAddress" (change)="toggleAddressFields()" />
+      Reprendre l'adresse de livraison
+    </label>
+  </div>
+
+  <div class="input-container">
+    <label for="adress">Adresse*</label>
+    <input
+      type="text"
+      id="adress"
+      name="adress"
+      placeholder="18 rue de Paris"
+      [(ngModel)]="address"
+      #addressInput="ngModel"
+      [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+      [attr.disabled]="useDeliveryAddress ? true : null"
+      required
+    />
+    <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
+      <span>L'adresse est requise.</span>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="input-container">
+      <label for="post_code">Code postal*</label>
+      <input
+        type="text"
+        id="post_code"
+        name="post_code"
+        placeholder="75000"
+        [(ngModel)]="postCode"
+        #postCodeInput="ngModel"
+        (blur)="validatePostCode(postCodeInput)"
+        [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+        [attr.disabled]="useDeliveryAddress ? true : null"
+        required
+      />
+      <div *ngIf="validatePostCode(postCodeInput)" class="error-message">
+        <span>Code postal invalide</span>
+      </div>
+      <div *ngIf="(postCodeInput.touched || isSubmitted) && !postCodeInput.valid && !validatePostCode(postCodeInput)" class="error-message">
+        <span>Le code postal est requis.</span>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <label for="city">Ville*</label>
+      <input
+        type="text"
+        id="city"
+        name="city"
+        placeholder="Paris"
+        [(ngModel)]="city"
+        #cityInput="ngModel"
+        [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+        [attr.disabled]="useDeliveryAddress ? true : null"
+        required
+      />
+      <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
+        <span>La ville est requise.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="separator"></div>
+
+<div>
+  <div class="form-part">
+    <div>
+      <span class="title">Information de carte de paiement</span>
+      <span class="required">* champs requis</span>
+    </div>
+
+    <div class="input-container">
+      <label for="cardNumber">Numéro de carte*</label>
+      <input
+        type="text"
+        id="cardNumber"
+        name="cardNumber"
+        placeholder="XXXX XXXX XXXX XXXX"
+        [(ngModel)]="cardNumber"
+        #cardNumberInput="ngModel"
+        required
+      />
+      <div *ngIf="validateCardNumber(cardNumberInput)" class="error-message">
+        <span>Numéro de carte invalide (trop long/trop court)</span>
+      </div>
+      <div
+        *ngIf="(cardNumberInput.touched || isSubmitted) && !cardNumberInput.valid && !validateCardNumber(cardNumberInput)"
+        class="error-message"
+      >
+        <span>Le numéro de carte est requis.</span>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <label for="cardOwner">Propriétaire de la carte*</label>
+      <input
+        type="text"
+        id="cardOwner"
+        name="cardOwner"
+        placeholder="John Doe"
+        [(ngModel)]="cardOwner"
+        #cardOwnerInput="ngModel"
+        required
+        email
+      />
+      <div *ngIf="(cardOwnerInput.touched || isSubmitted) && !cardOwnerInput.valid" class="error-message">
+        <span>Le détenteur de la carte est requis</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="input-container">
+        <label for="expirationDate">Date d'expiration*</label>
+        <input
+          type="month"
+          id="expirationDate"
+          name="expirationDate"
+          placeholder="01/26"
+          [(ngModel)]="expirationDate"
+          #expirationDateInput="ngModel"
+          required
+        />
+        <div *ngIf="validateMonth(expirationDateInput)" class="error-message">
+          <span>Format de mois invalide (MM/AA)</span>
+        </div>
+        <div
+          *ngIf="(expirationDateInput.touched || isSubmitted) && !expirationDateInput.valid && !validateMonth(expirationDateInput)"
+          class="error-message"
+        >
+          <span>La date d'expiration est requise.</span>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="securityCode">Code de sécurité*</label>
+        <input
+          type="text"
+          id="securityCode"
+          name="securityCode"
+          placeholder="XXX"
+          [(ngModel)]="securityCode"
+          #securityCodeInput="ngModel"
+          required
+        />
+        <div *ngIf="validateSecurityCode(securityCodeInput)" class="error-message">
+          <span>Code de sécurité trop long/trop court</span>
+        </div>
+        <div
+          *ngIf="(securityCodeInput.touched || isSubmitted) && !securityCodeInput.valid && !validateSecurityCode(cardNumberInput)"
+          class="error-message"
+        >
+          <span>Le code de sécurité est requis.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Boutons -->
+<div class="button-container">
+  <div class="button-row">
+    <button type="button" class="btn btn-back" (click)="goBackToCart()">Retour au panier</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Valider la commande
+      <img src="../../content/images/asset/icons/down_arrow_icon.png" alt="Icône" class="icon" />
+    </button>
+  </div>
+</div>
