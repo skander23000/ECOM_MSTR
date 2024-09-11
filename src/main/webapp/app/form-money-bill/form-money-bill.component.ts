@@ -2,6 +2,16 @@ import { Component, Input } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
+import { ICustomer } from '../entities/customer/customer.model';
+export interface PaymentInfo {
+  cardOwner?: string | null;
+  cardNumber?: string | null;
+  postCode?: string | null;
+  expirationDate?: string | null;
+  securityCode?: string | null;
+  address?: string | null;
+  city?: string | null;
+}
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -11,31 +21,28 @@ import TranslateDirective from '../shared/language/translate.directive';
   styleUrl: './form-money-bill.component.scss',
 })
 export class FormMoneyBillComponent {
-  cardOwner = '';
-  cardNumber = '';
-  postCode = '';
-  expirationDate = '';
-  securityCode = '';
-  address = '';
-  city = '';
-
-  @Input() deliAddress = '18 rue de la Liberté'; // Exemple de valeur
-  @Input() deliPostCode = '79000'; // Exemple de valeur
-  @Input() deliCity = 'Nogent sur marne'; // Exemple de valeur
+  paymentInfo: PaymentInfo;
+  @Input() user_infos: ICustomer | undefined;
 
   useDeliveryAddress = false; // Détermine si l'adresse de livraison est utilisée
   isSubmitted = false;
 
+  constructor() {
+    this.paymentInfo = {};
+  }
   toggleAddressFields(): void {
+    if (!this.user_infos) {
+      return;
+    }
     this.useDeliveryAddress = !this.useDeliveryAddress;
     if (this.useDeliveryAddress) {
-      this.address = this.deliAddress;
-      this.postCode = this.deliPostCode;
-      this.city = this.deliCity;
+      this.paymentInfo.address = this.user_infos.address;
+      this.paymentInfo.postCode = this.user_infos.zipCode;
+      this.paymentInfo.city = this.user_infos.city;
     } else {
-      this.address = '';
-      this.postCode = '';
-      this.city = '';
+      this.paymentInfo.address = '';
+      this.paymentInfo.postCode = '';
+      this.paymentInfo.city = '';
     }
   }
 

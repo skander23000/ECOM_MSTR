@@ -20,7 +20,7 @@
         id="adress"
         name="adress"
         placeholder="18 rue de Paris"
-        [(ngModel)]="address"
+        [(ngModel)]="paymentInfo.address"
         #addressInput="ngModel"
         [ngClass]="{ 'disabled-field': useDeliveryAddress }"
         [attr.disabled]="useDeliveryAddress ? true : null"
@@ -39,7 +39,7 @@
           id="post_code"
           name="post_code"
           placeholder="75000"
-          [(ngModel)]="postCode"
+          [(ngModel)]="paymentInfo.postCode"
           #postCodeInput="ngModel"
           (blur)="validatePostCode(postCodeInput)"
           [ngClass]="{ 'disabled-field': useDeliveryAddress }"
@@ -64,7 +64,7 @@
           id="city"
           name="city"
           placeholder="Paris"
-          [(ngModel)]="city"
+          [(ngModel)]="paymentInfo.city"
           #cityInput="ngModel"
           [ngClass]="{ 'disabled-field': useDeliveryAddress }"
           [attr.disabled]="useDeliveryAddress ? true : null"
@@ -93,7 +93,7 @@
           id="cardNumber"
           name="cardNumber"
           placeholder="XXXX XXXX XXXX XXXX"
-          [(ngModel)]="cardNumber"
+          [(ngModel)]="paymentInfo.cardNumber"
           #cardNumberInput="ngModel"
           required
         />
@@ -115,7 +115,7 @@
           id="cardOwner"
           name="cardOwner"
           placeholder="John Doe"
-          [(ngModel)]="cardOwner"
+          [(ngModel)]="paymentInfo.cardOwner"
           #cardOwnerInput="ngModel"
           required
         />
@@ -132,7 +132,7 @@
             id="expirationDate"
             name="expirationDate"
             placeholder="01/26"
-            [(ngModel)]="expirationDate"
+            [(ngModel)]="paymentInfo.expirationDate"
             #expirationDateInput="ngModel"
             required
           />
@@ -162,7 +162,7 @@
             id="securityCode"
             name="securityCode"
             placeholder="XXX"
-            [(ngModel)]="securityCode"
+            [(ngModel)]="paymentInfo.securityCode"
             #securityCodeInput="ngModel"
             required
           />

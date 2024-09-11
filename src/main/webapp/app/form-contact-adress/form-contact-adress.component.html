@@ -10,7 +10,15 @@
       <div class="form-row">
         <div class="input-container">
           <label for="lastname" jhiTranslate="form_input_header.last_name"></label>
-          <input type="text" id="lastname" name="lastname" placeholder="Doe" [(ngModel)]="lastname" #lastnameInput="ngModel" required />
+          <input
+            type="text"
+            id="lastname"
+            name="lastname"
+            placeholder="Doe"
+            [(ngModel)]="user_info.lastName"
+            #lastnameInput="ngModel"
+            required
+          />
           <div *ngIf="(lastnameInput.touched || isSubmitted) && !lastnameInput.valid" class="error-message">
             <span jhiTranslate="form_error.missing_last_name"></span>
           </div>
@@ -23,7 +31,7 @@
             id="firstname"
             name="firstname"
             placeholder="John"
-            [(ngModel)]="firstname"
+            [(ngModel)]="user_info.firstName"
             #firstnameInput="ngModel"
             required
           />
@@ -35,7 +43,15 @@
 
       <div class="input-container">
         <label for="phone" jhiTranslate="form_input_header.phone"></label>
-        <input type="tel" id="phone" name="phone" placeholder="06 12 34 56 78" [(ngModel)]="phoneNumber" #phoneInput="ngModel" required />
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="06 12 34 56 78"
+          [(ngModel)]="user_info.phoneNumber"
+          #phoneInput="ngModel"
+          required
+        />
         <div *ngIf="validatePhoneNumber(phoneInput)" class="error-message">
           <span jhiTranslate="form_error.invalid_phone"></span>
         </div>
@@ -51,7 +67,7 @@
           id="email"
           name="email"
           placeholder="exemple@email.com"
-          [(ngModel)]="email"
+          [(ngModel)]="user_info.email"
           #emailInput="ngModel"
           required
           email
@@ -76,7 +92,15 @@
 
       <div class="input-container">
         <label for="adress" jhiTranslate="form_input_header.address"></label>
-        <input type="text" id="adress" name="adress" placeholder="18 rue de Paris" [(ngModel)]="address" #addressInput="ngModel" required />
+        <input
+          type="text"
+          id="adress"
+          name="adress"
+          placeholder="18 rue de Paris"
+          [(ngModel)]="user_info.address"
+          #addressInput="ngModel"
+          required
+        />
         <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
           <span jhiTranslate="form_error.missing_address"></span>
         </div>
@@ -90,7 +114,7 @@
             id="post_code"
             name="post_code"
             placeholder="75000"
-            [(ngModel)]="postCode"
+            [(ngModel)]="user_info.zipCode"
             #postCodeInput="ngModel"
             (blur)="validatePostCode(postCodeInput)"
             required
@@ -108,7 +132,7 @@
 
         <div class="input-container">
           <label for="city" jhiTranslate="form_input_header.city"></label>
-          <input type="text" id="city" name="city" placeholder="Paris" [(ngModel)]="city" #cityInput="ngModel" required />
+          <input type="text" id="city" name="city" placeholder="Paris" [(ngModel)]="user_info.city" #cityInput="ngModel" required />
           <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
             <span jhiTranslate="form_error.missing_city"></span>
           </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
+import { ICustomer } from '../entities/customer/customer.model';
 
 @Component({
   selector: 'jhi-form-contact-adress',
@@ -11,13 +12,10 @@ import TranslateDirective from '../shared/language/translate.directive';
   styleUrl: './form-contact-adress.component.scss',
 })
 export class FormContactAdressComponent {
-  email = '';
-  phoneNumber = '';
-  postCode = '';
-  firstname = '';
-  lastname = '';
-  address = '';
-  city = '';
+  // [TODO] Pass the required id to a possibly null id
+  user_info: ICustomer = {
+    id: 0,
+  };
 
   isSubmitted = false;
 
@@ -47,8 +45,6 @@ export class FormContactAdressComponent {
 
       // Logique supplémentaire, comme l'envoi des données au serveur
     } else {
-      // eslint-disable-next-line no-console
-      console.log('Formulaire raté');
       // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
       const firstInvalidControl = document.querySelector('.ng-invalid');
       if (firstInvalidControl) {
