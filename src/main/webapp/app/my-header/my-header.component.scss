@@ -1,6 +1,5 @@
-// Variables pour personnaliser le style
-$primary-color: black; // Couleur principale (pour la barre et le texte)
-$background-color: #e9f0fa; // Couleur de fond similaire à l'image
+@import '../../content/scss/colors';
+
 $font-size-logo: 5em; // Taille du texte "ReTire"
 $font-size-cart: 1.8em; // Taille de l'icône du panier
 $line-height: 2px; // Hauteur de la barre
@@ -18,7 +17,7 @@ $line-height: 2px; // Hauteur de la barre
     font-size: $font-size-logo;
     font-weight: normal;
     text-decoration: none;
-    color: $primary-color;
+    color: $text_black;
     font-family: 'Arial', sans-serif;
 
     .bold {
@@ -34,7 +33,7 @@ $line-height: 2px; // Hauteur de la barre
     align-items: center;
     padding: 2rem;
     text-decoration: none;
-    color: $primary-color;
+    color: $text_black;
     font-size: $font-size-cart;
 
     .cart-icon {

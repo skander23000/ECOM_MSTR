@@ -4,7 +4,8 @@
   },
 
   "cart_infos": {
-    "empty": "Votre panier est vide"
+    "empty": "Votre panier est vide",
+    "total": "Total"
   },
 
   "cart_button": {

@@ -1,17 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
-export interface PaymentInfo {
-  cardOwner?: string | null;
-  cardNumber?: string | null;
-  postCode?: string | null;
-  expirationDate?: string | null;
-  securityCode?: string | null;
-  address?: string | null;
-  city?: string | null;
-}
+import { SharedUserDataService } from '../shared-user-data.service';
+import { PaymentInfo } from '../entities/entity.payment-info';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -20,16 +13,23 @@ export interface PaymentInfo {
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
-export class FormMoneyBillComponent {
+export class FormMoneyBillComponent implements OnInit {
   paymentInfo: PaymentInfo;
-  @Input() user_infos: ICustomer | undefined;
+  user_infos: ICustomer | null = null;
 
   useDeliveryAddress = false; // Détermine si l'adresse de livraison est utilisée
   isSubmitted = false;
 
-  constructor() {
+  constructor(private sharedDataService: SharedUserDataService) {
     this.paymentInfo = {};
   }
+
+  ngOnInit(): void {
+    this.sharedDataService.userInfo$.subscribe(data => {
+      this.user_infos = data;
+    });
+  }
+
   toggleAddressFields(): void {
     if (!this.user_infos) {
       return;
@@ -86,7 +86,9 @@ export class FormMoneyBillComponent {
     this.isSubmitted = true;
 
     if (form.valid) {
-      // Si le formulaire est valide, tu peux exécuter la logique de soumission
+      this.sharedDataService.setPaymentInfo(this.paymentInfo);
+      // [TODO] [ROUTAGE] Routage vers l'alerte "Votre commande est passée avec succès"
+
       // eslint-disable-next-line no-console
       console.log('Formulaire soumis avec succès');
 
@@ -102,7 +104,7 @@ export class FormMoneyBillComponent {
 
   // Méthode pour retourner au panier
   goBackToCart(): void {
-    // Logique pour rediriger ou revenir au panier
+    // [TODO] [ROUTAGE] Routage vers le panier
     // eslint-disable-next-line no-console
     console.log('Retour au panier');
   }

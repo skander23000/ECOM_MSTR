@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
+import { SharedUserDataService } from '../shared-user-data.service';
 
 @Component({
   selector: 'jhi-form-contact-adress',
@@ -11,13 +12,23 @@ import { ICustomer } from '../entities/customer/customer.model';
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
-export class FormContactAdressComponent {
+export class FormContactAdressComponent implements OnInit {
   // [TODO] Pass the required id to a possibly null id
   user_info: ICustomer = {
     id: 0,
   };
 
   isSubmitted = false;
+
+  constructor(private sharedDataService: SharedUserDataService) {}
+
+  ngOnInit(): void {
+    this.sharedDataService.userId$.subscribe(data => {
+      if (data) {
+        this.user_info.id = data;
+      }
+    });
+  }
 
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;
@@ -39,11 +50,8 @@ export class FormContactAdressComponent {
     this.isSubmitted = true;
 
     if (form.valid) {
-      // Si le formulaire est valide, tu peux exécuter la logique de soumission
-      // eslint-disable-next-line no-console
-      console.log('Formulaire soumis avec succès');
-
-      // Logique supplémentaire, comme l'envoi des données au serveur
+      this.sharedDataService.setUserInfo(this.user_info);
+      // [TODO] [ROUTAGE] vers le formulaire de paiement
     } else {
       // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
       const firstInvalidControl = document.querySelector('.ng-invalid');
@@ -55,8 +63,6 @@ export class FormContactAdressComponent {
 
   // Méthode pour retourner au panier
   goBackToCart(): void {
-    // Logique pour rediriger ou revenir au panier
-    // eslint-disable-next-line no-console
-    console.log('Retour au panier');
+    // [TODO] [ROUTAGE] Routage vers le panier
   }
 }
