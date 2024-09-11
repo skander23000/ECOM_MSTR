@@ -5,10 +5,13 @@ import fr.ecom.mstr.tire.repository.TireRepository;
 import fr.ecom.mstr.tire.service.dto.TireDTO;
 import fr.ecom.mstr.tire.service.mapper.TireMapper;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import fr.ecom.mstr.tire.web.rest.Containers.FilterContainer;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,15 +103,36 @@ public class TireService {
     /**
      * Get one tire by id.
      *
-     * @param id the id of the entity.
+     * @param ref the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<TireDTO> findOne(Long id) {
-        LOG.debug("Request to get Tire : {}", id);
-        return tireRepository.findOneWithEagerRelationships(id).map(tireMapper::toDto);
+    public Optional<TireDTO> findOneByRef(Long ref) {
+        LOG.debug("Request to get Tire : {}", ref);
+        return tireRepository.findOneWithRef(ref).map(tireMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<TireDTO> findOneById(Long id) {
+        LOG.debug("Request to get Tire : {}", id);
+        return tireRepository.findOneWithID(id).map(tireMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TireDTO> filterAllByPrice( Integer nbtires, Boolean asc) {
+        LOG.debug("Request to get Tire : {}", asc);
+        Pageable page = PageRequest.of(0,nbtires,asc? Sort.by("price").ascending():Sort.by("price").descending());
+        return tireRepository.findAllWithPrice(page).map(tireMapper::toDto);
+    }
+
+    /*@Transactional(readOnly = true)
+    public Page<TireDTO> filterAllBySpecs(FilterContainer container) {
+        LOG.debug("Request to get Tire : with a lot of parameter");
+        return new PageImpl<>(tireRepository.findAllWithSpecs(container)
+            .stream()
+            .map(tireMapper::toDto)
+            .collect(Collectors.toList()));
+    }*/
     /**
      * Delete the tire by id.
      *

@@ -1,8 +1,11 @@
 package fr.ecom.mstr.tire.web.rest;
 
+import fr.ecom.mstr.tire.domain.User;
 import fr.ecom.mstr.tire.repository.TireRepository;
+import fr.ecom.mstr.tire.service.MailService;
 import fr.ecom.mstr.tire.service.TireService;
 import fr.ecom.mstr.tire.service.dto.TireDTO;
+import fr.ecom.mstr.tire.web.rest.Containers.FilterContainer;
 import fr.ecom.mstr.tire.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +46,12 @@ public class TireResource {
 
     private final TireRepository tireRepository;
 
-    public TireResource(TireService tireService, TireRepository tireRepository) {
+    private final MailService mailservice;
+
+    public TireResource(TireService tireService, TireRepository tireRepository,MailService mailservice) {
         this.tireService = tireService;
         this.tireRepository = tireRepository;
+        this.mailservice =mailservice;
     }
 
     /**
@@ -164,11 +171,54 @@ public class TireResource {
      * @param id the id of the tireDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tireDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<TireDTO> getTire(@PathVariable("id") Long id) {
-        LOG.debug("REST request to get Tire : {}", id);
-        Optional<TireDTO> tireDTO = tireService.findOne(id);
+    @GetMapping("/byid/{id}")
+    public ResponseEntity<TireDTO> getTireByID(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get Tire byd id: {}", id);
+        Optional<TireDTO> tireDTO = tireService.findOneById(id);
         return ResponseUtil.wrapOrNotFound(tireDTO);
+    }
+
+    @GetMapping("/byref/{ref}")
+    public ResponseEntity<TireDTO> getTireByRef(@PathVariable("ref") Long ref) {
+        LOG.debug("REST request to get Tire by ref : {}", ref);
+        Optional<TireDTO> tireDTO = tireService.findOneByRef(ref);
+        return ResponseUtil.wrapOrNotFound(tireDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Boolean> getQuantities(@PathVariable("id")  Integer ref, @RequestParam Integer nb) {
+        LOG.debug("REST request to get Quantities : {}", ref);
+        throw new BadRequestAlertException("Hey checkingquantities? no you can't !", "SearchController", "notimplemented");
+        //return new ResponseEntity<>("Hey checkingquantities? no you can't", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * {@code DELETE  /tires/price?b='1 or 0'} : choose between 0 or 1.
+     *
+     * @param b true for ascending
+     * @return the {@link ResponseEntity} .
+     */
+    @GetMapping("/filter/price")
+    public ResponseEntity<List<TireDTO>> filterByPrice(@RequestParam(value="b",required = false) Boolean b) {
+        if(b==null)
+            b=false;
+        Page<TireDTO> page = tireService.filterAllByPrice(50,b);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        User tmp = new User();
+        tmp.setLogin("test");
+        tmp.setActivated(true);
+        tmp.setLangKey("fr");
+        tmp.setEmail("mathieu.zussy.pro@gmail.com");
+        mailservice.sendActivationEmail(tmp);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        //return new ResponseEntity<>("Hey! filterbyprice? nop deal with it", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/filter/specs")
+    public ResponseEntity<List<TireDTO>> filterBySpecs(@RequestBody FilterContainer container) {
+        //Page<TireDTO> tireDTO = tireService.filterAllBySpecs(container);
+        throw new BadRequestAlertException("Hey filterbyspecs? no you can't !", "FilterController", "notimplemented");
+        //return new ResponseEntity<>("Hey filterbyspecs? no you can't !", HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -177,12 +227,12 @@ public class TireResource {
      * @param id the id of the tireDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    /*@DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTire(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Tire : {}", id);
         tireService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
+    }*/
 }

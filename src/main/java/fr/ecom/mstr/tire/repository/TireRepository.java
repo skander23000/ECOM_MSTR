@@ -3,6 +3,9 @@ package fr.ecom.mstr.tire.repository;
 import fr.ecom.mstr.tire.domain.Tire;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Filter;
+
+import fr.ecom.mstr.tire.web.rest.Containers.FilterContainer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TireRepository extends JpaRepository<Tire, Long> {
     default Optional<Tire> findOneWithEagerRelationships(Long id) {
-        return this.findOneWithToOneRelationships(id);
+        return this.findOneWithID(id);
     }
 
     default List<Tire> findAllWithEagerRelationships() {
@@ -32,6 +35,15 @@ public interface TireRepository extends JpaRepository<Tire, Long> {
     @Query("select tire from Tire tire left join fetch tire.tireBrand")
     List<Tire> findAllWithToOneRelationships();
 
-    @Query("select tire from Tire tire left join fetch tire.tireBrand where tire.id =:id")
-    Optional<Tire> findOneWithToOneRelationships(@Param("id") Long id);
+    @Query("select tire from Tire tire left join fetch tire.tireBrand where tire.reference =:id")
+    Optional<Tire> findOneWithRef(@Param("id") Long id);
+
+    @Query("select tire from Tire tire left join fetch tire.tireBrand where tire.id =:ref")
+    Optional<Tire> findOneWithID(@Param("ref") Long ref);
+
+    @Query("select tire from Tire tire left join fetch tire.tireBrand")
+    Page<Tire> findAllWithPrice(Pageable pageable);
+
+    /*@Query("select tire from Tire tire left join fetch tire.tireBrand where tire.reference =:ref")
+    Page<Tire> findAllWithSpecs(Pageable pageable, @Param("specs") FilterContainer container);*/
 }

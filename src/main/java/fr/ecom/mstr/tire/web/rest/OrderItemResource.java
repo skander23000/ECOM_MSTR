@@ -1,5 +1,6 @@
 package fr.ecom.mstr.tire.web.rest;
 
+import fr.ecom.mstr.tire.domain.Customer;
 import fr.ecom.mstr.tire.repository.OrderItemRepository;
 import fr.ecom.mstr.tire.service.OrderItemService;
 import fr.ecom.mstr.tire.service.dto.OrderItemDTO;
@@ -64,6 +65,13 @@ public class OrderItemResource {
         return ResponseEntity.created(new URI("/api/order-items/" + orderItemDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, orderItemDTO.getId().toString()))
             .body(orderItemDTO);
+    }
+
+    // Goes to the payment process, while adding a "Customer". Revert the database in case of a failure
+    @PostMapping("/order")
+    public ResponseEntity<OrderItemDTO> sendOrder(@RequestBody Customer customer) {
+        throw new BadRequestAlertException("Hey! ordering? nop deal with it", "PaymentController", "notimplemented");
+        //return new ResponseEntity<>("Hey! filterbyprice? nop deal with it", HttpStatus.BAD_REQUEST);
     }
 
     /**
