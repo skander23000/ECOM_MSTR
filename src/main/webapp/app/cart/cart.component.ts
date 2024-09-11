@@ -16,7 +16,7 @@ export class CartComponent implements OnInit {
   totalPrice = 0;
 
   ngOnInit(): void {
-    // [TODO] Récupérer les éléments du panier via le service
+    // [TODO] Récupérer les éléments du panier via le service de Théo
     this.cart_items = [];
   }
 
@@ -49,7 +49,6 @@ export class CartComponent implements OnInit {
   protected computeTotalPrice(): void {
     this.totalPrice = 0;
     this.cart_items.forEach(item => {
-      // eslint-disable-next-line
       if (item.tire?.price) {
         this.totalPrice += item.tire.price;
       }
