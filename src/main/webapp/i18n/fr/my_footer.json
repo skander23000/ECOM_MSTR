@@ -1,0 +1,10 @@
+{
+  "footer_button": {
+    "admin": "Administration",
+    "credit": "Crédits"
+  },
+  "footer_infos": {
+    "data": "Les informations de livraison (contact, adresse de livraison, adresse de facturation et carte de crédit ne sont pas stockés durablement par notre service",
+    "payment": "Le paiement s'effectue uniquement en carte bancaire et nous livrons qu'en France Métropolitaine"
+  }
+}

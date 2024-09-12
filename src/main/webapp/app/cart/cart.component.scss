@@ -1,0 +1,82 @@
+@import '../../content/scss/colors';
+
+.head-title {
+  font-size: 2rem;
+  padding-bottom: 1rem;
+  font-weight: bolder;
+}
+
+.separator {
+  padding-bottom: 10rem;
+}
+
+.btn {
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 1rem; /* Espacement entre les boutons */
+}
+
+.btn-primary {
+  background-color: $my_button_primary;
+  color: $text_white;
+}
+
+.btn-back .icon {
+  width: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  height: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  margin-right: 10px; /* Espacement entre le texte et l'icône */
+  transform: rotate(90deg); /* Pivote l'icône de 90° */
+  transition: transform 0.3s; /* Transition fluide pour la rotation si nécessaire */
+}
+
+.btn-primary .icon-right {
+  width: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  height: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  margin-left: 10px; /* Espacement entre le texte et l'icône */
+  transform: rotate(270deg); /* Pivote l'icône de 90° */
+  transition: transform 0.3s; /* Transition fluide pour la rotation si nécessaire */
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.button-box {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Sépare les boutons de chaque côté */
+  width: 100%; /* Prend toute la largeur de la page */
+  padding: 2rem 20px; /* Ajuste l'espacement latéral si nécessaire */
+}
+
+.btn-back {
+  background-color: $my_button_secondary; /* Couleur de fond gris clair */
+  color: $text_black; /* Couleur du texte noire */
+  border: 1px solid $my_grey; /* Bordure grise */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 1rem; /* Espacement entre les boutons */
+}
+
+.btn-back:hover {
+  background-color: $my_button_hover; /* Couleur de fond gris plus foncé au survol */
+}
+
+.container {
+  display: flex;
+}
+
+.total-box {
+  text-align: right;
+  font-size: 3rem;
+  margin-right: 2rem;
+}

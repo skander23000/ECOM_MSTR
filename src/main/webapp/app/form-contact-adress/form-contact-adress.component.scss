@@ -1,0 +1,133 @@
+@import '../../content/scss/colors';
+
+.head-title {
+  font-size: 2rem;
+  padding-left: 5rem;
+  font-weight: bolder;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+.required {
+  font-size: 15px;
+  font-style: italic;
+}
+
+.form-part {
+  width: 100%; /* S'assure que le formulaire prend toute la largeur */
+  padding-top: 1rem;
+  padding-left: 10rem;
+}
+
+.form-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem; /* Ajoute un espacement léger entre Nom et Prénom */
+  width: 48%;
+}
+
+.input-container {
+  padding-left: 2rem;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-family: Arial, sans-serif;
+  flex: 1; /* Les champs prennent un espace égal dans leur ligne */
+  min-width: 150px; /* Pour éviter que les champs ne deviennent trop petits sur les petits écrans */
+}
+
+.input-container label {
+  padding-left: 6px;
+  font-size: 11px;
+  display: block;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid $my_grey;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.form-part .input-container:nth-of-type(3),
+.form-part .input-container:nth-of-type(4) {
+  flex: 1;
+  width: 48%; /* Champs Téléphone et Email prennent 48% de l'espace total, avec un petit espacement */
+}
+
+.separator {
+  padding-top: 2rem;
+}
+
+.warning {
+  padding-left: 2rem;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center; /* Centre les boutons horizontalement */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%; /* S'assure que la rangée de boutons prend toute la largeur disponible */
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 1rem; /* Espacement entre les boutons */
+}
+
+.btn-primary {
+  background-color: $my_button_primary;
+  color: $text_white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-back {
+  background-color: $my_button_secondary; /* Couleur de fond gris clair */
+  color: $text_black; /* Couleur du texte noire */
+  border: 1px solid $my_grey; /* Bordure grise */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 1rem; /* Espacement entre les boutons */
+}
+
+.btn-back:hover {
+  background-color: $my_button_hover; /* Couleur de fond gris plus foncé au survol */
+}
+
+.button-container {
+  width: 50%; /* Limite la largeur à 50% */
+  margin: 0 auto; /* Centre le conteneur horizontalement */
+}
+
+.btn-primary .icon {
+  width: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  height: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  margin-left: 10px; /* Espacement entre le texte et l'icône */
+  transform: rotate(270deg); /* Pivote l'icône de 90° */
+  transition: transform 0.3s; /* Transition fluide pour la rotation si nécessaire */
+}
+
+.btn-primary:hover .icon {
+  transform: rotate(270deg); /* Assurez-vous que la rotation est appliquée lors du survol */
+}
+
+.error-message {
+  padding-left: 6px;
+  color: $text_error;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}

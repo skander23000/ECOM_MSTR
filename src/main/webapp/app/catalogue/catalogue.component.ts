@@ -72,7 +72,7 @@ export class CatalogueComponent {
     }
 
     if (this.searchQuery) {
-      params['name.contains'] = this.searchQuery; // Assuming the search is based on the tire's name
+      params['name.contains'] = this.searchQuery;
     }
 
     this.tireService.query(params).subscribe(

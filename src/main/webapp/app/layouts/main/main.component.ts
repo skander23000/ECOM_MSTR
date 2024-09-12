@@ -7,17 +7,32 @@ import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
+import { MyHeaderComponent } from '../../my-header/my-header.component';
+import { MyFooterComponent } from '../../my-footer/my-footer.component';
+import { FormMoneyBillComponent } from '../../form-money-bill/form-money-bill.component';
+import { FormContactAdressComponent } from '../../form-contact-adress/form-contact-adress.component';
+import { CartComponent } from '../../cart/cart.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-main',
   templateUrl: './main.component.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
+  imports: [
+    RouterOutlet,
+    FooterComponent,
+    PageRibbonComponent,
+    MyHeaderComponent,
+    MyFooterComponent,
+    FormMoneyBillComponent,
+    FormContactAdressComponent,
+    CartComponent,
+  ],
 })
 export default class MainComponent implements OnInit {
-  private renderer: Renderer2;
+  public isConnected = false;
 
+  private renderer: Renderer2;
   private router = inject(Router);
   private appPageTitleStrategy = inject(AppPageTitleStrategy);
   private accountService = inject(AccountService);
@@ -31,6 +46,11 @@ export default class MainComponent implements OnInit {
   ngOnInit(): void {
     // try to log in automatically
     this.accountService.identity().subscribe();
+    this.accountService.getAuthenticationState().subscribe(account => {
+      if (account) {
+        this.isConnected = true;
+      }
+    });
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.appPageTitleStrategy.updateTitle(this.router.routerState.snapshot);

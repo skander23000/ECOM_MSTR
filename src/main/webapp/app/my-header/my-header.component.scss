@@ -1,0 +1,49 @@
+@import '../../content/scss/colors';
+
+$font-size-logo: 5em; // Taille du texte "ReTire"
+$font-size-cart: 1.8em; // Taille de l'icône du panier
+$line-height: 2px; // Hauteur de la barre
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 colonnes égales */
+  align-items: center; /* Centre verticalement les éléments */
+  padding: 10px 0;
+
+  .logo {
+    grid-column: 1; /* Colonne 1 */
+    padding-left: 1rem;
+    justify-self: start; /* Alignement à gauche de la colonne */
+    font-size: $font-size-logo;
+    font-weight: normal;
+    text-decoration: none;
+    color: $text_black;
+    font-family: 'Arial', sans-serif;
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+
+  .cart {
+    grid-column: 3; /* Colonne 3 */
+    justify-self: end; /* Alignement à droite de la colonne */
+    align-self: center; /* Alignement au centre de la case */
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    text-decoration: none;
+    color: $text_black;
+    font-size: $font-size-cart;
+
+    .cart-icon {
+      width: $font-size-cart; /* Correspond à la taille de la police */
+      height: auto;
+      margin-right: 5px;
+    }
+
+    .cart-count {
+      font-weight: bold;
+    }
+  }
+}
