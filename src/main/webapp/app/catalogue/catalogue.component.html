@@ -1,28 +1,19 @@
 <div class="container">
-  <div class="filter-panel">
-    <h4>Filtrer par :</h4>
-
-    <div>
-      <label for="brand">Marque :</label>
-      <select id="brand" [(ngModel)]="selectedBrand" (change)="onFilterChange()">
-        <option value="">Toutes les marques</option>
-        <option value="Michelin">Michelin</option>
-        <option value="Pirelli">Pirelli</option>
-        <option value="Goodyear">Goodyear</option>
-      </select>
+  <div style="display: flex; flex-direction: column">
+    <div class="search-panel">
+      <div style="display: flex; margin: 0.5rem 0rem">
+        <img style="width: 1.7rem; height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/search_icon.png">
+        <h4>Rechercher :</h4>
+      </div>
+      <input
+        type="text"
+        placeholder="Rechercher un produit"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        style="padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;">
     </div>
 
-    <div>
-      <label for="priceMin">Prix minimum :</label>
-      <input type="number" id="priceMin" [(ngModel)]="priceMin" (input)="onFilterChange()">
-    </div>
-
-    <div>
-      <label for="priceMax">Prix maximum :</label>
-      <input type="number" id="priceMax" [(ngModel)]="priceMax" (input)="onFilterChange()">
-    </div>
-  </div>
-  <div class="sorting-panel">
+    <div class="sorting-panel">
     <div style="display: flex; margin: 0.5rem 0rem">
     <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png">
     <h4>Tri :</h4>
@@ -71,16 +62,40 @@
       </div>
     </div>
   </div>
+    <div class="filter-panel">
+    <div style="display: flex; margin: 0.5rem 0rem">
+      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png">
+      <h4>Filtrer :</h4>
+      </div>
+      <div class="filter-group">
+        <label class="label" for="brand">Par type :</label>
+        <select id="brand" [(ngModel)]="tireType" (change)="onFilterChange()">
+          <option value="">Touts les types</option>
+          <option value="SUMMER">Été</option>
+          <option value="WINTER">Hiver</option>
+          <option value="ALL_SEASON">Toutes les saisons</option>
+        </select>
+      </div>
 
+
+      <div class="filter-group">
+        <label class="label" for="priceRange">Par prix :</label>
+        <div class="custom-slider">
+        <ngx-slider  [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions" (userChangeEnd)="onFilterChange()"></ngx-slider>
+        </div>
+
+      </div>
+    </div>
+  </div>
   <div class="row">
 
     <div *ngFor="let tire of tires" class="col-md-4" (click)="openDetails(tire)">
-      <div class="card mb-4 shadow-sm" style="border-radius: 50px;">
+      <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black">
         <img [src]="tire.imageUrl" class="image" alt="{{ tire.name }}">
         <div class="card-body">
           <div class="card-title-price">
             <h5 class="card-title">{{ tire.name }}</h5>
-            <h4>{{ tire.price }}€</h4>
+            <h5>{{ tire.price }}€</h5>
           </div>
           <div class="details">
           <span class="card-text">Ref : {{ tire.description }}</span>

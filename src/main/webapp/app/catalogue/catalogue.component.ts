@@ -6,11 +6,12 @@ import { ITire } from '../entities/tire/tire.model';
 import { HttpResponse } from '@angular/common/http';
 import { DetailComponent } from 'app/detail/detail.component';
 import { FormsModule } from '@angular/forms';
+import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule],
+  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -21,7 +22,7 @@ export class CatalogueComponent {
 
   // Variables de pagination
   currentPage = 0;
-  itemsPerPage = 3;
+  itemsPerPage = 10;
   totalItems = 0;
 
   // Variables de tri
@@ -29,9 +30,21 @@ export class CatalogueComponent {
   currentSortDirection = 'asc';
 
   // Variables de filtrage
-  selectedBrand = ''; // Filtre par marque
-  priceMin = 0; // Filtre prix minimum
-  priceMax = 10000; // Filtre prix maximum
+  tireType = '';
+  priceMin = 0;
+  priceMax = 50000;
+
+  // Variable de recherche
+  searchQuery = '';
+
+  sliderOptions: Options = {
+    floor: 0,
+    ceil: 50000,
+    step: 100,
+    translate(value: number) {
+      return `${value} + €`;
+    },
+  };
 
   constructor(private tireService: TireService) {}
 
@@ -40,14 +53,27 @@ export class CatalogueComponent {
   }
 
   loadTires(): void {
-    const params = {
+    const params: any = {
       page: this.currentPage,
       size: this.itemsPerPage,
       sort: `${this.currentSortField},${this.currentSortDirection}`,
-      brand: this.selectedBrand, // Filtre par marque
-      priceMin: this.priceMin, // Filtre prix minimum
-      priceMax: this.priceMax, // Filtre prix maximum
     };
+
+    if (this.tireType) {
+      params['tireType.equals'] = this.tireType;
+    }
+
+    if (this.priceMin > 0) {
+      params['price.greaterThan'] = this.priceMin;
+    }
+
+    if (this.priceMax) {
+      params['price.lessThan'] = this.priceMax;
+    }
+
+    if (this.searchQuery) {
+      params['name.contains'] = this.searchQuery; // Assuming the search is based on the tire's name
+    }
 
     this.tireService.query(params).subscribe(
       (res: HttpResponse<ITire[]>) => {
@@ -77,6 +103,12 @@ export class CatalogueComponent {
   // Méthode appelée lors du changement de filtres
   onFilterChange(): void {
     this.currentPage = 0; // Réinitialiser à la première page après un changement de filtre
+    this.loadTires();
+  }
+
+  // Méthode appelée lors du changement de recherche
+  onSearchChange(): void {
+    this.currentPage = 0; // Réinitialiser à la première page après un changement de recherche
     this.loadTires();
   }
 

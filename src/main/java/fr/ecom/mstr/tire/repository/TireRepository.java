@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the Tire entity.
  */
 @Repository
-public interface TireRepository extends JpaRepository<Tire, Long> {
+public interface TireRepository extends JpaRepository<Tire, Long>, JpaSpecificationExecutor<Tire> {
     default Optional<Tire> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

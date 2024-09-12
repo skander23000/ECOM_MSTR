@@ -77,18 +77,6 @@ public class TireService {
     }
 
     /**
-     * Get all the tires.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public Page<TireDTO> findAll(Pageable pageable) {
-        LOG.debug("Request to get all Tires");
-        return tireRepository.findAll(pageable).map(tireMapper::toDto);
-    }
-
-    /**
      * Get all the tires with eager load of many-to-many relationships.
      *
      * @return the list of entities.
