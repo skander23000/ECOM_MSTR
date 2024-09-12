@@ -12,12 +12,8 @@ interface TireContainer {
 export class BasketService {
   setTire(t_tire: ITire, t_count: number): void {
     let basket = this.getContent();
-    // eslint-disable-next-line no-console
-    console.log(t_count);
     if (basket.length > 0) {
       const item: any = basket.find(x => x.tire.id === t_tire.id);
-      // eslint-disable-next-line no-console
-      console.log(item);
       if (item !== undefined) {
         const index: number = basket.indexOf(item);
         basket[index].count = t_count;
@@ -35,8 +31,6 @@ export class BasketService {
     let basket = this.getContent();
     if (basket.length > 0) {
       const item: any = basket.find(x => x.tire.id === t_tire.id);
-      // eslint-disable-next-line no-console
-      console.log(item);
       if (item !== undefined) {
         const index: number = basket.indexOf(item);
         basket[index].count += 1;
@@ -60,8 +54,6 @@ export class BasketService {
     const basket = this.getContent();
     if (basket.length > 0) {
       const item: any = basket.find(x => x.tire.id === t_tire.id);
-      // eslint-disable-next-line no-console
-      console.log(item);
       if (item !== undefined) {
         const index: number = basket.indexOf(item);
         if (basket[index].count > 1) basket[index].count -= 1;
