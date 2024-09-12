@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ICustomer } from './entities/customer/customer.model';
-import { PaymentInfo } from './entities/entity.payment-info';
+import { ICustomer } from '../entities/customer/customer.model';
+import { PaymentInfo } from '../entities/entity.payment-info';
 
 @Injectable({
   providedIn: 'root',

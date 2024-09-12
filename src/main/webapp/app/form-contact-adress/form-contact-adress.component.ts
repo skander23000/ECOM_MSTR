@@ -3,7 +3,7 @@ import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
-import { SharedUserDataService } from '../shared-user-data.service';
+import { SharedUserDataService } from '../shared/shared-user-data.service';
 
 @Component({
   selector: 'jhi-form-contact-adress',
