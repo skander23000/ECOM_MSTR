@@ -1,0 +1,153 @@
+/* Style pour la superposition d'arrière-plan */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Style pour la fenêtre modale */
+.modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+}
+
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.product-image {
+  display: block;
+  margin-left: 10%;
+
+  width: 30%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.modal-body {
+  display: flex;
+  justify-content: space-between;
+}
+.div-droite{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.modal-body p {
+  margin-bottom: 10px;
+}
+.logos{
+  margin-top: 0.5rem;
+  width: 40px;
+  height: 40px;
+}
+
+.modal-footer {
+  text-align: right;
+}
+
+.modal-close-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  background-color: #0056b3;
+}
+
+
+/*table*/
+.table-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.custom-table th, .custom-table td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 5px;
+}
+
+.custom-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.custom-table td {
+  text-align: center;
+}
+/*droite-haut*/
+.droite-haut{
+ text-align: center;
+}
+/*gauche bas*/
+.plus-moins{
+  display: flex;
+}
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.quantity-selector .plus-moins button {
+  background-color: #E0E0E0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-selector input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  margin: 0 5px;
+}
+
+.add-to-cart {
+  align-items: center;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+
+  background-color: #E0E0E0;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-block;
+}

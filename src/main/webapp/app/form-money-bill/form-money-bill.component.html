@@ -1,0 +1,193 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="head-title" jhiTranslate="form_header.payment_form.main_title"></div>
+
+  <div class="form-part">
+    <div>
+      <span class="title" jhiTranslate="form_header.payment_form.billing_title"></span>
+      <span class="required" jhiTranslate="form_header.required"></span>
+    </div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" (change)="toggleAddressFields()" />
+      <span class="checkbox-separator"></span>
+      <label jhiTranslate="form_button.use_delivery_address"></label>
+    </div>
+
+    <div class="input-container">
+      <label for="adress" jhiTranslate="form_input_header.address"></label>
+      <input
+        type="text"
+        id="adress"
+        name="adress"
+        placeholder="18 rue de Paris"
+        [(ngModel)]="paymentInfo.address"
+        #addressInput="ngModel"
+        [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+        [attr.disabled]="useDeliveryAddress ? true : null"
+        required
+      />
+      <div *ngIf="(addressInput.touched || isSubmitted) && !addressInput.valid" class="error-message">
+        <span jhiTranslate="form_error.missing_address"></span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="input-container">
+        <label for="post_code" jhiTranslate="form_input_header.post_code"></label>
+        <input
+          type="text"
+          id="post_code"
+          name="post_code"
+          placeholder="75000"
+          [(ngModel)]="paymentInfo.postCode"
+          #postCodeInput="ngModel"
+          (blur)="validatePostCode(postCodeInput)"
+          [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+          [attr.disabled]="useDeliveryAddress ? true : null"
+          required
+        />
+        <div *ngIf="validatePostCode(postCodeInput)" class="error-message">
+          <span jhiTranslate="form_error.invalid_post_code"></span>
+        </div>
+        <div
+          *ngIf="(postCodeInput.touched || isSubmitted) && !postCodeInput.valid && !validatePostCode(postCodeInput)"
+          class="error-message"
+        >
+          <span jhiTranslate="form_error.missing_post_code"></span>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="city" jhiTranslate="form_input_header.city"></label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          placeholder="Paris"
+          [(ngModel)]="paymentInfo.city"
+          #cityInput="ngModel"
+          [ngClass]="{ 'disabled-field': useDeliveryAddress }"
+          [attr.disabled]="useDeliveryAddress ? true : null"
+          required
+        />
+        <div *ngIf="(cityInput.touched || isSubmitted) && !cityInput.valid" class="error-message">
+          <span jhiTranslate="form_error.missing_city"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div>
+    <div class="form-part">
+      <div>
+        <span class="title" jhiTranslate="form_header.payment_form.card_title"></span>
+        <span class="required" jhiTranslate="form_header.required"></span>
+      </div>
+
+      <div class="input-container">
+        <label for="cardNumber" jhiTranslate="form_input_header.card_number"></label>
+        <input
+          type="text"
+          id="cardNumber"
+          name="cardNumber"
+          placeholder="XXXX XXXX XXXX XXXX"
+          [(ngModel)]="paymentInfo.cardNumber"
+          #cardNumberInput="ngModel"
+          required
+        />
+        <div *ngIf="validateCardNumber(cardNumberInput)" class="error-message">
+          <span jhiTranslate="form_error.invalid_card_number"></span>
+        </div>
+        <div
+          *ngIf="(cardNumberInput.touched || isSubmitted) && !cardNumberInput.valid && !validateCardNumber(cardNumberInput)"
+          class="error-message"
+        >
+          <span jhiTranslate="form_error.missing_card_number"></span>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="cardOwner" jhiTranslate="form_input_header.card_owner"></label>
+        <input
+          type="text"
+          id="cardOwner"
+          name="cardOwner"
+          placeholder="John Doe"
+          [(ngModel)]="paymentInfo.cardOwner"
+          #cardOwnerInput="ngModel"
+          required
+        />
+        <div *ngIf="(cardOwnerInput.touched || isSubmitted) && !cardOwnerInput.valid" class="error-message">
+          <span jhiTranslate="form_error.missing_card_owner"></span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="input-container">
+          <label for="expirationDate" jhiTranslate="form_input_header.exp_date"></label>
+          <input
+            type="month"
+            id="expirationDate"
+            name="expirationDate"
+            placeholder="01/26"
+            [(ngModel)]="paymentInfo.expirationDate"
+            #expirationDateInput="ngModel"
+            required
+          />
+          <div *ngIf="validateMonth(expirationDateInput) && !validateIsExpired(expirationDateInput)" class="error-message">
+            <span jhiTranslate="form_error.invalid_exp_date_type"></span>
+          </div>
+          <div *ngIf="validateIsExpired(expirationDateInput)" class="error-message">
+            <span jhiTranslate="form_error.invalid_exp_date_time"></span>
+          </div>
+          <div
+            *ngIf="
+              (expirationDateInput.touched || isSubmitted) &&
+              !expirationDateInput.valid &&
+              !validateMonth(expirationDateInput) &&
+              !validateIsExpired(expirationDateInput)
+            "
+            class="error-message"
+          >
+            <span jhiTranslate="form_error.missing_exp_date"></span>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <label for="securityCode" jhiTranslate="form_input_header.cvv"></label>
+          <input
+            type="text"
+            id="securityCode"
+            name="securityCode"
+            placeholder="XXX"
+            [(ngModel)]="paymentInfo.securityCode"
+            #securityCodeInput="ngModel"
+            required
+          />
+          <div *ngIf="validateSecurityCode(securityCodeInput)" class="error-message">
+            <span jhiTranslate="form_error.invalid_cvv"></span>
+          </div>
+          <div
+            *ngIf="(securityCodeInput.touched || isSubmitted) && !securityCodeInput.valid && !validateSecurityCode(securityCodeInput)"
+            class="error-message"
+          >
+            <span jhiTranslate="form_error.missing_cvv">Le code de sécurité est requis.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Boutons -->
+  <div class="button-container">
+    <div class="button-row">
+      <button type="button" class="btn btn-back" (click)="goBackToCart()" jhiTranslate="form_button.cancel"></button>
+      <button type="submit" class="btn btn-primary">
+        <span jhiTranslate="form_button.submit"></span>
+        <img ngSrc="../../content/images/website_icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
+      </button>
+    </div>
+  </div>
+</form>

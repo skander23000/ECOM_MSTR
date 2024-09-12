@@ -1,7 +1,9 @@
 package fr.ecom.mstr.tire.web.rest;
 
 import fr.ecom.mstr.tire.repository.TireRepository;
+import fr.ecom.mstr.tire.service.TireQueryService;
 import fr.ecom.mstr.tire.service.TireService;
+import fr.ecom.mstr.tire.service.criteria.TireCriteria;
 import fr.ecom.mstr.tire.service.dto.TireDTO;
 import fr.ecom.mstr.tire.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,12 @@ public class TireResource {
 
     private final TireRepository tireRepository;
 
-    public TireResource(TireService tireService, TireRepository tireRepository) {
+    private final TireQueryService tireQueryService;
+
+    public TireResource(TireService tireService, TireRepository tireRepository, TireQueryService tireQueryService) {
         this.tireService = tireService;
         this.tireRepository = tireRepository;
+        this.tireQueryService = tireQueryService;
     }
 
     /**
@@ -139,23 +144,31 @@ public class TireResource {
      * {@code GET  /tires} : get all the tires.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tires in body.
      */
     @GetMapping("")
     public ResponseEntity<List<TireDTO>> getAllTires(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        TireCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        LOG.debug("REST request to get a page of Tires");
-        Page<TireDTO> page;
-        if (eagerload) {
-            page = tireService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = tireService.findAll(pageable);
-        }
+        LOG.debug("REST request to get Tires by criteria: {}", criteria);
+
+        Page<TireDTO> page = tireQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tires/count} : count all the tires.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTires(TireCriteria criteria) {
+        LOG.debug("REST request to count Tires by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tireQueryService.countByCriteria(criteria));
     }
 
     /**

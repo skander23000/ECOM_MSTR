@@ -1,0 +1,21 @@
+{
+  "cart_header": {
+    "title": "Votre panier"
+  },
+
+  "cart_infos": {
+    "empty": "Votre panier est vide",
+    "total": "Total"
+  },
+
+  "cart_button": {
+    "checkout": "Passer la commande",
+    "cancel": "Continuer les achats",
+    "empty": "Vider le panier"
+  },
+
+  "cart_item": {
+    "compatibility": "Compatible",
+    "tire": "Pneu"
+  }
+}

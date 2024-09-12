@@ -1,0 +1,23 @@
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-text">
+      <ng-container>
+        <a [routerLink]="['/login']" class="footer-link">
+          <span jhiTranslate="footer_button.admin"></span>
+        </a>
+      </ng-container>
+      <span> - </span>
+      <ng-container>
+        <a routerLink="/credits" class="footer-link">
+          <span jhiTranslate="footer_button.credit"></span>
+        </a>
+      </ng-container>
+    </div>
+    <div class="text-zone">
+      <p jhiTranslate="footer_infos.data"></p>
+    </div>
+    <div class="text-zone">
+      <p jhiTranslate="footer_infos.payment"></p>
+    </div>
+  </div>
+</footer>

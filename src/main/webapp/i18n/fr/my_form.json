@@ -1,0 +1,56 @@
+{
+  "form_header": {
+    "required": "* champs requis",
+    "delivery_warning": "La livraison ne s'effectue qu'en France Métropolitaine",
+    "contact_address_form": {
+      "main_title": "Contact et adresse de livraison",
+      "contact_title": "Contact",
+      "delivery_title": "Adresse de livraison"
+    },
+    "payment_form": {
+      "main_title": "Adresse de facturation et paiement",
+      "card_title": "Information de carte de paiement",
+      "billing_title": "Adresse de facturation"
+    }
+  },
+  "form_input_header": {
+    "last_name": "Nom*",
+    "first_name": "Prénom*",
+    "phone": "Téléphone*",
+    "email": "Email*",
+    "address": "Adresse*",
+    "post_code": "Code postal*",
+    "city": "Ville*",
+    "country": "Pays*",
+    "card_number": "Numéro de carte*",
+    "card_owner": "Propriétaire de la carte*",
+    "exp_date": "Date d'expiration*",
+    "cvv": "CVV*"
+  },
+  "form_button": {
+    "use_delivery_address": "Utiliser cette adresse pour la facturation",
+    "cancel": "Retour au panier",
+    "next": "Suivant",
+    "submit": "Valider et payer la commande"
+  },
+  "form_error": {
+    "missing_first_name": "Prénom requis",
+    "missing_last_name": "Nom requis",
+    "missing_phone": "Téléphone requis",
+    "missing_email": "Email requis",
+    "missing_address": "Adresse requise",
+    "missing_city": "Ville requise",
+    "missing_post_code": "Code postal requis",
+    "missing_card_number": "Numéro de carte requis",
+    "missing_card_owner": "Propriétaire de la carte requis",
+    "missing_exp_date": "Date d'expiration requise",
+    "missing_cvv": "CVV requis",
+    "invalid_email": "Entrez un e-mail valide (exemple&#64;email.com)",
+    "invalid_phone": "Entrez un numéro valide (06 12 34 56 78)",
+    "invalid_post_code": "Code postal trop long/trop court",
+    "invalid_card_number": "Numéro de carte trop long/trop court",
+    "invalid_exp_date_type": "Format de mois invalide (MM/AA)",
+    "invalid_exp_date_time": "Carte expirée",
+    "invalid_cvv": "CVV trop long/trop court"
+  }
+}

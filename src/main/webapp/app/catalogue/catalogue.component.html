@@ -1,0 +1,126 @@
+<div class="container">
+  <div style="display: flex; flex-direction: column">
+    <div class="search-panel">
+      <div style="display: flex; margin: 0.5rem 0rem">
+        <img style="width: 1.7rem; height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/search_icon.png">
+        <h4>Rechercher :</h4>
+      </div>
+      <input
+        type="text"
+        placeholder="Rechercher un produit"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        style="padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;">
+    </div>
+
+    <div class="sorting-panel">
+    <div style="display: flex; margin: 0.5rem 0rem">
+    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png">
+    <h4>Tri :</h4>
+    </div>
+    <div class="sort-group">
+      <label class="label" >Par prix</label>
+      <div class="radio-group">
+        <label>
+          <input
+            type="radio"
+            name="sortPrice"
+            (click)="onSortChange('price', 'asc')"
+            [checked]="currentSortField === 'price' && currentSortDirection === 'asc'">
+          Ascendant
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="sortPrice"
+            (click)="onSortChange('price', 'desc')"
+            [checked]="currentSortField === 'price' && currentSortDirection === 'desc'">
+          Descendant
+        </label>
+      </div>
+    </div>
+
+    <div class="sort-group">
+      <label class="label">Par poids</label>
+      <div class="radio-group">
+        <label>
+          <input
+            type="radio"
+            name="sortWeight"
+            (click)="onSortChange('weightIndex', 'asc')"
+            [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'asc'">
+          Ascendant
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="sortWeight"
+            (click)="onSortChange('weightIndex', 'desc')"
+            [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'desc'">
+          Descendant
+        </label>
+      </div>
+    </div>
+  </div>
+    <div class="filter-panel">
+    <div style="display: flex; margin: 0.5rem 0rem">
+      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png">
+      <h4>Filtrer :</h4>
+      </div>
+      <div class="filter-group">
+        <label class="label" for="brand">Par type :</label>
+        <select id="brand" [(ngModel)]="tireType" (change)="onFilterChange()">
+          <option value="">Touts les types</option>
+          <option value="SUMMER">Été</option>
+          <option value="WINTER">Hiver</option>
+          <option value="ALL_SEASON">Toutes les saisons</option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <label class="label" for="priceRange">Par prix :</label>
+        <div class="custom-slider">
+        <ngx-slider  [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions" (userChangeEnd)="onFilterChange()"></ngx-slider>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+
+    <div *ngFor="let tire of tires" class="col-md-4" (click)="openDetails(tire)">
+      <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black">
+        <img [src]="tire.imageUrl" class="image" alt="{{ tire.name }}">
+        <div class="card-body">
+          <div class="card-title-price">
+            <h5 class="card-title">{{ tire.name }}</h5>
+            <h5>{{ tire.price }}€</h5>
+          </div>
+          <div class="details">
+          <span class="card-text">Ref : {{ tire.description }}</span>
+          <span class="card-text">Poids : {{ tire.weightIndex }}</span>
+          </div>
+          <div class="card-footer">
+            <div>
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/snowflakes_icon.png">
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png">
+            </div>
+            <div>
+              <a>
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 0">Précédent</button>
+      <span>Page {{ currentPage + 1 }}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="tires.length < itemsPerPage">Suivant</button>
+    </div>
+  </div>
+
+</div>
+<jhi-detail *ngIf="showModal" [tire]="selectedTire" (closeModal)="closeModal()"></jhi-detail>

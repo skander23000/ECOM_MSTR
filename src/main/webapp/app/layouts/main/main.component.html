@@ -1,13 +1,17 @@
-<jhi-page-ribbon></jhi-page-ribbon>
-
-<div>
-  <router-outlet name="navbar"></router-outlet>
-</div>
+@if (isConnected) {
+  <jhi-page-ribbon></jhi-page-ribbon>
+  <div>
+    <router-outlet name="navbar"></router-outlet>
+  </div>
+} @else {
+  <jhi-my-header></jhi-my-header>
+}
 
 <div class="container-fluid">
   <div class="card jh-card">
     <router-outlet></router-outlet>
   </div>
-
-  <jhi-footer></jhi-footer>
+</div>
+<div>
+  <jhi-my-footer></jhi-my-footer>
 </div>
