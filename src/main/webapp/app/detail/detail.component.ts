@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ITire } from 'app/entities/tire/tire.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'jhi-detail',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })

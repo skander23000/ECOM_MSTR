@@ -4,6 +4,7 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-form-contact-adress',
@@ -20,7 +21,10 @@ export class FormContactAdressComponent implements OnInit {
 
   isSubmitted = false;
 
-  constructor(private sharedDataService: SharedUserDataService) {}
+  constructor(
+    private sharedDataService: SharedUserDataService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.sharedDataService.userId$.subscribe(data => {
@@ -51,7 +55,7 @@ export class FormContactAdressComponent implements OnInit {
 
     if (form.valid) {
       this.sharedDataService.setUserInfo(this.user_info);
-      // [TODO] [ROUTAGE] vers le formulaire de paiement
+      this.router.navigate(['/payment']);
     } else {
       // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
       const firstInvalidControl = document.querySelector('.ng-invalid');
@@ -63,6 +67,6 @@ export class FormContactAdressComponent implements OnInit {
 
   // Méthode pour retourner au panier
   goBackToCart(): void {
-    // [TODO] [ROUTAGE] Routage vers le panier
+    this.router.navigate(['/panier']);
   }
 }
