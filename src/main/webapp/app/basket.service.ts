@@ -1,10 +1,10 @@
-import {inject, Injectable} from '@angular/core';
-import {ITire} from './entities/tire/tire.model';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {ApplicationConfigService} from './core/config/application-config.service';
-import {createRequestOption} from './core/request/request-util';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {SharedUserDataService} from './shared/shared-user-data.service';
+import { inject, Injectable } from '@angular/core';
+import { ITire } from './entities/tire/tire.model';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ApplicationConfigService } from './core/config/application-config.service';
+import { createRequestOption } from './core/request/request-util';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
   tire: ITire;
@@ -62,12 +62,12 @@ export class BasketService {
               localStorage.setItem('basket', JSON.stringify(basket));
               this.updateTotalItems();
             },
-            error: () => {
+            error() {
               sub.error('101|No Enough Items !');
             },
           });
         },
-        error: () => {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -76,7 +76,7 @@ export class BasketService {
 
   getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
-    return JSON.parse(basket);
+    return JSON.parse(basket) as TireContainer[];
   }
 
   refreshContent(): Observable<HttpResponse<TireContainer>> {
@@ -108,13 +108,13 @@ export class BasketService {
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
               },
-              error: () => {
+              error() {
                 sub.error("104|can't add -1 tire!");
               },
             });
           }
         },
-        error: () => {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -133,7 +133,7 @@ export class BasketService {
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
               },
-              error: () => {
+              error() {
                 sub.error('103|Item has to exist !');
               },
             });
@@ -141,7 +141,7 @@ export class BasketService {
             sub.error('100|Item has to exist !');
           }
         },
-        error: () => {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -180,7 +180,7 @@ export class BasketService {
             sub.complete();
           }
         },
-        error: () => {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -221,13 +221,13 @@ export class BasketService {
                 sub.next(true);
                 sub.complete();
               },
-              error: () => {
+              error() {
                 sub.error('101|No Enough Items !');
               },
             });
           }
         },
-        error: () => {
+        error() {
           sub.error('102|Account timeout !');
         },
       });

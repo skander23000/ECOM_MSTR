@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgClass, NgIf, NgOptimizedImage, ViewportScroller } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {FormsModule, NgForm, NgModel} from '@angular/forms';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
-import { ICustomer } from '../entities/customer/customer.model';
-import { SharedUserDataService } from '../shared/shared-user-data.service';
-import { PaymentInfo } from '../entities/entity.payment-info';
-import { Router } from '@angular/router';
+import {ICustomer} from '../entities/customer/customer.model';
+import {SharedUserDataService} from '../shared/shared-user-data.service';
+import {PaymentInfo} from '../entities/entity.payment-info';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -29,9 +29,7 @@ export class FormMoneyBillComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sharedDataService.userInfo$.subscribe(data => {
-      this.user_infos = data;
-    });
+    this.user_infos = this.sharedDataService.getUserInfo();
   }
 
   toggleAddressFields(): void {

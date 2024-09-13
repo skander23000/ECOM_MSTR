@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
@@ -13,7 +13,9 @@ import { Router } from '@angular/router';
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
-export class FormContactAdressComponent implements OnInit {
+export class FormContactAdressComponent {
+  // implements OnInit
+
   // [TODO] Pass the required id to a possibly null id
   user_info: ICustomer = {
     id: 0,
@@ -26,13 +28,10 @@ export class FormContactAdressComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit(): void {
-    this.sharedDataService.userId$.subscribe(data => {
-      if (data) {
-        this.user_info.id = data;
-      }
-    });
-  }
+  // ngOnInit(): void {
+  // [TODO] Modifiy id to be a string in the JDL
+  // this.user_info.id = this.sharedDataService.getUserId()
+  // }
 
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;
