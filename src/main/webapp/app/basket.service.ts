@@ -1,9 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { ITire } from './entities/tire/tire.model';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { ApplicationConfigService } from './core/config/application-config.service';
-import { createRequestOption } from './core/request/request-util';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {ITire} from './entities/tire/tire.model';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {ApplicationConfigService} from './core/config/application-config.service';
+import {createRequestOption} from './core/request/request-util';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 interface TireContainer {
   tire: ITire;
@@ -83,7 +83,7 @@ export class BasketService {
     });
   }
 
-    getContent(): TireContainer[] {
+  getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
     const result: TireContainer[] = JSON.parse(basket);
     return result;

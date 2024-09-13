@@ -31,9 +31,9 @@
     </div>
 
     <div class="plus-moins">
-      <button (click)="decreaseQuantity()" [disabled]="!isAvailable">-</button>
-      <input type="text" [(ngModel)]="cart_item.count" (ngModelChange)="onCountChange()" [disabled]="!isAvailable">
-      <button (click)="increaseQuantity()" [disabled]="!isAvailable">+</button>
+      <button (click)="decreaseQuantity()" [disabled]="!isAvailableMoins">-</button>
+      <input type="text" [(ngModel)]="cart_item.count" (ngModelChange)="onCountChange()" [disabled]="!isAvailableSet">
+      <button (click)="increaseQuantity()" [disabled]="!isAvailablePlus">+</button>
     </div>
   </div>
   <div class="close-button" (click)="this.onDestroy()">✖</div> <!-- Ajoutez cette ligne -->

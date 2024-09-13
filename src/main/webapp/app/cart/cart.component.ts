@@ -73,8 +73,11 @@ export class CartComponent implements OnInit {
 
   // On vide le panier quand on appuie dessus
   protected emptyCart(): void {
-    this.basketService.wipe();
-    this.cart_items = [];
+    this.basketService.wipe().subscribe({
+      next: () => {
+        this.cart_items = [];
+      },
+    });
   }
 
   // On récupère le prix total dans le cas ou on voudrait l'afficher

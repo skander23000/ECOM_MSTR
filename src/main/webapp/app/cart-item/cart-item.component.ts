@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { GetIconsService } from '../shared/get-icons.service';
+import { BasketService } from '../basket.service';
 
 @Component({
   selector: 'jhi-cart-item',
@@ -16,12 +17,17 @@ export class CartItemComponent implements OnInit {
   @Input() cart_item: TireContainer = {};
   @Output() countChanged = new EventEmitter<{ id: number; count: number }>();
   @Output() destroy = new EventEmitter<number>();
+  showError = false;
   total_price = 0;
-  isAvailable = true;
+  isAvailablePlus = true;
+  isAvailableMoins = true;
+  isAvailableSet = true;
   getIconservice: GetIconsService;
+  basktService: BasketService;
 
-  constructor(getIconservice: GetIconsService) {
+  constructor(getIconservice: GetIconsService, basketService: BasketService) {
     this.getIconservice = getIconservice;
+    this.basktService = basketService;
   }
 
   updateTotalPrice(): void {
@@ -46,52 +52,77 @@ export class CartItemComponent implements OnInit {
   }
 
   decreaseQuantity(): void {
-    this.isAvailable = false;
-    if (!this.cart_item.count) {
-      this.isAvailable = true;
+    this.isAvailablePlus = false;
+    this.isAvailableMoins = false;
+    if (!this.cart_item.count || !this.cart_item.tire) {
+      this.isAvailablePlus = false;
+      this.isAvailableMoins = false;
       return;
     }
-    if (this.cart_item.count > 1) {
-      this.cart_item.count--;
-      this.updateTotalPrice();
-    }
-    // [TODO] Ajouter la logique concernant l'ajout d'un pneu au panier
-
-    this.isAvailable = true;
+    this.basktService.removeATire(this.cart_item.tire).subscribe({
+      next: () => {
+        if (this.cart_item.count && this.cart_item.count > 1) {
+          this.cart_item.count--;
+          this.updateTotalPrice();
+          this.isAvailablePlus = false;
+          this.isAvailableMoins = false;
+        }
+      },
+      error: () => {
+        this.isAvailablePlus = true;
+        this.showError = true;
+      },
+    });
   }
 
   increaseQuantity(): void {
-    this.isAvailable = false;
-    if (!this.cart_item.count) {
-      this.isAvailable = true;
+    this.isAvailablePlus = false;
+    this.isAvailableMoins = false;
+    if (!this.cart_item.count || !this.cart_item.tire) {
+      this.isAvailablePlus = true;
+      this.isAvailableMoins = true;
       return;
     }
-    this.cart_item.count++;
-    this.updateTotalPrice();
-    // [TODO] Ajouter la logique concernant l'ajout d'un pneu au panier
-    this.isAvailable = true;
+    this.basktService.addTire(this.cart_item.tire, 1).subscribe({
+      next: () => {
+        if (this.cart_item.count && this.cart_item.count > 1) {
+          this.cart_item.count++;
+          this.updateTotalPrice();
+          this.isAvailablePlus = true;
+          this.isAvailableMoins = true;
+        }
+      },
+      error: () => {
+        this.isAvailableMoins = true;
+        this.showError = true;
+      },
+    });
   }
 
   onCountChange(): void {
-    this.isAvailable = false;
-    if (!this.cart_item.count) {
-      this.cart_item.count = 1;
-      this.updateTotalPrice();
-      this.isAvailable = true;
+    this.isAvailableSet = false;
+    if (!this.cart_item.count || !this.cart_item.tire) {
       return;
     }
 
-    const countValue = parseFloat(String(this.cart_item.count));
+    let countValue = parseFloat(String(this.cart_item.count));
 
-    if (isNaN(countValue) || countValue <= 0) {
+    if (isNaN(countValue) || countValue <= 0 || countValue >= 255) {
       // Réinitialiser à 1 si la valeur est non numérique ou inférieure ou égale à 0
-      this.cart_item.count = 1;
-    } else {
-      // Sinon, utilisez la valeur validée
-      this.cart_item.count = countValue;
+      countValue = 1;
     }
-    this.updateTotalPrice();
-    this.isAvailable = true;
+    this.basktService.setTire(this.cart_item.tire, countValue).subscribe({
+      next: () => {
+        if (this.cart_item.count && this.cart_item.count > 1) {
+          this.cart_item.count = countValue;
+          this.isAvailableSet = false;
+          this.updateTotalPrice();
+        }
+      },
+      error: () => {
+        this.showError = true;
+      },
+    });
   }
 
   onDestroy(): void {
@@ -99,7 +130,13 @@ export class CartItemComponent implements OnInit {
       return;
     }
     if (this.cart_item.tire?.id) {
-      this.destroy.emit(this.cart_item.tire.id);
+      this.basktService.removeTires(this.cart_item.tire).subscribe({
+        next: () => {
+          if (this.cart_item.tire) {
+            this.destroy.emit(this.cart_item.tire.id);
+          }
+        },
+      });
     }
   }
 }
