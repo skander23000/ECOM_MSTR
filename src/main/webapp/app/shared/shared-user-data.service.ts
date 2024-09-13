@@ -12,12 +12,13 @@ export class SharedUserDataService {
   paymentInfoSubject = new BehaviorSubject<PaymentInfo | null>(null);
   userIdSubject = new BehaviorSubject<number | null>(null);
   successInfoSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
   // Observables to expose the data as streams
   userInfo$ = this.userInfoSubject.asObservable();
   paymentInfo$ = this.paymentInfoSubject.asObservable();
   userId$ = this.userIdSubject.asObservable();
   successInfo$ = this.successInfoSubject.asObservable();
-
+  successInfoProduct$ = this.successInfoProductSubject.asObservable();
   setUserInfo(userInfo: ICustomer): void {
     this.userInfoSubject.next(userInfo);
   }
@@ -30,5 +31,8 @@ export class SharedUserDataService {
   }
   setSuccessMessage(isSuccessMessage: boolean): void {
     this.successInfoSubject.next(isSuccessMessage);
+  }
+  setSuccessMessageProduct(isSuccessMessage: boolean): void {
+    this.successInfoProductSubject.next(isSuccessMessage);
   }
 }

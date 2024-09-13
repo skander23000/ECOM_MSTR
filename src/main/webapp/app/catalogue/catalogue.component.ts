@@ -25,7 +25,7 @@ export class CatalogueComponent {
 
   // Variables de pagination
   currentPage = 0;
-  itemsPerPage = 10;
+  itemsPerPage = 5;
   totalItems = 0;
 
   // Variables de tri
@@ -41,6 +41,7 @@ export class CatalogueComponent {
   searchQuery = '';
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
+  showSuccessProductMessage: boolean | null = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -63,6 +64,10 @@ export class CatalogueComponent {
     this.sharedDataService.successInfo$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessMessage = data;
+    });
+    this.sharedDataService.successInfoProduct$.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showSuccessProductMessage = data;
     });
   }
 
@@ -132,6 +137,11 @@ export class CatalogueComponent {
   }
   closeSuccessMessage(): void {
     this.showSuccessMessage = false;
+    this.sharedDataService.setSuccessMessage(false);
+  }
+  closeSuccessProductMessage(): void {
+    this.showSuccessProductMessage = false;
+    this.sharedDataService.setSuccessMessageProduct(false);
   }
   onAddToCart(tire: ITire): void {
     this.basketService.addTire(tire).subscribe();

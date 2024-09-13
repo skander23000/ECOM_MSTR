@@ -19,15 +19,13 @@ interface IDContainer {
   providedIn: 'root',
 })
 export class BasketService {
-  totalItemsSubject = new BehaviorSubject<number>(0);
+  totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
 
   constructor() {
-    const empty: TireContainer[] = [];
-    localStorage.setItem('basket', JSON.stringify(empty));
     this.updateTotalItems();
   }
 
@@ -235,6 +233,10 @@ export class BasketService {
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
     const container: IDContainer = { id: t_tire.id, count: t_count };
     const options = createRequestOption(container);
+    return new Observable(hey => {
+      hey.next();
+      hey.complete();
+    });
     return this.http.get<boolean>(`${this.resourceUrl}/check-availability`, { params: options, observe: 'response' });
   }
   private updateTotalItems(): void {
