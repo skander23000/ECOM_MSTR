@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TireService } from 'app/entities/tire/service/tire.service';
@@ -18,7 +18,7 @@ import { TruncatePipe } from '../pipe/truncate.pipe';
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit {
   tires: ITire[] = [];
   selectedTire: ITire | null = null;
   showModal = false;

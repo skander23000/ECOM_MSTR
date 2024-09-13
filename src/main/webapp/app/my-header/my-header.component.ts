@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import TranslateDirective from '../shared/language/translate.directive';
 import { RouterLink } from '@angular/router';
 import { BasketService } from '../basket.service';
@@ -10,7 +10,7 @@ import { BasketService } from '../basket.service';
   templateUrl: './my-header.component.html',
   styleUrls: ['./my-header.component.scss'],
 })
-export class MyHeaderComponent {
+export class MyHeaderComponent implements OnInit {
   totalItems = 0;
   constructor(private basketService: BasketService) {}
   ngOnInit(): void {
