@@ -9,23 +9,28 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class SharedUserDataService {
   // Subjects to manage the data
-  userInfoSubject = new BehaviorSubject<ICustomer | null>(null);
-  paymentInfoSubject = new BehaviorSubject<PaymentInfo | null>(null);
-  userIdSubject = new BehaviorSubject<number | null>(null);
   successInfoSubject = new BehaviorSubject<boolean | null>(null);
   // Observables to expose the data as streams
-  userInfo$ = this.userInfoSubject.asObservable();
-  paymentInfo$ = this.paymentInfoSubject.asObservable();
-  userId$ = this.userIdSubject.asObservable();
   successInfo$ = this.successInfoSubject.asObservable();
 
   setUserInfo(userInfo: ICustomer): void {
-    this.userInfoSubject.next(userInfo);
+    localStorage.setItem('userinfo', JSON.stringify(userInfo));
+  }
+
+  getUserInfo(): ICustomer {
+    const tmp: ICustomer = JSON.parse(localStorage.getItem('userinfo') ?? '');
+    return tmp;
   }
 
   setPaymentInfo(paymentInfo: PaymentInfo): void {
-    this.paymentInfoSubject.next(paymentInfo);
+    localStorage.setItem('paymentinfo', JSON.stringify(paymentInfo));
   }
+
+  getPaymentInfo(): PaymentInfo {
+    const tmp: PaymentInfo = JSON.parse(localStorage.getItem('paymentinfo') ?? '');
+    return tmp;
+  }
+
   generateUserId(): void {
     localStorage.setItem('uuserid', uuidv4());
   }
