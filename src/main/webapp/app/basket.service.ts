@@ -1,18 +1,20 @@
-import {inject, Injectable} from '@angular/core';
-import {ITire} from './entities/tire/tire.model';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {ApplicationConfigService} from './core/config/application-config.service';
-import {createRequestOption} from './core/request/request-util';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { ITire } from './entities/tire/tire.model';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ApplicationConfigService } from './core/config/application-config.service';
+import { createRequestOption } from './core/request/request-util';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
   tire: ITire;
   count: number;
 }
 
-interface IDContainer {
-  id: number;
-  count: number;
+interface RequestContainer {
+  userUuid: string;
+  tireId: number;
+  quantity: number;
 }
 
 @Injectable({
@@ -25,9 +27,10 @@ export class BasketService {
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
 
-  constructor() {
+  constructor(private userinfo: SharedUserDataService) {
     const empty: TireContainer[] = [];
     localStorage.setItem('basket', JSON.stringify(empty));
+    userinfo.generateUserId();
     this.updateTotalItems();
   }
 
@@ -46,15 +49,11 @@ export class BasketService {
             } else {
               basket.push({ count: t_count, tire: t_tire });
               nbtire = t_count;
-              // eslint-disable-next-line no-console
-              console.log('hey4');
             }
           } else {
             basket = new Array(1);
             basket[0] = { count: t_count, tire: t_tire };
             nbtire = t_count;
-            // eslint-disable-next-line no-console
-            console.log('hey5');
           }
           this.setTireBDD(t_tire, nbtire).subscribe({
             next: value2 => {
@@ -62,22 +61,14 @@ export class BasketService {
               sub.complete();
               localStorage.setItem('basket', JSON.stringify(basket));
               this.updateTotalItems();
-              // eslint-disable-next-line no-console
-              console.log('hey6');
             },
             error(err) {
-              // eslint-disable-next-line no-console
-              console.log('hey7');
               sub.error('101|No Enough Items !');
             },
           });
         },
         error(err) {
           sub.error('102|Account timeout !');
-        },
-        complete() {
-          // eslint-disable-next-line no-console
-          console.log('heyo');
         },
       });
     });
@@ -183,7 +174,8 @@ export class BasketService {
           for (const tire of basket) {
             this.removeTires(tire.tire).subscribe();
 
-            localStorage.setItem('basket', JSON.stringify('{}'));
+            const empty: TireContainer[] = [];
+            localStorage.setItem('basket', JSON.stringify(empty));
             this.updateTotalItems();
             sub.next(true);
             sub.complete();
@@ -245,12 +237,8 @@ export class BasketService {
   }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
-    const container: IDContainer = { id: t_tire.id, count: t_count };
+    const container: RequestContainer = { userUuid: this.userinfo.getUserId(), tireId: t_tire.id, quantity: t_count };
     const options = createRequestOption(container);
-    // return new Observable(hey => {
-    //   hey.next();
-    //   hey.complete();
-    // });
     return this.http.get<boolean>(`${this.resourceUrl}/check-availability`, { params: options, observe: 'response' });
   }
   private updateTotalItems(): void {

@@ -113,12 +113,12 @@ export class CatalogueComponent implements OnInit {
   }
 
   onFilterChange(): void {
-    this.currentPage = 0; // Réinitialiser à la première page après un changement de filtre
+    this.currentPage = 0;
     this.loadTires();
   }
 
   onSearchChange(): void {
-    this.currentPage = 0; // Réinitialiser à la première page après un changement de recherche
+    this.currentPage = 0;
     this.loadTires();
   }
 
