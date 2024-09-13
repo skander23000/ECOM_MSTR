@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ITire } from './entities/tire/tire.model';
+import { ITire } from '../entities/tire/tire.model';
 
 interface TireContainer {
   tire: ITire;

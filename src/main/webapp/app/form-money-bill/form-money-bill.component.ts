@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
+import { NgClass, NgIf, NgOptimizedImage, ViewportScroller } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { PaymentInfo } from '../entities/entity.payment-info';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -17,10 +18,13 @@ export class FormMoneyBillComponent implements OnInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
 
-  useDeliveryAddress = false; // Détermine si l'adresse de livraison est utilisée
+  useDeliveryAddress = false;
   isSubmitted = false;
 
-  constructor(private sharedDataService: SharedUserDataService) {
+  constructor(
+    private sharedDataService: SharedUserDataService,
+    private router: Router,
+  ) {
     this.paymentInfo = {};
   }
 
@@ -87,8 +91,10 @@ export class FormMoneyBillComponent implements OnInit {
 
     if (form.valid) {
       this.sharedDataService.setPaymentInfo(this.paymentInfo);
-      // [TODO] [ROUTAGE] Routage vers l'alerte "Votre commande est passée avec succès"
 
+      this.sharedDataService.setSuccessMessage(true);
+
+      this.router.navigate(['/']);
       // eslint-disable-next-line no-console
       console.log('Formulaire soumis avec succès');
 
@@ -101,11 +107,15 @@ export class FormMoneyBillComponent implements OnInit {
       }
     }
   }
-
   // Méthode pour retourner au panier
   goBackToCart(): void {
-    // [TODO] [ROUTAGE] Routage vers le panier
-    // eslint-disable-next-line no-console
-    console.log('Retour au panier');
+    this.router.navigate(['/panier']);
+  }
+  onDivClick(event: MouseEvent): void {
+    if ((event.target as HTMLElement).tagName !== 'INPUT') {
+      const checkbox = (event.currentTarget as HTMLElement).querySelector('input[type="checkbox"]') as HTMLInputElement;
+      checkbox.checked = !checkbox.checked;
+      this.toggleAddressFields();
+    }
   }
 }

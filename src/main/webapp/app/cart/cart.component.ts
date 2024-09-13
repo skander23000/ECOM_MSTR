@@ -3,6 +3,7 @@ import { TireContainer } from '../entities/entity.tire-container';
 import TranslateDirective from '../shared/language/translate.directive';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-cart',
@@ -14,7 +15,7 @@ import { NgOptimizedImage } from '@angular/common';
 export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   totalPrice = 0;
-
+  constructor(private router: Router) {}
   ngOnInit(): void {
     // [TODO] Récupérer les éléments du panier via le service de Théo
     this.cart_items = [];
@@ -25,11 +26,11 @@ export class CartComponent implements OnInit {
   }
 
   goToCheckout(): void {
-    // [TODO] [ROUTAGE] Rediriger vers le formulaire d'adresse et de contact
+    this.router.navigate(['/informations']);
   }
 
   goToHome(): void {
-    // [TODO] [ROUTAGE] Rediriger vers la page d'accueil
+    this.router.navigate(['/']);
   }
 
   // Assurez-vous que cette méthode est dans le composant correspondant
