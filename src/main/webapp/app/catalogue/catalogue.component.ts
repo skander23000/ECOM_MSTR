@@ -139,4 +139,11 @@ export class CatalogueComponent {
   stopPropagation(event: Event): void {
     event.stopPropagation();
   }
+  onResetFilters(): void {
+    this.tireType = '';
+    this.priceMin = 0;
+    this.priceMax = 50000;
+    this.searchQuery = '';
+    this.loadTires();
+  }
 }

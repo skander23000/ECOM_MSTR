@@ -91,6 +91,14 @@ a.custom-link {
   flex-direction: column;
   margin-bottom: 10px;
 }
+.reset-button{
+  margin: 1rem auto;
+  width: 200px;
+  padding: 0.25rem;
+  border-radius: 10px;
+  background-color: #E0E0E0;
+  cursor: pointer;
+}
 
 .radio-group {
   display: flex;
