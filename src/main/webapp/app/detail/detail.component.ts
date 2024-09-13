@@ -26,7 +26,7 @@ export class DetailComponent {
     if (tire === null) {
       return;
     }
-    this.basketService.setTire(tire, this.quantity);
+    this.basketService.addTire(tire, this.quantity).subscribe();
   }
 
   increaseQuantity(): void {

@@ -134,7 +134,7 @@ export class CatalogueComponent {
     this.showSuccessMessage = false;
   }
   onAddToCart(tire: ITire): void {
-    this.basketService.addTire(tire);
+    this.basketService.addTire(tire).subscribe();
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();
