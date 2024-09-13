@@ -27,6 +27,12 @@ public interface ItemListLockRepository extends JpaRepository<ItemListLock, Long
     @Query("Select ill from ItemListLock ill left join fetch ill.tire where ill.userUuid = :userUuid and ill.tire.id = :tireId")
     Optional<ItemListLock> findByUuidAndTireId(@Param("userUuid") UUID userUuid, @Param("tireId") Long tireId);
 
+    @Query("Select ill from ItemListLock ill left join fetch ill.tire where ill.userUuid = :userUuid")
+    List<ItemListLock> findByUuid(@Param("userUuid") UUID userUuid);
+
+    @Query("Select exists (Select 1 from ItemListLock ill where ill.userUuid = :userUuid)")
+    Boolean isItemListLockByUuid(@Param("userUuid") UUID userUuid);
+
     @Modifying
     @Query("Update ItemListLock ill set ill.quantity = :quantity where ill.id = :id")
     void updateItemQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);
