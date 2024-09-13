@@ -12,6 +12,18 @@ const routes: Routes = [
     title: 'home.title',
   },
   {
+    path: 'payment',
+    loadComponent: () => import('./form-money-bill/form-money-bill.component').then(m => m.FormMoneyBillComponent),
+  },
+  {
+    path: 'informations',
+    loadComponent: () => import('./form-contact-adress/form-contact-adress.component').then(m => m.FormContactAdressComponent),
+  },
+  {
+    path: 'panier',
+    loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent),
+  },
+  {
     path: '',
     loadComponent: () => import('./layouts/navbar/navbar.component'),
     outlet: 'navbar',

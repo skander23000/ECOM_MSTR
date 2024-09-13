@@ -3,6 +3,7 @@ import { TireContainer } from '../entities/entity.tire-container';
 import TranslateDirective from '../shared/language/translate.directive';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
 import { BasketService } from '../entities/basket.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { BasketService } from '../entities/basket.service';
 export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   totalPrice = 0;
+  constructor(private router: Router) {}
   basketService: BasketService;
 
   // Exemple d'appel de la fonction avec un JSON en tant que chaîne
@@ -123,11 +125,11 @@ export class CartComponent implements OnInit {
   }
 
   goToCheckout(): void {
-    // [TODO] [ROUTAGE] Rediriger vers le formulaire d'adresse et de contact
+    this.router.navigate(['/informations']);
   }
 
   goToHome(): void {
-    // [TODO] [ROUTAGE] Rediriger vers la page d'accueil
+    this.router.navigate(['/']);
   }
 
   // Assurez-vous que cette méthode est dans le composant correspondant
