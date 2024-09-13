@@ -32,25 +32,17 @@ export class BasketService {
   }
 
   addTire(t_tire: ITire, t_count = 1): Observable<boolean> {
-    // eslint-disable-next-line no-console
-    console.log('hey1');
     return new Observable<boolean>(sub => {
-      // eslint-disable-next-line no-console
-      console.log('hey11');
       this.checkAccountValidity().subscribe({
         next: value => {
           let nbtire = 0;
           let basket = this.getContent();
           if (basket.length > 0) {
-            // eslint-disable-next-line no-console
-            console.log('hey2');
             const item: any = basket.find(x => x.tire.id === t_tire.id);
             if (item !== undefined) {
               const index: number = basket.indexOf(item);
               basket[index].count += t_count;
               nbtire = basket[index].count;
-              // eslint-disable-next-line no-console
-              console.log('hey3');
             } else {
               basket.push({ count: t_count, tire: t_tire });
               nbtire = t_count;
@@ -91,7 +83,7 @@ export class BasketService {
     });
   }
 
-  getContent(): TireContainer[] {
+    getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
     const result: TireContainer[] = JSON.parse(basket);
     return result;
