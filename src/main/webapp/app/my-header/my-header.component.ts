@@ -16,7 +16,7 @@ export class MyHeaderComponent {
   ngOnInit(): void {
     // S'abonner au total des items
     this.basketService.totalItems$.subscribe(total => {
-      this.totalItems = total ?? 0;
+      this.totalItems = total || 0;
     });
   }
 }
