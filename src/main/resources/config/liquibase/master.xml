@@ -17,11 +17,9 @@
     <include file="config/liquibase/changelog/20240909111743_added_entity_CustomerOrder.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111744_added_entity_OrderItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111745_added_entity_ItemListLock.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20240909111740_added_entity_constraints_Tire.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111742_added_entity_constraints_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111744_added_entity_constraints_OrderItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111745_added_entity_constraints_ItemListLock.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20240912164950_updated_entity_Tire_add_column_version.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

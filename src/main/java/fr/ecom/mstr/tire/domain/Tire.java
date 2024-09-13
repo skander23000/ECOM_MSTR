@@ -5,7 +5,8 @@ import fr.ecom.mstr.tire.domain.enumeration.ChargeIndex;
 import fr.ecom.mstr.tire.domain.enumeration.SpeedIndex;
 import fr.ecom.mstr.tire.domain.enumeration.TireType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -40,15 +41,15 @@ public class Tire implements Serializable {
 
     @NotNull
     @Column(name = "tire_width", nullable = false)
-    private String tireWidth;
+    private BigDecimal tireWidth;
 
     @NotNull
     @Column(name = "tire_height", nullable = false)
-    private String tireHeight;
+    private BigDecimal tireHeight;
 
     @NotNull
     @Column(name = "tire_diameter", nullable = false)
-    private String tireDiameter;
+    private BigDecimal tireDiameter;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -84,12 +85,16 @@ public class Tire implements Serializable {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tire")
-    @JsonIgnoreProperties(value = { "tire" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"tire"}, allowSetters = true)
     private Set<ItemListLock> itemListLocks = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "tires" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"tires"}, allowSetters = true)
     private TireBrand tireBrand;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Integer version;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -97,17 +102,21 @@ public class Tire implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Tire id(Long id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getReference() {
         return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Tire reference(String reference) {
@@ -115,12 +124,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Tire name(String name) {
@@ -128,12 +137,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public BigDecimal getPrice() {
         return this.price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Tire price(BigDecimal price) {
@@ -141,51 +150,51 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getTireWidth() {
+    public BigDecimal getTireWidth() {
         return this.tireWidth;
     }
 
-    public Tire tireWidth(String tireWidth) {
+    public void setTireWidth(BigDecimal tireWidth) {
+        this.tireWidth = tireWidth;
+    }
+
+    public Tire tireWidth(BigDecimal tireWidth) {
         this.setTireWidth(tireWidth);
         return this;
     }
 
-    public void setTireWidth(String tireWidth) {
-        this.tireWidth = tireWidth;
-    }
-
-    public String getTireHeight() {
+    public BigDecimal getTireHeight() {
         return this.tireHeight;
     }
 
-    public Tire tireHeight(String tireHeight) {
+    public void setTireHeight(BigDecimal tireHeight) {
+        this.tireHeight = tireHeight;
+    }
+
+    public Tire tireHeight(BigDecimal tireHeight) {
         this.setTireHeight(tireHeight);
         return this;
     }
 
-    public void setTireHeight(String tireHeight) {
-        this.tireHeight = tireHeight;
-    }
-
-    public String getTireDiameter() {
+    public BigDecimal getTireDiameter() {
         return this.tireDiameter;
     }
 
-    public Tire tireDiameter(String tireDiameter) {
+    public void setTireDiameter(BigDecimal tireDiameter) {
+        this.tireDiameter = tireDiameter;
+    }
+
+    public Tire tireDiameter(BigDecimal tireDiameter) {
         this.setTireDiameter(tireDiameter);
         return this;
     }
 
-    public void setTireDiameter(String tireDiameter) {
-        this.tireDiameter = tireDiameter;
-    }
-
     public TireType getTireType() {
         return this.tireType;
+    }
+
+    public void setTireType(TireType tireType) {
+        this.tireType = tireType;
     }
 
     public Tire tireType(TireType tireType) {
@@ -193,12 +202,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setTireType(TireType tireType) {
-        this.tireType = tireType;
-    }
-
     public String getImageUrl() {
         return this.imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Tire imageUrl(String imageUrl) {
@@ -206,12 +215,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public SpeedIndex getSpeedIndex() {
         return this.speedIndex;
+    }
+
+    public void setSpeedIndex(SpeedIndex speedIndex) {
+        this.speedIndex = speedIndex;
     }
 
     public Tire speedIndex(SpeedIndex speedIndex) {
@@ -219,12 +228,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setSpeedIndex(SpeedIndex speedIndex) {
-        this.speedIndex = speedIndex;
-    }
-
     public ChargeIndex getWeightIndex() {
         return this.weightIndex;
+    }
+
+    public void setWeightIndex(ChargeIndex weightIndex) {
+        this.weightIndex = weightIndex;
     }
 
     public Tire weightIndex(ChargeIndex weightIndex) {
@@ -232,12 +241,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setWeightIndex(ChargeIndex weightIndex) {
-        this.weightIndex = weightIndex;
-    }
-
     public Integer getQuantity() {
         return this.quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Tire quantity(Integer quantity) {
@@ -245,12 +254,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
     public Boolean getDisable() {
         return this.disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
     }
 
     public Tire disable(Boolean disable) {
@@ -258,12 +267,12 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setDisable(Boolean disable) {
-        this.disable = disable;
-    }
-
     public String getDisableReason() {
         return this.disableReason;
+    }
+
+    public void setDisableReason(String disableReason) {
+        this.disableReason = disableReason;
     }
 
     public Tire disableReason(String disableReason) {
@@ -271,21 +280,17 @@ public class Tire implements Serializable {
         return this;
     }
 
-    public void setDisableReason(String disableReason) {
-        this.disableReason = disableReason;
-    }
-
     public String getDescription() {
         return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Tire description(String description) {
         this.setDescription(description);
         return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Set<ItemListLock> getItemListLocks() {
@@ -332,6 +337,19 @@ public class Tire implements Serializable {
         return this;
     }
 
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Tire version(Integer version) {
+        this.setVersion(version);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -370,6 +388,7 @@ public class Tire implements Serializable {
             ", disable='" + getDisable() + "'" +
             ", disableReason='" + getDisableReason() + "'" +
             ", description='" + getDescription() + "'" +
+            ", version='" + getVersion() + "'" +
             "}";
     }
 }

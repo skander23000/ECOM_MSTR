@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- Supprimer la contrainte NOT NULL de tire_width -->
+    <changeSet id="1-drop-not-null-constraint" author="mathieu">
+      <dropNotNullConstraint tableName="tire" columnName="tire_width" columnDataType="varchar(255)"/>
+      <dropNotNullConstraint tableName="tire" columnName="tire_height" columnDataType="varchar(255)"/>
+      <dropNotNullConstraint tableName="tire" columnName="tire_diameter" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <!-- Supprimer le contenu de la colonne tire_width -->
+    <changeSet id="2-clear-tire-table-column" author="mathieu">
+      <update tableName="tire">
+        <column name="tire_width" value="NULL"/>
+      </update>
+      <update tableName="tire">
+        <column name="tire_height" value="NULL"/>
+      </update>
+      <update tableName="tire">
+        <column name="tire_diameter" value="NULL"/>
+      </update>
+    </changeSet>
+
+    <!-- Modifier le type de la colonne tire_width -->
+    <changeSet id="3-modify-tire-table-column-type" author="mathieu">
+      <modifyDataType tableName="tire" columnName="tire_width" newDataType="decimal(21,2)"/>
+      <modifyDataType tableName="tire" columnName="tire_height" newDataType="decimal(21,2)"/>
+      <modifyDataType tableName="tire" columnName="tire_diameter" newDataType="decimal(21,2)"/>
+    </changeSet>
+
+  <!-- Supprimer le contenu de la colonne tire_width -->
+  <changeSet id="4-update-tire-column" author="mathieu">
+    <update tableName="tire">
+      <column name="tire_width" value="0"/>
+    </update>
+    <update tableName="tire">
+      <column name="tire_height" value="0"/>
+    </update>
+    <update tableName="tire">
+      <column name="tire_diameter" value="0"/>
+    </update>
+  </changeSet>
+
+    <!-- Réappliquer la contrainte NOT NULL -->
+    <changeSet id="5-add-not-null-constraint" author="mathieu">
+      <addNotNullConstraint tableName="tire" columnName="tire_width" columnDataType="decimal(21,2)"/>
+      <addNotNullConstraint tableName="tire" columnName="tire_height" columnDataType="decimal(21,2)"/>
+      <addNotNullConstraint tableName="tire" columnName="tire_diameter" columnDataType="decimal(21,2)"/>
+    </changeSet>
+
+    <!-- Ajouter une colonne version -->
+    <changeSet id="6-add-version-column" author="mathieu">
+      <addColumn tableName="tire">
+        <column name="version" type="BIGINT" defaultValue="1">
+          <constraints nullable="false"/>
+        </column>
+      </addColumn>
+    </changeSet>
+
+  <changeSet id="7-clean-lock-table-content" author="mathieu">
+    <delete tableName="item_list_lock"/>
+  </changeSet>
+</databaseChangeLog>

@@ -25,13 +25,13 @@ public class TireDTO implements Serializable {
     private BigDecimal price;
 
     @NotNull
-    private String tireWidth;
+    private BigDecimal tireWidth;
 
     @NotNull
-    private String tireHeight;
+    private BigDecimal tireHeight;
 
     @NotNull
-    private String tireDiameter;
+    private BigDecimal tireDiameter;
 
     @NotNull
     private TireType tireType;
@@ -56,6 +56,8 @@ public class TireDTO implements Serializable {
     private String description;
 
     private TireBrandDTO tireBrand;
+
+    private Integer version;
 
     public Long getId() {
         return id;
@@ -89,27 +91,27 @@ public class TireDTO implements Serializable {
         this.price = price;
     }
 
-    public String getTireWidth() {
+    public BigDecimal getTireWidth() {
         return tireWidth;
     }
 
-    public void setTireWidth(String tireWidth) {
+    public void setTireWidth(BigDecimal tireWidth) {
         this.tireWidth = tireWidth;
     }
 
-    public String getTireHeight() {
+    public BigDecimal getTireHeight() {
         return tireHeight;
     }
 
-    public void setTireHeight(String tireHeight) {
+    public void setTireHeight(BigDecimal tireHeight) {
         this.tireHeight = tireHeight;
     }
 
-    public String getTireDiameter() {
+    public BigDecimal getTireDiameter() {
         return tireDiameter;
     }
 
-    public void setTireDiameter(String tireDiameter) {
+    public void setTireDiameter(BigDecimal tireDiameter) {
         this.tireDiameter = tireDiameter;
     }
 
@@ -185,6 +187,14 @@ public class TireDTO implements Serializable {
         this.tireBrand = tireBrand;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -225,7 +235,8 @@ public class TireDTO implements Serializable {
             ", disable='" + getDisable() + "'" +
             ", disableReason='" + getDisableReason() + "'" +
             ", description='" + getDescription() + "'" +
-            ", tireBrand=" + getTireBrand() +
+            ", tireBrand=" + getTireBrand() + "'" +
+            ", version=" + getVersion() + "'" +
             "}";
     }
 }
