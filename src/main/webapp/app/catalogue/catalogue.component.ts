@@ -8,7 +8,7 @@ import { DetailComponent } from 'app/detail/detail.component';
 import { FormsModule } from '@angular/forms';
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
-import { BasketService } from '../basket/basket.service';
+import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
 
 @Component({
