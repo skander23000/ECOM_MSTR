@@ -32,37 +32,25 @@ export class BasketService {
   }
 
   addTire(t_tire: ITire, t_count = 1): Observable<boolean> {
-    // eslint-disable-next-line no-console
-    console.log('hey1');
     return new Observable<boolean>(sub => {
-      // eslint-disable-next-line no-console
-      console.log('hey11');
       this.checkAccountValidity().subscribe({
         next: value => {
           let nbtire = 0;
           let basket = this.getContent();
           if (basket.length > 0) {
-            // eslint-disable-next-line no-console
-            console.log('hey2');
             const item: any = basket.find(x => x.tire.id === t_tire.id);
             if (item !== undefined) {
               const index: number = basket.indexOf(item);
               basket[index].count += t_count;
               nbtire = basket[index].count;
-              // eslint-disable-next-line no-console
-              console.log('hey3');
             } else {
               basket.push({ count: t_count, tire: t_tire });
               nbtire = t_count;
-              // eslint-disable-next-line no-console
-              console.log('hey4');
             }
           } else {
             basket = new Array(1);
             basket[0] = { count: t_count, tire: t_tire };
             nbtire = t_count;
-            // eslint-disable-next-line no-console
-            console.log('hey5');
           }
           this.setTireBDD(t_tire, nbtire).subscribe({
             next: value2 => {
@@ -70,12 +58,8 @@ export class BasketService {
               sub.complete();
               localStorage.setItem('basket', JSON.stringify(basket));
               this.updateTotalItems();
-              // eslint-disable-next-line no-console
-              console.log('hey6');
             },
             error(err) {
-              // eslint-disable-next-line no-console
-              console.log('hey7');
               sub.error('101|No Enough Items !');
             },
           });
@@ -83,10 +67,7 @@ export class BasketService {
         error(err) {
           sub.error('102|Account timeout !');
         },
-        complete() {
-          // eslint-disable-next-line no-console
-          console.log('heyo');
-        },
+        complete() {},
       });
     });
   }
@@ -255,10 +236,6 @@ export class BasketService {
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
     const container: IDContainer = { id: t_tire.id, count: t_count };
     const options = createRequestOption(container);
-    // return new Observable(hey => {
-    //   hey.next();
-    //   hey.complete();
-    // });
     return this.http.get<boolean>(`${this.resourceUrl}/check-availability`, { params: options, observe: 'response' });
   }
   private updateTotalItems(): void {
