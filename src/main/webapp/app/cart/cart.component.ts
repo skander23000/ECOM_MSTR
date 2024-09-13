@@ -3,6 +3,8 @@ import { TireContainer } from '../entities/entity.tire-container';
 import TranslateDirective from '../shared/language/translate.directive';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
+import { BasketService } from '../basket.service';
 
 @Component({
   selector: 'jhi-cart',
@@ -15,21 +17,51 @@ export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   totalPrice = 0;
 
+  constructor(
+    private router: Router,
+    private basketService: BasketService,
+  ) {}
+
   ngOnInit(): void {
-    // [TODO] Récupérer les éléments du panier via le service de Théo
-    this.cart_items = [];
+    this.cart_items = this.basketService.getContent();
+    this.updateTotalPrice();
+  }
+
+  updateTireItemCount($event: { id: number; count: number }): void {
+    this.cart_items.forEach(item => {
+      if (item.tire && item.tire.id === $event.id) {
+        item.count = $event.count;
+      }
+    });
+    this.updateTotalPrice();
+  }
+
+  // Supprime un pneu du panier
+  destroyItem($event: number): void {
+    this.cart_items = this.cart_items.filter(item => item.tire?.id !== $event);
+    this.updateTotalPrice();
+  }
+
+  updateTotalPrice(): void {
+    let som = 0;
+    this.cart_items.forEach((item: TireContainer) => {
+      if (item.tire?.price && item.count) {
+        som += item.tire.price * item.count;
+      }
+    });
+    this.totalPrice = parseFloat(som.toFixed(2));
   }
 
   isCartEmpty(): boolean {
-    return this.cart_items.length !== 0;
+    return this.cart_items.length === 0;
   }
 
   goToCheckout(): void {
-    // [TODO] [ROUTAGE] Rediriger vers le formulaire d'adresse et de contact
+    this.router.navigate(['/informations']);
   }
 
   goToHome(): void {
-    // [TODO] [ROUTAGE] Rediriger vers la page d'accueil
+    this.router.navigate(['/']);
   }
 
   // Assurez-vous que cette méthode est dans le composant correspondant
@@ -41,7 +73,7 @@ export class CartComponent implements OnInit {
 
   // On vide le panier quand on appuie dessus
   protected emptyCart(): void {
-    // [TODO] Vider le panier
+    this.basketService.wipe();
     this.cart_items = [];
   }
 

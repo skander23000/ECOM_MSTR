@@ -1,21 +1,16 @@
+<div *ngIf="showSuccessMessage" class="alert alert-success">
+  Votre commande a été passée avec succès !
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="closeSuccessMessage()">×</button>
+  </div>
+</div>
 <div class="container">
+
   <div style="display: flex; flex-direction: column">
-    <div class="search-panel">
-      <div style="display: flex; margin: 0.5rem 0rem">
-        <img style="width: 1.7rem; height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/search_icon.png">
-        <h4>Rechercher :</h4>
-      </div>
-      <input
-        type="text"
-        placeholder="Rechercher un produit"
-        [(ngModel)]="searchQuery"
-        (input)="onSearchChange()"
-        style="padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;">
-    </div>
 
     <div class="sorting-panel">
     <div style="display: flex; margin: 0.5rem 0rem">
-    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png">
+    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" >
     <h4>Tri :</h4>
     </div>
     <div class="sort-group">
@@ -86,15 +81,30 @@
 
       </div>
     </div>
+    <div>
+      <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
+    </div>
   </div>
-  <div class="row">
+  <div class="row" style="height: 100%;width:100%">
 
-    <div *ngFor="let tire of tires" class="col-md-4" (click)="openDetails(tire)">
-      <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black">
-        <img [src]="tire.imageUrl" class="image" alt="{{ tire.name }}">
+    <div class="search-panel" style="position: relative;">
+      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png">
+      <input
+        type="text"
+        placeholder="Rechercher un produit"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        >
+    </div>
+
+
+
+    <div *ngFor="let tire of tires" class="col-md-4"   (click)="openDetails(tire)" style="margin-top: 0.75rem; margin-bottom: 0.75rem">
+      <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black; width:95%; height:100%">
+        <img src="https://picsum.photos/200/200" class="image" alt="{{ tire.name }}">
         <div class="card-body">
           <div class="card-title-price">
-            <h5 class="card-title">{{ tire.name }}</h5>
+            <h5 class="card-title">{{ (tire.name ?? '') | truncate:15}}</h5>
             <h5>{{ tire.price }}€</h5>
           </div>
           <div class="details">
@@ -108,7 +118,7 @@
             </div>
             <div>
               <a>
-                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png">
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);">
               </a>
             </div>
           </div>

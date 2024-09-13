@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TireService } from 'app/entities/tire/service/tire.service';
 import { ITire } from '../entities/tire/tire.model';
@@ -7,11 +7,14 @@ import { HttpResponse } from '@angular/common/http';
 import { DetailComponent } from 'app/detail/detail.component';
 import { FormsModule } from '@angular/forms';
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
+import { SharedUserDataService } from '../shared/shared-user-data.service';
+import { BasketService } from '../basket.service';
+import { TruncatePipe } from '../pipe/truncate.pipe';
 
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule],
+  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -36,6 +39,8 @@ export class CatalogueComponent {
 
   // Variable de recherche
   searchQuery = '';
+  // Variable d'affichage du message de succès
+  showSuccessMessage: boolean | null = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -46,10 +51,19 @@ export class CatalogueComponent {
     },
   };
 
-  constructor(private tireService: TireService) {}
+  constructor(
+    private tireService: TireService,
+    private sharedDataService: SharedUserDataService,
+    private viewportScroller: ViewportScroller,
+    private basketService: BasketService,
+  ) {}
 
   ngOnInit(): void {
     this.loadTires();
+    this.sharedDataService.successInfo$.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showSuccessMessage = data;
+    });
   }
 
   loadTires(): void {
@@ -87,28 +101,24 @@ export class CatalogueComponent {
     );
   }
 
-  // Méthode appelée lors du changement de tri
   onSortChange(sortField: string, sortDirection: string): void {
     this.currentSortField = sortField;
     this.currentSortDirection = sortDirection;
     this.loadTires();
   }
 
-  // Méthode appelée lors du changement de page
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
     this.loadTires();
   }
 
-  // Méthode appelée lors du changement de filtres
   onFilterChange(): void {
-    this.currentPage = 0; // Réinitialiser à la première page après un changement de filtre
+    this.currentPage = 0;
     this.loadTires();
   }
 
-  // Méthode appelée lors du changement de recherche
   onSearchChange(): void {
-    this.currentPage = 0; // Réinitialiser à la première page après un changement de recherche
+    this.currentPage = 0;
     this.loadTires();
   }
 
@@ -119,5 +129,21 @@ export class CatalogueComponent {
 
   closeModal(): any {
     this.showModal = false;
+  }
+  closeSuccessMessage(): void {
+    this.showSuccessMessage = false;
+  }
+  onAddToCart(tire: ITire): void {
+    this.basketService.addTire(tire).subscribe();
+  }
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
+  }
+  onResetFilters(): void {
+    this.tireType = '';
+    this.priceMin = 0;
+    this.priceMax = 50000;
+    this.searchQuery = '';
+    this.loadTires();
   }
 }

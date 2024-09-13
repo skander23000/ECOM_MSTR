@@ -7,10 +7,10 @@
       <span class="required" jhiTranslate="form_header.required"></span>
     </div>
 
-    <div class="checkbox-container">
-      <input type="checkbox" (change)="toggleAddressFields()" />
+    <div class="checkbox-container" (click)="onDivClick($event)">
+      <input type="checkbox" id="checkbox" (change)="toggleAddressFields()" />
       <span class="checkbox-separator"></span>
-      <label jhiTranslate="form_button.use_delivery_address"></label>
+      <label style=" user-select: none;" jhiTranslate="form_button.use_delivery_address"></label>
     </div>
 
     <div class="input-container">
@@ -186,8 +186,10 @@
       <button type="button" class="btn btn-back" (click)="goBackToCart()" jhiTranslate="form_button.cancel"></button>
       <button type="submit" class="btn btn-primary">
         <span jhiTranslate="form_button.submit"></span>
-        <img ngSrc="../../content/images/website_icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
+        <img src="../../content/images/website_icon_pack/icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
       </button>
     </div>
   </div>
 </form>
+
+

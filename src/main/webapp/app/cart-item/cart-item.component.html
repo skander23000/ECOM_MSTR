@@ -1,1 +1,40 @@
-<p>cart-item works!</p>
+<div class="card">
+  <div class="card-image-container">
+    <img ngSrc="{{ this.cart_item.tire?.imageUrl }}" alt="Tire Image" class="card-image">
+  </div>
+  <div class="card-content">
+    <div>
+      <span class="card-title">{{ this.cart_item.tire?.name }}</span>
+      <span class="card-title-separator"></span>
+      <span class="card-ref" jhiTranslate="tire_infos.ref"></span>
+      <span class="card-ref"> : </span>
+      <span class="card-ref">{{ this.cart_item.tire?.reference }}</span>
+      <div class="card-others-infos">
+        <span jhiTranslate="cart_item.desc"></span>
+        <span> : </span>
+        <span>{{ this.cart_item.tire?.description }}</span>
+      </div>
+      <div class="card-others-infos">
+        <span>{{ this.cart_item.tire?.price}}</span>
+        <span>€ / </span>
+        <span jhiTranslate="tire_infos.name"></span>
+      </div>
+      <div class="card-icon">
+        <img class="small-image" src="{{getIcon()}}" alt="TypeIcon"/>
+        <img class="small-image" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png" alt="Certified">
+      </div>
+    </div>
+
+    <div class="additional-content">
+      <span>{{ this.total_price }}</span>
+      <span>€</span>
+    </div>
+
+    <div class="plus-moins">
+      <button (click)="decreaseQuantity()" [disabled]="!isAvailable">-</button>
+      <input type="text" [(ngModel)]="cart_item.count" (ngModelChange)="onCountChange()" [disabled]="!isAvailable">
+      <button (click)="increaseQuantity()" [disabled]="!isAvailable">+</button>
+    </div>
+  </div>
+  <div class="close-button" (click)="this.onDestroy()">✖</div> <!-- Ajoutez cette ligne -->
+</div>

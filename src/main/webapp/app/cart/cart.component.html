@@ -12,8 +12,9 @@
 @if (isCartEmpty()) {
   <div class="alert alert-warning" jhiTranslate="cart_infos.empty"></div>
 } @else {
+  <div class="title_separator"></div>
   @for (cart_item of cart_items; track cart_item.tire?.id) {
-    <jhi-cart-item [cart_item]="cart_item"></jhi-cart-item>
+    <jhi-cart-item (countChanged)="updateTireItemCount($event)" (destroy)="this.destroyItem($event)" [cart_item]="cart_item"></jhi-cart-item>
   }
   <div class="total-box">
     <span class="total-title" jhiTranslate="cart_infos.total"></span>
@@ -25,7 +26,7 @@
 <div class="button-container">
   <button type="button" class="btn-back" (click)="goToHome()">
     <span>
-      <img ngSrc="../../content/images/website_icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
+      <img ngSrc="../../content/images/website_icon_pack/icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
     </span>
     <span jhiTranslate="cart_button.cancel"></span>
   </button>
@@ -34,7 +35,7 @@
     <button type="button" class="btn btn-primary" (click)="goToCheckout()">
       <span jhiTranslate="cart_button.checkout"></span>
       <span>
-        <img ngSrc="../../content/images/website_icon_pack/down_arrow_icon.png" alt="Icône" class="icon-right" height="1600" width="1600" />
+        <img ngSrc="../../content/images/website_icon_pack/icon_pack/down_arrow_icon.png" alt="Icône" class="icon-right" height="1600" width="1600" />
       </span>
     </button>
   }
