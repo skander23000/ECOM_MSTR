@@ -67,7 +67,6 @@ export class BasketService {
         error(err) {
           sub.error('102|Account timeout !');
         },
-        complete() {},
       });
     });
   }
