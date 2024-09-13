@@ -15,7 +15,6 @@
   },
 
   "cart_item": {
-    "compatibility": "Compatible",
-    "tire": "Pneu"
+    "desc": "Description"
   }
 }
