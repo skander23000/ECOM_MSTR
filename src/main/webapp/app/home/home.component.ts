@@ -8,13 +8,14 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { CatalogueComponent } from '../catalogue/catalogue.component';
 import { MyHeaderComponent } from '../my-header/my-header.component';
+import { CartComponent } from '../cart/cart.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  imports: [SharedModule, RouterModule, CatalogueComponent, MyHeaderComponent],
+  imports: [SharedModule, RouterModule, CatalogueComponent, MyHeaderComponent, CartComponent],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   account = signal<Account | null>(null);

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import TranslateDirective from '../shared/language/translate.directive';
 import { RouterLink } from '@angular/router';
 
@@ -10,5 +10,5 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./my-header.component.scss'],
 })
 export class MyHeaderComponent {
-  @Input() cartItemCount = 0; // Variable pour representer le nombre d articles dans le panier
+  cartItemCount = 0;
 }
