@@ -61,4 +61,8 @@
         </column>
       </addColumn>
     </changeSet>
+
+  <changeSet id="7-clean-lock-table-content" author="mathieu">
+    <delete tableName="item_list_lock"/>
+  </changeSet>
 </databaseChangeLog>
