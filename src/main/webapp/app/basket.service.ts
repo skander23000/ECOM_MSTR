@@ -4,15 +4,17 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from './core/config/application-config.service';
 import { createRequestOption } from './core/request/request-util';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
   tire: ITire;
   count: number;
 }
 
-interface IDContainer {
-  id: number;
-  count: number;
+interface RequestContainer {
+  userUuid: string;
+  tireId: number;
+  quantity: number;
 }
 
 @Injectable({
@@ -25,9 +27,10 @@ export class BasketService {
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
 
-  constructor() {
+  constructor(private userinfo: SharedUserDataService) {
     const empty: TireContainer[] = [];
     localStorage.setItem('basket', JSON.stringify(empty));
+    userinfo.generateUserId();
     this.updateTotalItems();
   }
 
@@ -171,7 +174,8 @@ export class BasketService {
           for (const tire of basket) {
             this.removeTires(tire.tire).subscribe();
 
-            localStorage.setItem('basket', JSON.stringify('{}'));
+            const empty: TireContainer[] = [];
+            localStorage.setItem('basket', JSON.stringify(empty));
             this.updateTotalItems();
             sub.next(true);
             sub.complete();
@@ -233,7 +237,7 @@ export class BasketService {
   }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
-    const container: IDContainer = { id: t_tire.id, count: t_count };
+    const container: RequestContainer = { userUuid: this.userinfo.getUserId(), tireId: t_tire.id, quantity: t_count };
     const options = createRequestOption(container);
     return this.http.get<boolean>(`${this.resourceUrl}/check-availability`, { params: options, observe: 'response' });
   }
