@@ -19,7 +19,7 @@ interface IDContainer {
   providedIn: 'root',
 })
 export class BasketService {
-  totalItemsSubject = new BehaviorSubject<number>(0);
+  totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
