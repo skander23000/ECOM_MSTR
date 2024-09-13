@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ITire } from './entities/tire/tire.model';
+import { ITire } from './tire/tire.model';
 
 interface TireContainer {
   tire: ITire;
@@ -46,8 +46,7 @@ export class BasketService {
 
   getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
-    const result: TireContainer[] = JSON.parse(basket);
-    return result;
+    return JSON.parse(basket) as TireContainer[];
   }
 
   removeATire(t_tire: ITire): void {
@@ -71,7 +70,7 @@ export class BasketService {
       throw new Error('Item has to exist !');
     }
   }
-  getNumberOfTires(t_tire: ITire): number {
+  getNumberOfATire(t_tire: ITire): number {
     const basket: TireContainer[] = this.getContent();
     if (basket.length > 0) {
       const item: any = basket.find(x => x.tire === t_tire);
@@ -84,6 +83,7 @@ export class BasketService {
       throw new Error('Item has to exist !');
     }
   }
+  // Efface tous les pneus du panier
   wipe(): void {
     localStorage.setItem('basket', JSON.stringify('{}'));
   }

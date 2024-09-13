@@ -1,0 +1,112 @@
+@import '../../content/scss/colors';
+
+.card {
+  border: 2px solid $box_stroke; /* Bordure noire */
+  display: flex;
+  flex-direction: row; /* Disposition en colonnes */
+  border-radius: 10px; /* Angles arrondis */
+  max-width: 80%; /* Largeur maximale de la carte */
+  margin: auto auto 2rem; /* Centrer la carte et ajouter de l'espace autour */
+  min-height: 150px; /* Définir une hauteur minimale pour la carte */
+  position: relative; /* Position relative pour le positionnement absolu des éléments enfants */
+
+  .card-image-container {
+    flex: 1 1 15%; /* Ajustez la largeur de la colonne de l'image */
+    display: flex;
+    align-items: center; /* Centrer l'image verticalement */
+    justify-content: center; /* Centrer l'image horizontalement */
+
+    .card-image {
+      height: auto;
+      max-width: 150px; /* Limiter la largeur maximale de l'image */
+      object-fit: cover; /* Conserver les proportions de l'image */
+    }
+  }
+
+  .card-content {
+    flex: 1 1 75%; /* Ajustez la largeur de la colonne du contenu */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espacer le contenu verticalement */
+
+    .card-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card-title-separator {
+      padding-right: 10px;
+    }
+
+    .card-ref {
+      font-size: 1.2rem;
+    }
+
+    .card-desc {
+      font-size: 1rem;
+      vertical-align: top;
+    }
+
+    .card-others-infos {
+      font-size: 1.3rem;
+    }
+
+    .additional-content {
+      text-align: right;
+      font-size: 2rem;
+      font-weight: bolder;
+      margin-right: 10px;
+      margin-bottom: 5px; /* Espacement entre le nouveau contenu et les boutons */
+    }
+
+    .plus-moins {
+      text-align: right;
+      margin-top: auto; /* Pour pousser la section vers le bas si nécessaire */
+      bottom: 10px; /* Distance du bas de la carte */
+      right: 10px; /* Distance du côté droit de la carte */
+
+      button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #E0E0E0;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      input {
+        width: 40px;
+        text-align: center;
+        height: 40px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        margin: 0 5px;
+      }
+    }
+  }
+
+  .close-button {
+    position: absolute; /* Positionnement absolu */
+    top: 10px; /* Distance du haut de la carte */
+    right: 20px; /* Distance du côté droit de la carte */
+    cursor: pointer; /* Change le curseur en main lorsque vous survolez la croix */
+    font-size: 2rem; /* Taille de la croix */
+    color: $box_stroke; /* Couleur de la croix (utiliser une couleur définie dans votre SCSS) */
+    background-color: transparent; /* Fond transparent */
+    border: none; /* Pas de bordure */
+  }
+
+  .small-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; /* Assure que l'image garde ses proportions en remplissant l'espace */
+  }
+
+}
