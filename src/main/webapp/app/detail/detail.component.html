@@ -62,7 +62,7 @@
             <input type="text" [(ngModel)]="quantity" >
             <button (click)="increaseQuantity()">+</button>
           </div>
-            <div style="margin: 1rem"><button class="add-to-cart">Ajouter au panier</button></div>
+            <div style="margin: 1rem"><button class="add-to-cart" (click)="onAddToCart(tire)">Ajouter au panier</button></div>
         </div>
 
       </div>

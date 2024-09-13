@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import TranslateDirective from '../shared/language/translate.directive';
 import { RouterLink } from '@angular/router';
+import { BasketService } from '../basket.service';
 
 @Component({
   selector: 'jhi-my-header',
@@ -10,5 +11,12 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./my-header.component.scss'],
 })
 export class MyHeaderComponent {
-  cartItemCount = 0;
+  totalItems = 0;
+  constructor(private basketService: BasketService) {}
+  ngOnInit(): void {
+    // S'abonner au total des items
+    this.basketService.totalItems$.subscribe(total => {
+      this.totalItems = total;
+    });
+  }
 }
