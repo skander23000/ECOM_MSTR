@@ -3,7 +3,7 @@ import { TireContainer } from '../entities/entity.tire-container';
 import TranslateDirective from '../shared/language/translate.directive';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { NgOptimizedImage } from '@angular/common';
-import { BasketService } from '../entities/basket.service';
+import { BasketService } from '../shared/basket.service';
 
 @Component({
   selector: 'jhi-cart',
