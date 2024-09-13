@@ -57,16 +57,19 @@ class TireResourceIT {
 
     private static final BigDecimal DEFAULT_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(2);
-    private static final BigDecimal SMALLER_PRICE = new BigDecimal(1 - 1);
+    private static final BigDecimal SMALLER_PRICE = BigDecimal.ZERO;
 
     private static final BigDecimal DEFAULT_TIRE_WIDTH = new BigDecimal(1);
     private static final BigDecimal UPDATED_TIRE_WIDTH = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TIRE_WIDTH = BigDecimal.ZERO;
 
     private static final BigDecimal DEFAULT_TIRE_HEIGHT = new BigDecimal(1);
     private static final BigDecimal UPDATED_TIRE_HEIGHT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TIRE_HEIGHT = BigDecimal.ZERO;
 
     private static final BigDecimal DEFAULT_TIRE_DIAMETER = new BigDecimal(1);
     private static final BigDecimal UPDATED_TIRE_DIAMETER = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TIRE_DIAMETER = BigDecimal.ZERO;
 
     private static final TireType DEFAULT_TIRE_TYPE = TireType.SUMMER;
     private static final TireType UPDATED_TIRE_TYPE = TireType.WINTER;
@@ -183,7 +186,7 @@ class TireResourceIT {
     @AfterEach
     public void cleanup() {
         if (insertedTire != null) {
-            tireRepository.delete(insertedTire);
+            tireRepository.deleteById(insertedTire.getId());
             insertedTire = null;
         }
     }
@@ -497,7 +500,7 @@ class TireResourceIT {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        Long id = tire.getId();
+        Long id = insertedTire.getId();
 
         defaultTireFiltering("id.equals=" + id, "id.notEquals=" + id);
 
@@ -708,22 +711,42 @@ class TireResourceIT {
 
     @Test
     @Transactional
-    void getAllTiresByTireWidthContainsSomething() throws Exception {
+    void getAllTiresByIsTireWidthGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireWidth contains
-        defaultTireFiltering("tireWidth.contains=" + DEFAULT_TIRE_WIDTH, "tireWidth.contains=" + UPDATED_TIRE_WIDTH);
+        // Get all the tireList where price is greater than or equal to
+        defaultTireFiltering("tireWidth.greaterThanOrEqual=" + DEFAULT_TIRE_WIDTH, "tireWidth.greaterThanOrEqual=" + UPDATED_TIRE_WIDTH);
     }
 
     @Test
     @Transactional
-    void getAllTiresByTireWidthNotContainsSomething() throws Exception {
+    void getAllTiresByTireWidthIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireWidth does not contain
-        defaultTireFiltering("tireWidth.doesNotContain=" + UPDATED_TIRE_WIDTH, "tireWidth.doesNotContain=" + DEFAULT_TIRE_WIDTH);
+        // Get all the tireList where price is less than or equal to
+        defaultTireFiltering("tireWidth.lessThanOrEqual=" + DEFAULT_TIRE_WIDTH, "tireWidth.lessThanOrEqual=" + SMALLER_TIRE_WIDTH);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireWidthIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is less than
+        defaultTireFiltering("tireWidth.lessThan=" + UPDATED_TIRE_WIDTH, "tireWidth.lessThan=" + DEFAULT_TIRE_WIDTH);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireWidthIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is greater than
+        defaultTireFiltering("tireWidth.greaterThan=" + SMALLER_TIRE_WIDTH, "tireWidth.greaterThan=" + DEFAULT_TIRE_WIDTH);
     }
 
     @Test
@@ -758,22 +781,42 @@ class TireResourceIT {
 
     @Test
     @Transactional
-    void getAllTiresByTireHeightContainsSomething() throws Exception {
+    void getAllTiresByIsTireHeightGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireHeight contains
-        defaultTireFiltering("tireHeight.contains=" + DEFAULT_TIRE_HEIGHT, "tireHeight.contains=" + UPDATED_TIRE_HEIGHT);
+        // Get all the tireList where price is greater than or equal to
+        defaultTireFiltering("tireHeight.greaterThanOrEqual=" + DEFAULT_TIRE_HEIGHT, "tireHeight.greaterThanOrEqual=" + UPDATED_TIRE_HEIGHT);
     }
 
     @Test
     @Transactional
-    void getAllTiresByTireHeightNotContainsSomething() throws Exception {
+    void getAllTiresByTireHeightIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireHeight does not contain
-        defaultTireFiltering("tireHeight.doesNotContain=" + UPDATED_TIRE_HEIGHT, "tireHeight.doesNotContain=" + DEFAULT_TIRE_HEIGHT);
+        // Get all the tireList where price is less than or equal to
+        defaultTireFiltering("tireHeight.lessThanOrEqual=" + DEFAULT_TIRE_HEIGHT, "tireHeight.lessThanOrEqual=" + SMALLER_TIRE_HEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireHeightIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is less than
+        defaultTireFiltering("tireHeight.lessThan=" + UPDATED_TIRE_HEIGHT, "tireHeight.lessThan=" + DEFAULT_TIRE_HEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireHeightIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is greater than
+        defaultTireFiltering("tireHeight.greaterThan=" + SMALLER_TIRE_HEIGHT, "tireHeight.greaterThan=" + DEFAULT_TIRE_HEIGHT);
     }
 
     @Test
@@ -811,25 +854,42 @@ class TireResourceIT {
 
     @Test
     @Transactional
-    void getAllTiresByTireDiameterContainsSomething() throws Exception {
+    void getAllTiresByIsTireDiameterGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireDiameter contains
-        defaultTireFiltering("tireDiameter.contains=" + DEFAULT_TIRE_DIAMETER, "tireDiameter.contains=" + UPDATED_TIRE_DIAMETER);
+        // Get all the tireList where price is greater than or equal to
+        defaultTireFiltering("tireDiameter.greaterThanOrEqual=" + DEFAULT_TIRE_DIAMETER, "tireDiameter.greaterThanOrEqual=" + UPDATED_TIRE_DIAMETER);
     }
 
     @Test
     @Transactional
-    void getAllTiresByTireDiameterNotContainsSomething() throws Exception {
+    void getAllTiresByTireDiameterIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
 
-        // Get all the tireList where tireDiameter does not contain
-        defaultTireFiltering(
-            "tireDiameter.doesNotContain=" + UPDATED_TIRE_DIAMETER,
-            "tireDiameter.doesNotContain=" + DEFAULT_TIRE_DIAMETER
-        );
+        // Get all the tireList where price is less than or equal to
+        defaultTireFiltering("tireDiameter.lessThanOrEqual=" + DEFAULT_TIRE_DIAMETER, "tireDiameter.lessThanOrEqual=" + SMALLER_TIRE_DIAMETER);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireDiameterIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is less than
+        defaultTireFiltering("tireDiameter.lessThan=" + UPDATED_TIRE_DIAMETER, "tireDiameter.lessThan=" + DEFAULT_TIRE_DIAMETER);
+    }
+
+    @Test
+    @Transactional
+    void getAllTiresByTireDiameterIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedTire = tireRepository.saveAndFlush(tire);
+
+        // Get all the tireList where price is greater than
+        defaultTireFiltering("tireDiameter.greaterThan=" + SMALLER_TIRE_DIAMETER, "tireDiameter.greaterThan=" + DEFAULT_TIRE_DIAMETER);
     }
 
     @Test
@@ -1186,15 +1246,15 @@ class TireResourceIT {
     void getAllTiresByTireBrandIsEqualToSomething() throws Exception {
         TireBrand tireBrand;
         if (TestUtil.findAll(em, TireBrand.class).isEmpty()) {
-            tireRepository.saveAndFlush(tire);
+            insertedTire = tireRepository.saveAndFlush(tire);
             tireBrand = TireBrandResourceIT.createEntity();
         } else {
             tireBrand = TestUtil.findAll(em, TireBrand.class).get(0);
         }
         em.persist(tireBrand);
         em.flush();
-        tire.setTireBrand(tireBrand);
-        tireRepository.saveAndFlush(tire);
+        insertedTire.setTireBrand(tireBrand);
+        insertedTire = tireRepository.saveAndFlush(insertedTire);
         Long tireBrandId = tireBrand.getId();
         // Get all the tireList where tireBrand equals to tireBrandId
         defaultTireShouldBeFound("tireBrandId.equals=" + tireBrandId);
@@ -1216,13 +1276,13 @@ class TireResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tire.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(insertedTire.getId().intValue())))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
-            .andExpect(jsonPath("$.[*].tireWidth").value(hasItem(DEFAULT_TIRE_WIDTH)))
-            .andExpect(jsonPath("$.[*].tireHeight").value(hasItem(DEFAULT_TIRE_HEIGHT)))
-            .andExpect(jsonPath("$.[*].tireDiameter").value(hasItem(DEFAULT_TIRE_DIAMETER)))
+            .andExpect(jsonPath("$.[*].tireWidth").value(hasItem(sameNumber(DEFAULT_TIRE_WIDTH))))
+            .andExpect(jsonPath("$.[*].tireHeight").value(hasItem(sameNumber(DEFAULT_TIRE_HEIGHT))))
+            .andExpect(jsonPath("$.[*].tireDiameter").value(hasItem(sameNumber(DEFAULT_TIRE_DIAMETER))))
             .andExpect(jsonPath("$.[*].tireType").value(hasItem(DEFAULT_TIRE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].speedIndex").value(hasItem(DEFAULT_SPEED_INDEX.toString())))
@@ -1278,6 +1338,7 @@ class TireResourceIT {
         Tire updatedTire = tireRepository.findById(insertedTire.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedTire are not directly saved in db
         em.detach(updatedTire);
+        tireRepository.flush();
         updatedTire
             .reference(UPDATED_REFERENCE)
             .name(UPDATED_NAME)
@@ -1292,7 +1353,8 @@ class TireResourceIT {
             .quantity(UPDATED_QUANTITY)
             .disable(UPDATED_DISABLE)
             .disableReason(UPDATED_DISABLE_REASON)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .version(DEFAULT_VERSION);
         TireDTO tireDTO = tireMapper.toDto(updatedTire);
 
         restTireMockMvc
@@ -1302,6 +1364,7 @@ class TireResourceIT {
         // Validate the Tire in the database
         assertSameRepositoryCount(databaseSizeBeforeUpdate);
         assertPersistedTireToMatchAllProperties(updatedTire);
+        //tireRepository.deleteAll();
     }
 
     @Test

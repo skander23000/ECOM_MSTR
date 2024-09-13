@@ -84,11 +84,11 @@ public class TireCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter price;
 
-    private StringFilter tireWidth;
+    private BigDecimalFilter tireWidth;
 
-    private StringFilter tireHeight;
+    private BigDecimalFilter tireHeight;
 
-    private StringFilter tireDiameter;
+    private BigDecimalFilter tireDiameter;
 
     private TireTypeFilter tireType;
 
@@ -119,9 +119,9 @@ public class TireCriteria implements Serializable, Criteria {
         this.reference = other.optionalReference().map(StringFilter::copy).orElse(null);
         this.name = other.optionalName().map(StringFilter::copy).orElse(null);
         this.price = other.optionalPrice().map(BigDecimalFilter::copy).orElse(null);
-        this.tireWidth = other.optionalTireWidth().map(StringFilter::copy).orElse(null);
-        this.tireHeight = other.optionalTireHeight().map(StringFilter::copy).orElse(null);
-        this.tireDiameter = other.optionalTireDiameter().map(StringFilter::copy).orElse(null);
+        this.tireWidth = other.optionalTireWidth().map(BigDecimalFilter::copy).orElse(null);
+        this.tireHeight = other.optionalTireHeight().map(BigDecimalFilter::copy).orElse(null);
+        this.tireDiameter = other.optionalTireDiameter().map(BigDecimalFilter::copy).orElse(null);
         this.tireType = other.optionalTireType().map(TireTypeFilter::copy).orElse(null);
         this.imageUrl = other.optionalImageUrl().map(StringFilter::copy).orElse(null);
         this.speedIndex = other.optionalSpeedIndex().map(SpeedIndexFilter::copy).orElse(null);
@@ -216,60 +216,60 @@ public class TireCriteria implements Serializable, Criteria {
         this.price = price;
     }
 
-    public StringFilter getTireWidth() {
+    public BigDecimalFilter getTireWidth() {
         return tireWidth;
     }
 
-    public Optional<StringFilter> optionalTireWidth() {
+    public Optional<BigDecimalFilter> optionalTireWidth() {
         return Optional.ofNullable(tireWidth);
     }
 
-    public StringFilter tireWidth() {
+    public BigDecimalFilter tireWidth() {
         if (tireWidth == null) {
-            setTireWidth(new StringFilter());
+            setTireWidth(new BigDecimalFilter());
         }
         return tireWidth;
     }
 
-    public void setTireWidth(StringFilter tireWidth) {
+    public void setTireWidth(BigDecimalFilter tireWidth) {
         this.tireWidth = tireWidth;
     }
 
-    public StringFilter getTireHeight() {
+    public BigDecimalFilter getTireHeight() {
         return tireHeight;
     }
 
-    public Optional<StringFilter> optionalTireHeight() {
+    public Optional<BigDecimalFilter> optionalTireHeight() {
         return Optional.ofNullable(tireHeight);
     }
 
-    public StringFilter tireHeight() {
+    public BigDecimalFilter tireHeight() {
         if (tireHeight == null) {
-            setTireHeight(new StringFilter());
+            setTireHeight(new BigDecimalFilter());
         }
         return tireHeight;
     }
 
-    public void setTireHeight(StringFilter tireHeight) {
+    public void setTireHeight(BigDecimalFilter tireHeight) {
         this.tireHeight = tireHeight;
     }
 
-    public StringFilter getTireDiameter() {
+    public BigDecimalFilter getTireDiameter() {
         return tireDiameter;
     }
 
-    public Optional<StringFilter> optionalTireDiameter() {
+    public Optional<BigDecimalFilter> optionalTireDiameter() {
         return Optional.ofNullable(tireDiameter);
     }
 
-    public StringFilter tireDiameter() {
+    public BigDecimalFilter tireDiameter() {
         if (tireDiameter == null) {
-            setTireDiameter(new StringFilter());
+            setTireDiameter(new BigDecimalFilter());
         }
         return tireDiameter;
     }
 
-    public void setTireDiameter(StringFilter tireDiameter) {
+    public void setTireDiameter(BigDecimalFilter tireDiameter) {
         this.tireDiameter = tireDiameter;
     }
 

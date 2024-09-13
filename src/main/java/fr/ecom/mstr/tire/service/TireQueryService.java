@@ -87,13 +87,13 @@ public class TireQueryService extends QueryService<Tire> {
                 specification = specification.and(buildRangeSpecification(criteria.getPrice(), Tire_.price));
             }
             if (criteria.getTireWidth() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTireWidth(), Tire_.tireWidth));
+                specification = specification.and(buildRangeSpecification(criteria.getTireWidth(), Tire_.tireWidth));
             }
             if (criteria.getTireHeight() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTireHeight(), Tire_.tireHeight));
+                specification = specification.and(buildRangeSpecification(criteria.getTireHeight(), Tire_.tireHeight));
             }
             if (criteria.getTireDiameter() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTireDiameter(), Tire_.tireDiameter));
+                specification = specification.and(buildRangeSpecification(criteria.getTireDiameter(), Tire_.tireDiameter));
             }
             if (criteria.getTireType() != null) {
                 specification = specification.and(buildSpecification(criteria.getTireType(), Tire_.tireType));
