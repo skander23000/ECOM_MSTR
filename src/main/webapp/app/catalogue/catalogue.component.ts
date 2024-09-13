@@ -113,12 +113,12 @@ export class CatalogueComponent {
   }
 
   onFilterChange(): void {
-    this.currentPage = 0;
+    this.currentPage = 0; // Réinitialiser à la première page après un changement de filtre
     this.loadTires();
   }
 
   onSearchChange(): void {
-    this.currentPage = 0;
+    this.currentPage = 0; // Réinitialiser à la première page après un changement de recherche
     this.loadTires();
   }
 
