@@ -98,10 +98,9 @@
     </div>
 
 
-
     <div *ngFor="let tire of tires" class="col-md-4"   (click)="openDetails(tire)" style="margin-top: 0.75rem; margin-bottom: 0.75rem">
       <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black; width:95%; height:100%">
-        <img src="https://picsum.photos/200/200" class="image" alt="{{ tire.name }}">
+        <img [src]="getImage(tire) " class="image" alt="{{ tire.name }}">
         <div class="card-body">
           <div class="card-title-price">
             <h5 class="card-title">{{ (tire.name ?? '') | truncate:15}}</h5>

@@ -10,6 +10,7 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
+import { S3Service } from '../s3.service';
 
 @Component({
   selector: 'jhi-catalogue',
@@ -25,7 +26,7 @@ export class CatalogueComponent {
 
   // Variables de pagination
   currentPage = 0;
-  itemsPerPage = 10;
+  itemsPerPage = 1;
   totalItems = 0;
 
   // Variables de tri
@@ -56,6 +57,7 @@ export class CatalogueComponent {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
+    private s3: S3Service,
   ) {}
 
   ngOnInit(): void {
@@ -145,5 +147,12 @@ export class CatalogueComponent {
     this.priceMax = 50000;
     this.searchQuery = '';
     this.loadTires();
+  }
+  getImage(tire: ITire): any {
+    if (tire.imageUrl === undefined || tire.imageUrl === null) {
+      return './content/imgages/website_icon_pack/icon_pack/image_not_found.png';
+    } else {
+      return this.s3.getImageS3(tire.imageUrl);
+    }
   }
 }

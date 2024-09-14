@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ITire } from 'app/entities/tire/tire.model';
 import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
+import { S3Service } from '../s3.service';
 
 @Component({
   selector: 'jhi-detail',
@@ -15,7 +16,10 @@ export class DetailComponent {
   @Output() closeModal = new EventEmitter<void>();
   quantity = 1;
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private s3: S3Service,
+  ) {}
 
   decreaseQuantity(): void {
     if (this.quantity > 1) {
