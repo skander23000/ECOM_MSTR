@@ -75,6 +75,7 @@ export class CartComponent implements OnInit {
   protected emptyCart(): void {
     this.basketService.wipe().subscribe({
       next: () => {
+        // es
         this.cart_items = [];
       },
     });
