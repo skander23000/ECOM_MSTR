@@ -11,27 +11,33 @@ export class FrontTimerService {
   private remainingTime: number = this.initialTime;
   private timerSubscription!: Subscription;
   private isInitialized = false; // Vérifie si le timer est initialisé
-  private checkNumber = 0;
 
   private timerSubject: BehaviorSubject<number>;
   private timerCompleteSubject: Subject<void> = new Subject<void>(); // Sujet pour la notification
+  private showTimerError = false;
 
   constructor(
     private basketService: BasketService,
     private router: Router,
   ) {
-    this.startTimer();
     this.timerSubject = new BehaviorSubject(this.remainingTime);
   }
 
   // Méthode pour démarrer le minuteur, qui ne s'exécute qu'une seule fois
   startTimer(): void {
+    if (this.basketService.getNumberOfTires() === 0) {
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.log('Starting timer');
     if (!this.isInitialized) {
       // Si le timer n'est pas encore initialisé
       this.isInitialized = true;
+      this.remainingTime = this.initialTime;
       this.timerSubscription = interval(1000).subscribe(() => {
         this.remainingTime--;
-
+        // eslint-disable-next-line no-console
+        console.log(this.remainingTime);
         if (this.remainingTime <= 0) {
           this.remainingTime = 0;
           this.timerSubscription.unsubscribe();
@@ -41,6 +47,14 @@ export class FrontTimerService {
         this.timerSubject.next(this.remainingTime); // Met à jour le temps restant
       });
     }
+  }
+
+  setShowTimerError(value: boolean): void {
+    this.showTimerError = value;
+  }
+
+  getShowTimerError(): boolean {
+    return this.showTimerError;
   }
 
   getIsInitialized(): boolean {
@@ -60,13 +74,8 @@ export class FrontTimerService {
   addActivity(): void {
     if (!this.isInitialized) {
       this.startTimer();
-      this.checkNumber = 0;
-    }
-    if (this.checkNumber >= 5) {
-      this.resetTimer();
-      this.checkNumber = 0;
     } else {
-      this.checkNumber++;
+      this.resetTimer();
     }
   }
 
@@ -84,8 +93,10 @@ export class FrontTimerService {
   // Fonction appelée lorsque le minuteur atteint zéro
   private onTimerComplete(): void {
     this.isInitialized = false;
-    this.router.navigate(['/']);
-    this.timerCompleteSubject.next(); // Émet le signal que le minuteur est terminé
-    this.basketService.wipe().subscribe();
+    if (this.basketService.getNumberOfTires() !== 0) {
+      this.router.navigate(['/']);
+      this.timerCompleteSubject.next(); // Émet le signal que le minuteur est terminé
+      this.basketService.wipe().subscribe();
+    }
   }
 }

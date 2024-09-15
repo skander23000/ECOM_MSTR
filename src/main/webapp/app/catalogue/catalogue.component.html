@@ -10,7 +10,7 @@
     <button class="close-button" (click)="closeSuccessProductMessage()">×</button>
   </div>
 </div>
-<div *ngIf="showTimerError" class="alert alert-error">
+<div *ngIf="this.timerService.getShowTimerError()" class="alert alert-error">
   <span class="error-text" jhiTranslate="error_text.inactivity"></span>
   <div style="display: flex; justify-content: flex-end;">
   <button class="close-button" (click)="closeTimerError()">&times;</button>

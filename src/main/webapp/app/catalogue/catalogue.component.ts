@@ -45,7 +45,6 @@ export class CatalogueComponent implements OnInit {
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
-  showTimerError = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -62,27 +61,34 @@ export class CatalogueComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
     private iconService: GetIconsService,
-    private timerService: FrontTimerService,
+    protected timerService: FrontTimerService,
   ) {}
 
   ngOnInit(): void {
+    // Si le minuteur n'est pas initialisé, démarrer le timer
     if (!this.timerService.getIsInitialized()) {
       this.timerService.startTimer();
     }
+    // S'abonner à l'événement de fin du minuteur et mettre à jour l'état
     this.timerService.getTimerComplete().subscribe(() => {
-      this.showTimerError = true;
+      this.timerService.setShowTimerError(true); // Sauvegarder l'état de showTimerError dans le service
     });
+
+    // Charger la liste des pneus
     this.loadTires();
+
+    // S'abonner à la variable successInfo pour afficher un message de succès
     this.sharedDataService.successInfo$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessMessage = data;
     });
+
+    // S'abonner à la variable successInfoProduct pour afficher un message de succès produit
     this.sharedDataService.successInfoProduct$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessProductMessage = data;
     });
   }
-
   loadTires(): void {
     // On relance le timer
     this.timerService.addActivity();
@@ -161,6 +167,7 @@ export class CatalogueComponent implements OnInit {
   }
 
   onAddToCart(tire: ITire): void {
+    this.timerService.addActivity();
     this.basketService.addTire(tire).subscribe();
   }
   stopPropagation(event: Event): void {
@@ -183,6 +190,6 @@ export class CatalogueComponent implements OnInit {
   }
 
   closeTimerError(): void {
-    this.showTimerError = false;
+    this.timerService.setShowTimerError(false);
   }
 }
