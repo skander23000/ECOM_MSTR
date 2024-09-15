@@ -15,16 +15,20 @@ import { ITire } from '../entities/tire/tire.model';
 export class TireImageComponent implements OnInit {
   @Input() tire: ITire | null = null;
   imageSrc: string | null = null;
+  loading = true;
 
   constructor(private s3: S3Service) {}
-
-  ngOnInit(): void {
-    (async () => {
-      if (this.tire?.imageUrl) {
+  /* eslint-disable */
+  async ngOnInit(): Promise<any> {
+    if (this.tire?.imageUrl) {
+      try {
         this.imageSrc = await this.s3.getImageS3(this.tire.imageUrl);
-      } else {
-        this.imageSrc = './content/images/website_icon_pack/icon_pack/image_not_found.png';
+      } catch (error) {
+        this.imageSrc = './content/images/website_icon_pack/icon_pack/image_not_found.jpg';
       }
-    })();
+    } else {
+      this.imageSrc = './content/images/website_icon_pack/icon_pack/image_not_found.jpg';
+    }
+    this.loading = false; // stop loading once image is set
   }
 }

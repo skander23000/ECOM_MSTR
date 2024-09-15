@@ -26,11 +26,16 @@ export class S3Service {
     const name = this.extractFileName(imageName);
     try {
       const response = await fetch(`https://${environment.BUCKET_NAME}.s3.${environment.BUCKET_REGION}.amazonaws.com/${name}`);
+      // Vérification explicite du statut de la réponse
+      if (!response.ok) {
+        return './content/images/website_icon_pack/icon_pack/image_not_found.jpg';
+      }
       return response.url;
-    } catch (e) {
-      return './content/imgages/website_icon_pack/icon_pack/image_not_found.png';
+    } catch (e: any) {
+      return './content/imgages/website_icon_pack/icon_pack/image_not_found.jpg';
     }
   }
+
   public async uploadImage(file: File): Promise<PutObjectCommandOutput> {
     const contentType = file.type;
     return await this.s3.send(

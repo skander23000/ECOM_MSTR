@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TireService } from 'app/entities/tire/service/tire.service';
@@ -20,14 +20,14 @@ import { TireImageComponent } from 'app/image/image.component';
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit {
   tires: ITire[] = [];
   selectedTire: ITire | null = null;
   showModal = false;
 
   // Variables de pagination
   currentPage = 0;
-  itemsPerPage = 1;
+  itemsPerPage = 5;
   totalItems = 0;
 
   // Variables de tri
