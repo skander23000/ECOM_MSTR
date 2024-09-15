@@ -60,11 +60,13 @@ export class CartItemComponent implements OnInit {
         if (this.cart_item.count && this.cart_item.count > 1) {
           this.cart_item.count--;
           this.updateTotalPrice();
-          this.isAvailable = false;
         }
+        this.isAvailable = true;
       },
       error: () => {
         this.isAvailable = true;
+        // eslint-disable-next-line no-console
+        console.log('Erreur lors de la suppression du pneu');
         this.showError = true;
       },
     });
@@ -78,11 +80,11 @@ export class CartItemComponent implements OnInit {
     }
     this.basktService.addTire(this.cart_item.tire, 1).subscribe({
       next: () => {
-        if (this.cart_item.count && this.cart_item.count > 1) {
+        if (this.cart_item.count) {
           this.cart_item.count++;
           this.updateTotalPrice();
-          this.isAvailable = true;
         }
+        this.isAvailable = true;
       },
       error: () => {
         this.isAvailable = true;
@@ -107,11 +109,12 @@ export class CartItemComponent implements OnInit {
       next: () => {
         if (this.cart_item.count && this.cart_item.count > 1) {
           this.cart_item.count = countValue;
-          this.isAvailable = false;
+          this.isAvailable = true;
           this.updateTotalPrice();
         }
       },
       error: () => {
+        this.isAvailable = true;
         this.showError = true;
       },
     });
@@ -125,13 +128,10 @@ export class CartItemComponent implements OnInit {
       this.basktService.removeTires(this.cart_item.tire).subscribe({
         next: () => {
           if (this.cart_item.tire) {
-            // eslint-disable-next-line no-console
-            console.log('Panier vidé');
             this.destroy.emit(this.cart_item.tire.id);
           }
         },
         error() {
-          // eslint-disable-next-line no-console
           console.error('Erreur lors de la suppression du pneu');
         },
       });

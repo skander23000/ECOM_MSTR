@@ -132,6 +132,8 @@ export class BasketService {
               next: () => {
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
+                sub.next(); // Émet une valeur de succès
+                sub.complete(); // Complète l'observable
               },
               error() {
                 sub.error('103|Item has to exist !');
