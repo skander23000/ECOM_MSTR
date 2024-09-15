@@ -27,10 +27,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static fr.ecom.mstr.tire.domain.ItemListLockAsserts.*;
+import static fr.ecom.mstr.tire.domain.ItemListLockAsserts.assertItemListLockAllPropertiesEquals;
+import static fr.ecom.mstr.tire.domain.ItemListLockAsserts.assertItemListLockUpdatableFieldsEquals;
 import static fr.ecom.mstr.tire.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -556,6 +558,52 @@ class ItemListLockResourceIT {
         tireRepository.deleteAll();
     }
 
+    @Test
+    @Transactional
+    void getAllItemListLocksByUserUuid() throws Exception {
+        // Initialize the database
+        insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
+
+        // Get all the itemListLockList by existing UserUuid
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/by-user?userUuid=" + itemListLock.getUserUuid().toString()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(hasSize(1)))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(itemListLock.getId().intValue())))
+            .andExpect(jsonPath("$.[*].userUuid").value(hasItem(DEFAULT_USER_UUID.toString())))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].lockTime").value(hasItem(DEFAULT_LOCK_TIME.toString())));
+
+        // Non-existing UUID
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/by-user?userUuid=00000000-0000-0000-0000-000000000000"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(hasSize(0)));
+    }
+
+    @Test
+    @Transactional
+    void isLockExistingForUserUuid() throws Exception {
+        // Initialize the database
+        insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
+
+        // has a lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/exist?userUuid=" + itemListLock.getUserUuid().toString()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(true));
+
+        // doesn't have a lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/exist?userUuid=00000000-0000-0000-0000-000000000000"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(false));
+    }
+
     protected long getRepositoryCount() {
         return itemListLockRepository.count();
     }
@@ -578,9 +626,5 @@ class ItemListLockResourceIT {
 
     protected void assertPersistedItemListLockToMatchAllProperties(ItemListLock expectedItemListLock) {
         assertItemListLockAllPropertiesEquals(expectedItemListLock, getPersistedItemListLock(expectedItemListLock));
-    }
-
-    protected void assertPersistedItemListLockToMatchUpdatableProperties(ItemListLock expectedItemListLock) {
-        assertItemListLockAllUpdatablePropertiesEquals(expectedItemListLock, getPersistedItemListLock(expectedItemListLock));
     }
 }

@@ -154,6 +154,18 @@ public class ItemListLockService {
         return res;
     }
 
+    @Transactional(readOnly = true)
+    public Boolean isUserUuidAssociatedToAnExistingLock(UUID userUuid) {
+        return this.itemListLockRepository.isItemListLockByUuid(userUuid);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ItemListLockDTO> findAllItemListLockByUserUuid(UUID userUuid) {
+        return this.itemListLockRepository.findByUuid(userUuid)
+            .stream().map(this.itemListLockMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
     /**
      * Execute a CRON every 1 minutes to get the list of expired lock.
      * IF the lock has expired, the item stock will be updated with the lock quantity and the lock deleted
@@ -166,7 +178,7 @@ public class ItemListLockService {
             LOG.debug("Expiring " + expiredLocks.size() + " lock(s)");
             HashMap<Long, Integer> tireMap = new HashMap<>();
             expiredLocks.forEach(lock -> tireMap.merge(lock.getTire().getId(), lock.getQuantity(), Integer::sum));
-            for (Map.Entry<Long, Integer> entry : tireMap.entrySet()){
+            for (Map.Entry<Long, Integer> entry : tireMap.entrySet()) {
                 Tire tire = this.tireRepository.findByIdWithOptimisticLock(entry.getKey());
                 tire.setQuantity(tire.getQuantity() + entry.getValue());
                 this.tireRepository.saveAndFlush(tire);
