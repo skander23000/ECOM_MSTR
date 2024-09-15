@@ -11,11 +11,13 @@ import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
 import { GetIconsService } from '../shared/get-icons.service';
+import { FrontTimerService } from '../shared/front-timer.service';
+import TranslateDirective from '../shared/language/translate.directive';
 
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe],
+  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe, TranslateDirective],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -42,6 +44,7 @@ export class CatalogueComponent implements OnInit {
   searchQuery = '';
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
+  showTimerError = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -58,9 +61,16 @@ export class CatalogueComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
     private iconService: GetIconsService,
+    private timerService: FrontTimerService,
   ) {}
 
   ngOnInit(): void {
+    if (!this.timerService.getIsInitialized()) {
+      this.timerService.startTimer();
+    }
+    this.timerService.getTimerComplete().subscribe(() => {
+      this.showTimerError = true;
+    });
     this.loadTires();
     this.sharedDataService.successInfo$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
@@ -69,6 +79,9 @@ export class CatalogueComponent implements OnInit {
   }
 
   loadTires(): void {
+    // On relance le timer
+    this.timerService.addActivity();
+
     const params: any = {
       page: this.currentPage,
       size: this.itemsPerPage,
@@ -155,5 +168,9 @@ export class CatalogueComponent implements OnInit {
       return this.iconService.processItem(type);
     }
     return '';
+  }
+
+  closeTimerError(): void {
+    this.showTimerError = false;
   }
 }

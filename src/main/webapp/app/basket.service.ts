@@ -3,7 +3,7 @@ import { ITire } from './entities/tire/tire.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from './core/config/application-config.service';
 import { createRequestOption } from './core/request/request-util';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
@@ -77,6 +77,12 @@ export class BasketService {
   getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
     return JSON.parse(basket) as TireContainer[];
+  }
+
+  getObservableContent(): Observable<TireContainer[]> {
+    const basket: string = localStorage.getItem('basket') ?? '[]'; // Remplacer '{}' par '[]' car un tableau vide est plus approprié
+    const parsedBasket: TireContainer[] = JSON.parse(basket) as TireContainer[];
+    return of(parsedBasket); // Retourne l'Observable contenant le tableau
   }
 
   refreshContent(): Observable<HttpResponse<TireContainer>> {

@@ -5,6 +5,7 @@ import { CartItemComponent } from '../cart-item/cart-item.component';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { BasketService } from '../basket.service';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-cart',
@@ -15,17 +16,25 @@ import { BasketService } from '../basket.service';
 })
 export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
+  subscription: any;
   totalPrice = 0;
-  showError = false;
 
   constructor(
     private router: Router,
     private basketService: BasketService,
+    private timerService: FrontTimerService,
   ) {}
 
   ngOnInit(): void {
-    this.cart_items = this.basketService.getContent();
-    this.updateTotalPrice();
+    // On relance le timer
+    this.timerService.addActivity();
+
+    this.subscription = this.basketService.getObservableContent().subscribe({
+      next: (content: TireContainer[]) => {
+        this.cart_items = content;
+        this.updateTotalPrice();
+      },
+    });
   }
 
   updateTireItemCount($event: { id: number; count: number }): void {
@@ -45,6 +54,9 @@ export class CartComponent implements OnInit {
 
   updateTotalPrice(): void {
     let som = 0;
+    // On relance le timer
+    this.timerService.addActivity();
+
     this.cart_items.forEach((item: TireContainer) => {
       if (item.tire?.price && item.count) {
         som += item.tire.price * item.count;
@@ -58,10 +70,14 @@ export class CartComponent implements OnInit {
   }
 
   goToCheckout(): void {
+    // On relance le timer
+    this.timerService.resetTimer();
     this.router.navigate(['/informations']);
   }
 
   goToHome(): void {
+    // On relance le timer
+    this.timerService.addActivity();
     this.router.navigate(['/']);
   }
 
@@ -72,12 +88,11 @@ export class CartComponent implements OnInit {
     }
   }
 
-  closeError(): void {
-    this.showError = false;
-  }
-
   // On vide le panier quand on appuie dessus
   protected emptyCart(): void {
+    // On relance le timer
+    this.timerService.addActivity();
+
     this.basketService.wipe().subscribe({
       next: () => {
         this.cart_items = [];
