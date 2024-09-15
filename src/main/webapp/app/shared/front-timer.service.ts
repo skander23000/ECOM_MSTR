@@ -86,6 +86,11 @@ export class FrontTimerService {
     return this.timerCompleteSubject.asObservable();
   }
 
+  stopTimer(): void {
+    this.timerSubscription.unsubscribe(); // Désabonne du timer
+    this.isInitialized = false; // Réinitialise l'état du minuteur
+  }
+
   // Fonction appelée lorsque le minuteur atteint zéro
   private onTimerComplete(): void {
     this.isInitialized = false;

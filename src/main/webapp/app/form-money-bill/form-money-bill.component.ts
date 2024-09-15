@@ -97,6 +97,7 @@ export class FormMoneyBillComponent implements OnInit {
       this.sharedDataService.setPaymentInfo(this.paymentInfo);
 
       this.sharedDataService.setSuccessMessage(true);
+      this.timerService.stopTimer();
 
       this.router.navigate(['/']);
       // eslint-disable-next-line no-console
