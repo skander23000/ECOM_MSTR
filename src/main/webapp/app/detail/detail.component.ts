@@ -3,6 +3,7 @@ import { ITire } from 'app/entities/tire/tire.model';
 import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
 import { GetIconsService } from '../shared/get-icons.service';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-detail',
@@ -19,10 +20,12 @@ export class DetailComponent {
   constructor(
     private basketService: BasketService,
     private iconService: GetIconsService,
+    private timerService: FrontTimerService,
   ) {}
 
   decreaseQuantity(): void {
     if (this.quantity > 1) {
+      this.timerService.addActivity();
       this.quantity--;
     }
   }
@@ -30,13 +33,16 @@ export class DetailComponent {
     if (tire === null) {
       return;
     }
+    this.timerService.addActivity();
     this.basketService.addTire(tire, this.quantity).subscribe();
   }
 
   increaseQuantity(): void {
+    this.timerService.addActivity();
     this.quantity++;
   }
   close(): any {
+    this.timerService.addActivity();
     this.closeModal.emit();
   }
 

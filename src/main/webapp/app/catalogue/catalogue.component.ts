@@ -149,6 +149,7 @@ export class CatalogueComponent implements OnInit {
     this.showSuccessMessage = false;
   }
   onAddToCart(tire: ITire): void {
+    this.timerService.addActivity();
     this.basketService.addTire(tire).subscribe();
   }
   stopPropagation(event: Event): void {

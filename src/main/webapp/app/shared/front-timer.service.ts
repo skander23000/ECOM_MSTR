@@ -58,10 +58,6 @@ export class FrontTimerService {
   }
 
   addActivity(): void {
-    if (!this.isInitialized) {
-      this.startTimer();
-      this.checkNumber = 0;
-    }
     if (this.checkNumber >= 5) {
       this.resetTimer();
       this.checkNumber = 0;
@@ -85,7 +81,7 @@ export class FrontTimerService {
   private onTimerComplete(): void {
     this.isInitialized = false;
     this.router.navigate(['/']);
-    this.timerCompleteSubject.next(); // Émet le signal que le minuteur est terminé
     this.basketService.wipe().subscribe();
+    this.timerCompleteSubject.next(); // Émet le signal que le minuteur est terminé
   }
 }
