@@ -19,9 +19,7 @@ export class CartItemComponent implements OnInit {
   @Output() destroy = new EventEmitter<number>();
   showError = false;
   total_price = 0;
-  isAvailablePlus = true;
-  isAvailableMoins = true;
-  isAvailableSet = true;
+  isAvailable = true;
   getIconservice: GetIconsService;
   basktService: BasketService;
 
@@ -52,11 +50,9 @@ export class CartItemComponent implements OnInit {
   }
 
   decreaseQuantity(): void {
-    this.isAvailablePlus = false;
-    this.isAvailableMoins = false;
+    this.isAvailable = false;
     if (!this.cart_item.count || !this.cart_item.tire) {
-      this.isAvailablePlus = false;
-      this.isAvailableMoins = false;
+      this.isAvailable = false;
       return;
     }
     this.basktService.removeATire(this.cart_item.tire).subscribe({
@@ -64,23 +60,20 @@ export class CartItemComponent implements OnInit {
         if (this.cart_item.count && this.cart_item.count > 1) {
           this.cart_item.count--;
           this.updateTotalPrice();
-          this.isAvailablePlus = false;
-          this.isAvailableMoins = false;
+          this.isAvailable = false;
         }
       },
       error: () => {
-        this.isAvailablePlus = true;
+        this.isAvailable = true;
         this.showError = true;
       },
     });
   }
 
   increaseQuantity(): void {
-    this.isAvailablePlus = false;
-    this.isAvailableMoins = false;
+    this.isAvailable = false;
     if (!this.cart_item.count || !this.cart_item.tire) {
-      this.isAvailablePlus = true;
-      this.isAvailableMoins = true;
+      this.isAvailable = true;
       return;
     }
     this.basktService.addTire(this.cart_item.tire, 1).subscribe({
@@ -88,19 +81,18 @@ export class CartItemComponent implements OnInit {
         if (this.cart_item.count && this.cart_item.count > 1) {
           this.cart_item.count++;
           this.updateTotalPrice();
-          this.isAvailablePlus = true;
-          this.isAvailableMoins = true;
+          this.isAvailable = true;
         }
       },
       error: () => {
-        this.isAvailableMoins = true;
+        this.isAvailable = true;
         this.showError = true;
       },
     });
   }
 
   onCountChange(): void {
-    this.isAvailableSet = false;
+    this.isAvailable = false;
     if (!this.cart_item.count || !this.cart_item.tire) {
       return;
     }
@@ -115,7 +107,7 @@ export class CartItemComponent implements OnInit {
       next: () => {
         if (this.cart_item.count && this.cart_item.count > 1) {
           this.cart_item.count = countValue;
-          this.isAvailableSet = false;
+          this.isAvailable = false;
           this.updateTotalPrice();
         }
       },
