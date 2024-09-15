@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ITire } from 'app/entities/tire/tire.model';
 import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
+import { GetIconsService } from '../shared/get-icons.service';
 
 @Component({
   selector: 'jhi-detail',
@@ -15,7 +16,10 @@ export class DetailComponent {
   @Output() closeModal = new EventEmitter<void>();
   quantity = 1;
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private iconService: GetIconsService,
+  ) {}
 
   decreaseQuantity(): void {
     if (this.quantity > 1) {
@@ -34,5 +38,13 @@ export class DetailComponent {
   }
   close(): any {
     this.closeModal.emit();
+  }
+
+  getIcon(): string {
+    const type = this.tire?.tireType;
+    if (type) {
+      return this.iconService.processItem(type);
+    }
+    return '';
   }
 }

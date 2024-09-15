@@ -10,6 +10,7 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
+import { GetIconsService } from '../shared/get-icons.service';
 
 @Component({
   selector: 'jhi-catalogue',
@@ -56,6 +57,7 @@ export class CatalogueComponent implements OnInit {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
+    private iconService: GetIconsService,
   ) {}
 
   ngOnInit(): void {
@@ -145,5 +147,13 @@ export class CatalogueComponent implements OnInit {
     this.priceMax = 50000;
     this.searchQuery = '';
     this.loadTires();
+  }
+
+  getIcon(tire: ITire): string {
+    const type = tire.tireType;
+    if (type) {
+      return this.iconService.processItem(type);
+    }
+    return '';
   }
 }

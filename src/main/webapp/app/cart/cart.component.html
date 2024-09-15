@@ -1,3 +1,7 @@
+<div *ngIf="showError" class="error-message">
+  <span class="error-text" jhiTranslate="error_text.inactivity"></span>
+  <button class="error-close" (click)="closeError()">&times;</button>
+</div>
 <div class="container">
   <div class="head-title" jhiTranslate="cart_header.title"></div>
   @if (!isCartEmpty()) {

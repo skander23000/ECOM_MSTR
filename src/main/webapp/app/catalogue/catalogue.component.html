@@ -9,8 +9,8 @@
   <div style="display: flex; flex-direction: column">
 
     <div class="sorting-panel">
-    <div style="display: flex; margin: 0.5rem 0rem">
-    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" >
+    <div style="display: flex; margin: 0.5rem 0">
+    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" alt="SortIcon">
     <h4>Tri :</h4>
     </div>
     <div class="sort-group">
@@ -58,8 +58,8 @@
     </div>
   </div>
     <div class="filter-panel">
-    <div style="display: flex; margin: 0.5rem 0rem">
-      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png">
+    <div style="display: flex; margin: 0.5rem 0">
+      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png" alt="filterIcon">
       <h4>Filtrer :</h4>
       </div>
       <div class="filter-group">
@@ -88,7 +88,7 @@
   <div class="row" style="height: 100%;width:100%">
 
     <div class="search-panel" style="position: relative;">
-      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png">
+      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png" alt="SearchIcon">
       <input
         type="text"
         placeholder="Rechercher un produit"
@@ -113,12 +113,12 @@
           </div>
           <div class="card-footer">
             <div>
-              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/snowflakes_icon.png">
-              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png">
+              <img class="footer-images" src="{{this.getIcon(tire)}}" alt="TypeIcon">
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png" alt="CertifiedIcon">
             </div>
             <div>
               <a>
-                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);">
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);" alt="AddToCartIcon">
               </a>
             </div>
           </div>
