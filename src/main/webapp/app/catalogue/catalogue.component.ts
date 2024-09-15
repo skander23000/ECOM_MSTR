@@ -11,11 +11,12 @@ import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
 import { S3Service } from '../s3.service';
+import { TireImageComponent } from 'app/image/image.component';
 
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe],
+  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe, TireImageComponent],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -147,12 +148,5 @@ export class CatalogueComponent {
     this.priceMax = 50000;
     this.searchQuery = '';
     this.loadTires();
-  }
-  getImage(tire: ITire): any {
-    if (tire.imageUrl === undefined || tire.imageUrl === null) {
-      return './content/imgages/website_icon_pack/icon_pack/image_not_found.png';
-    } else {
-      return this.s3.getImageS3(tire.imageUrl);
-    }
   }
 }

@@ -22,9 +22,14 @@ export class S3Service {
     return filePath?.split('\\').pop() ?? '';
   }
 
-  public getImageS3(imageName: string | undefined): string {
+  public async getImageS3(imageName: string | undefined): Promise<any> {
     const name = this.extractFileName(imageName);
-    return `https://${environment.BUCKET_NAME}.s3.${environment.BUCKET_REGION}.amazonaws.com/${name}`;
+    try {
+      const response = await fetch(`https://${environment.BUCKET_NAME}.s3.${environment.BUCKET_REGION}.amazonaws.com/${name}`);
+      return response.url;
+    } catch (e) {
+      return './content/imgages/website_icon_pack/icon_pack/image_not_found.png';
+    }
   }
   public async uploadImage(file: File): Promise<PutObjectCommandOutput> {
     const contentType = file.type;
