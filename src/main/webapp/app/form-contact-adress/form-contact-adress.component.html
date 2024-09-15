@@ -1,5 +1,6 @@
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="head-title" jhiTranslate="form_header.contact_address_form.main_title"></div>
+  <div class="timer">Les produits sont réservé jusqu'à {{ this.endTime | date:'HH:mm:ss'}}</div>
   <div>
     <div class="form-part">
       <div>

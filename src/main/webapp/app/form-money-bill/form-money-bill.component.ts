@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-form-money-bill',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage],
+  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage, DatePipe],
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
@@ -20,16 +21,21 @@ export class FormMoneyBillComponent implements OnInit {
 
   useDeliveryAddress = false;
   isSubmitted = false;
-
+  endTime: Date | null = null;
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
+    private timerService: FrontTimerService,
   ) {
     this.paymentInfo = {};
   }
 
   ngOnInit(): void {
     this.user_infos = this.sharedDataService.getUserInfo();
+    this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
+      const currentTime = new Date(); // Heure actuelle
+      this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
+    });
   }
 
   toggleAddressFields(): void {

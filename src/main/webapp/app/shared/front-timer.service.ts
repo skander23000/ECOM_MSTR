@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class FrontTimerService {
-  private initialTime = 20; // 30 * 60; // 30 minutes en secondes
+  private initialTime = 30 * 60; // 30 * 60; // 30 minutes en secondes
   private remainingTime: number = this.initialTime;
   private timerSubscription!: Subscription;
   private isInitialized = false; // Vérifie si le timer est initialisé
@@ -28,16 +28,12 @@ export class FrontTimerService {
     if (this.basketService.getNumberOfTires() === 0) {
       return;
     }
-    // eslint-disable-next-line no-console
-    console.log('Starting timer');
     if (!this.isInitialized) {
       // Si le timer n'est pas encore initialisé
       this.isInitialized = true;
       this.remainingTime = this.initialTime;
       this.timerSubscription = interval(1000).subscribe(() => {
         this.remainingTime--;
-        // eslint-disable-next-line no-console
-        console.log(this.remainingTime);
         if (this.remainingTime <= 0) {
           this.remainingTime = 0;
           this.timerSubscription.unsubscribe();

@@ -1,37 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { Router } from '@angular/router';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-form-contact-adress',
   standalone: true,
-  imports: [FormsModule, NgIf, TranslateDirective, NgOptimizedImage],
+  imports: [FormsModule, NgIf, TranslateDirective, NgOptimizedImage, DatePipe],
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
-export class FormContactAdressComponent {
-  // implements OnInit
-
+export class FormContactAdressComponent implements OnInit {
   // [TODO] Pass the required id to a possibly null id
   user_info: ICustomer = {
     id: 0,
   };
 
   isSubmitted = false;
+  endTime: Date | null = null;
 
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
+    private timerService: FrontTimerService,
   ) {}
 
-  // ngOnInit(): void {
-  // [TODO] Modifiy id to be a string in the JDL
-  // this.user_info.id = this.sharedDataService.getUserId()
-  // }
+  ngOnInit(): void {
+    this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
+      const currentTime = new Date(); // Heure actuelle
+      this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
+    });
+
+    // [TODO] Modifier l'id pour qu'il soit une chaîne dans le JDL
+    // this.user_info.id = this.sharedDataService.getUserId()
+  }
 
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;

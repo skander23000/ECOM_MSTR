@@ -65,8 +65,7 @@ export class CartItemComponent implements OnInit {
       },
       error: () => {
         this.isAvailable = true;
-        // eslint-disable-next-line no-console
-        console.log('Erreur lors de la suppression du pneu');
+        console.error('Erreur lors de la suppression du pneu');
         this.showError = true;
       },
     });
