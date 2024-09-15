@@ -3,6 +3,7 @@ import { ITire } from 'app/entities/tire/tire.model';
 import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
 import { GetIconsService } from '../shared/get-icons.service';
+import { SharedUserDataService } from '../shared/shared-user-data.service';
 
 @Component({
   selector: 'jhi-detail',
@@ -19,6 +20,7 @@ export class DetailComponent {
   constructor(
     private basketService: BasketService,
     private iconService: GetIconsService,
+    private sharedDataService: SharedUserDataService,
   ) {}
 
   decreaseQuantity(): void {
@@ -31,6 +33,8 @@ export class DetailComponent {
       return;
     }
     this.basketService.addTire(tire, this.quantity).subscribe();
+    this.sharedDataService.setSuccessMessageProduct(true);
+    this.close();
   }
 
   increaseQuantity(): void {

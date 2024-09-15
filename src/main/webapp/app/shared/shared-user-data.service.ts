@@ -12,6 +12,8 @@ export class SharedUserDataService {
   successInfoSubject = new BehaviorSubject<boolean | null>(null);
   // Observables to expose the data as streams
   successInfo$ = this.successInfoSubject.asObservable();
+  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoProduct$ = this.successInfoProductSubject.asObservable();
 
   setUserInfo(userInfo: ICustomer): void {
     localStorage.setItem('userinfo', JSON.stringify(userInfo));
@@ -40,5 +42,8 @@ export class SharedUserDataService {
   }
   setSuccessMessage(isSuccessMessage: boolean): void {
     this.successInfoSubject.next(isSuccessMessage);
+  }
+  setSuccessMessageProduct(isSuccessMessage: boolean): void {
+    this.successInfoProductSubject.next(isSuccessMessage);
   }
 }

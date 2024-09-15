@@ -4,9 +4,17 @@
     <button class="close-button" (click)="closeSuccessMessage()">×</button>
   </div>
 </div>
-<div *ngIf="showTimerError" class="error-message">
+<div *ngIf="showSuccessProductMessage" class="alert alert-success">
+  Votre produit a bien été ajouté au panier !
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="closeSuccessProductMessage()">×</button>
+  </div>
+</div>
+<div *ngIf="showTimerError" class="alert alert-error">
   <span class="error-text" jhiTranslate="error_text.inactivity"></span>
-  <button class="error-close" (click)="closeTimerError()">&times;</button>
+  <div style="display: flex; justify-content: flex-end;">
+  <button class="close-button" (click)="closeTimerError()">&times;</button>
+  </div>
 </div>
 <div class="container">
 

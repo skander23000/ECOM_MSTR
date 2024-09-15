@@ -21,15 +21,13 @@ interface RequestContainer {
   providedIn: 'root',
 })
 export class BasketService {
-  totalItemsSubject = new BehaviorSubject<number>(0);
+  totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
 
   constructor(private userinfo: SharedUserDataService) {
-    const empty: TireContainer[] = [];
-    localStorage.setItem('basket', JSON.stringify(empty));
     userinfo.generateUserId();
     this.updateTotalItems();
   }

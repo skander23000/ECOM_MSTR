@@ -185,7 +185,6 @@ a.custom-link {
 }
 
 .alert {
-  width: 95%;
   margin-left: 0.5rem;
   padding: 15px;
   margin-bottom: 20px;
@@ -198,9 +197,14 @@ a.custom-link {
   background-color: #d4edda;
   border-color: #c3e6cb;
 }
+.alert-error {
+  color: $error_color;
+  background-color: $error_background;
+  border-color: $error_border;
+}
 
 .close-button {
-  margin-top: -3.25 rem;
+  top:-14px;
   position: absolute;
   background: none;
   border: none;
@@ -208,18 +212,7 @@ a.custom-link {
   cursor: pointer;
 }
 
-.error-message {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: $error_border;
-  color: $error_color;
-  border: 1px solid $error_border;
-  padding: 10px 20px;
-  border-radius: 5px;
-  position: relative;
-  margin: 20px 0;
-}
+
 
 .error-text {
   margin-right: 10px;
