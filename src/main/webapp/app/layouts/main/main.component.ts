@@ -12,6 +12,7 @@ import { MyFooterComponent } from '../../my-footer/my-footer.component';
 import { FormMoneyBillComponent } from '../../form-money-bill/form-money-bill.component';
 import { FormContactAdressComponent } from '../../form-contact-adress/form-contact-adress.component';
 import { CartComponent } from '../../cart/cart.component';
+import { CatalogueComponent } from '../../catalogue/catalogue.component';
 
 @Component({
   standalone: true,
@@ -27,6 +28,7 @@ import { CartComponent } from '../../cart/cart.component';
     FormMoneyBillComponent,
     FormContactAdressComponent,
     CartComponent,
+    CatalogueComponent,
   ],
 })
 export default class MainComponent implements OnInit {
