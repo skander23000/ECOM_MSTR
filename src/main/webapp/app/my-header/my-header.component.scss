@@ -29,12 +29,15 @@ $line-height: 2px; // Hauteur de la barre
   }
 
   .cart {
+    border: 3px solid black;
+    border-radius: 10px;
     grid-column: 3; /* Colonne 3 */
     justify-self: end; /* Alignement à droite de la colonne */
     align-self: center; /* Alignement au centre de la case */
     display: flex;
     align-items: center;
-    padding: 2rem;
+    margin: 2rem;
+    padding: 0.25rem;
     text-decoration: none;
     color: $text_black;
     font-size: $font-size-cart;

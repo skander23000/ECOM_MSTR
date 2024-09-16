@@ -141,7 +141,7 @@ a.custom-link {
   width: 100px;
   padding: 0.25rem;
   border-radius: 10px;
-  background-color: white;
+  background-color: $button_grey;
   cursor: pointer;
 }
 
@@ -237,7 +237,7 @@ margin: auto;
 .compare{
   padding: 1rem 2rem ;
     margin: 0.5rem auto;
-    background-color: #E0E0E0;
+    background-color: $button_grey;
     text-decoration: none;
     color: inherit;
     display: block;

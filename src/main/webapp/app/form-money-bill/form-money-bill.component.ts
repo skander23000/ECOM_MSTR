@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { DatePipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
@@ -23,6 +23,7 @@ export class FormMoneyBillComponent implements OnInit {
   useDeliveryAddress = false;
   isSubmitted = false;
   endTime: Date | null = null;
+  @ViewChild('firstInput') firstInputElement!: ElementRef;
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
@@ -38,6 +39,9 @@ export class FormMoneyBillComponent implements OnInit {
       const currentTime = new Date(); // Heure actuelle
       this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
     });
+  }
+  ngAfterViewInit(): void {
+    this.firstInputElement.nativeElement.focus();
   }
 
   toggleAddressFields(): void {
@@ -96,6 +100,9 @@ export class FormMoneyBillComponent implements OnInit {
     this.isSubmitted = true;
 
     if (form.valid) {
+      if (!confirm('Êtes-vous sûr de vouloir passer la commande ?')) {
+        return;
+      }
       this.sharedDataService.setPaymentInfo(this.paymentInfo);
 
       this.sharedDataService.setSuccessMessage(true);

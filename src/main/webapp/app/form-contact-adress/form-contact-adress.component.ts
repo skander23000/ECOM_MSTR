@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { DatePipe, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
@@ -14,12 +14,12 @@ import { FrontTimerService } from '../shared/front-timer.service';
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
-export class FormContactAdressComponent implements OnInit {
+export class FormContactAdressComponent implements OnInit, AfterViewInit {
   // [TODO] Pass the required id to a possibly null id
   user_info: ICustomer = {
     id: 0,
   };
-
+  @ViewChild('firstInput') firstInputElement!: ElementRef;
   isSubmitted = false;
   endTime: Date | null = null;
 
@@ -39,6 +39,9 @@ export class FormContactAdressComponent implements OnInit {
     // this.user_info.id = this.sharedDataService.getUserId()
   }
 
+  ngAfterViewInit(): void {
+    this.firstInputElement.nativeElement.focus();
+  }
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;
     return emailInput.touched && !emailPattern.test(emailInput.value);
