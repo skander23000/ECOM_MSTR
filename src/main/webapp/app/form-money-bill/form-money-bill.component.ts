@@ -114,6 +114,7 @@ export class FormMoneyBillComponent implements OnInit {
   }
   // Méthode pour retourner au panier
   goBackToCart(): void {
+    this.timerService.addActivity();
     this.router.navigate(['/panier']);
   }
   onDivClick(event: MouseEvent): void {

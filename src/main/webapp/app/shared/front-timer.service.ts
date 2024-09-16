@@ -62,11 +62,6 @@ export class FrontTimerService {
     return this.timerSubject.asObservable();
   }
 
-  // Ajoute du temps au minuteur
-  addTime(seconds: number): void {
-    this.remainingTime += seconds;
-  }
-
   addActivity(): void {
     if (!this.isInitialized) {
       this.startTimer();
