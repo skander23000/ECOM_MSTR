@@ -219,4 +219,26 @@ public class ItemListLockService {
         LOG.debug("Request to delete ItemListLock : {}", ids);
         itemListLockRepository.deleteAllById(ids);
     }
+
+    /**
+     * Delete the itemListLock by userUuid
+     *
+     * @param userUuid the userUuid.
+     */
+    @Transactional
+    public void deleteAllByUserUuid(UUID userUuid) {
+        List<ItemListLock> itemListLockToDelete = this.itemListLockRepository.findByUuid(userUuid);
+        if (itemListLockToDelete != null && !itemListLockToDelete.isEmpty()) {
+            LOG.debug("Deleting " + itemListLockToDelete.size() + " lock(s)");
+            HashMap<Long, Integer> tireMap = new HashMap<>();
+            itemListLockToDelete.forEach(lock -> tireMap.merge(lock.getTire().getId(), lock.getQuantity(), Integer::sum));
+            for (Map.Entry<Long, Integer> entry : tireMap.entrySet()) {
+                Tire tire = this.tireRepository.findByIdWithOptimisticLock(entry.getKey());
+                tire.setQuantity(tire.getQuantity() + entry.getValue());
+                this.tireRepository.saveAndFlush(tire);
+            }
+            this.itemListLockRepository.deleteAllById(itemListLockToDelete.stream().map(ItemListLock::getId).collect(Collectors.toList()));
+        }
+
+    }
 }
