@@ -6,6 +6,7 @@ import TranslateDirective from '../shared/language/translate.directive';
 import { GetIconsService } from '../shared/get-icons.service';
 import { BasketService } from '../basket.service';
 import { TireImageComponent } from '../image/image.component';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-cart-item',
@@ -18,15 +19,17 @@ export class CartItemComponent implements OnInit {
   @Input() cart_item: TireContainer = { tire: null, count: 0 };
   @Output() countChanged = new EventEmitter<{ id: number; count: number }>();
   @Output() destroy = new EventEmitter<number>();
-  showError = false;
+  @Output() error = new EventEmitter<string>();
   total_price = 0;
   isAvailable = true;
   getIconservice: GetIconsService;
   basktService: BasketService;
+  timerService: FrontTimerService;
 
-  constructor(getIconservice: GetIconsService, basketService: BasketService) {
+  constructor(getIconservice: GetIconsService, basketService: BasketService, timerService: FrontTimerService) {
     this.getIconservice = getIconservice;
     this.basktService = basketService;
+    this.timerService = timerService;
   }
 
   updateTotalPrice(): void {
@@ -64,10 +67,15 @@ export class CartItemComponent implements OnInit {
         }
         this.isAvailable = true;
       },
-      error: () => {
-        this.isAvailable = true;
-        console.error('Erreur lors de la suppression du pneu');
-        this.showError = true;
+      error: (err: string) => {
+        const err_split = err.split('|')
+        if (err_split[0] === '102') {
+          this.isAvailable = true;
+          this.timerService.setTimer(1);
+        } else {
+          this.isAvailable = true;
+          this.error.emit("Impossible de retirer ce nombre de pneu du panier");
+        }
       },
     });
   }
@@ -86,9 +94,15 @@ export class CartItemComponent implements OnInit {
         }
         this.isAvailable = true;
       },
-      error: () => {
-        this.isAvailable = true;
-        this.showError = true;
+      error: (err: string) => {
+        const err_split = err.split('|')
+        if (err_split[0] === '102') {
+          this.isAvailable = true;
+          this.timerService.setTimer(1);
+        } else {
+          this.isAvailable = true;
+          this.error.emit("Ce pneu n'est plus disponible en stock");
+        }
       },
     });
   }
@@ -104,8 +118,15 @@ export class CartItemComponent implements OnInit {
             this.destroy.emit(this.cart_item.tire.id);
           }
         },
-        error() {
-          console.error('Erreur lors de la suppression du pneu');
+        error: (err: string) => {
+          const err_split = err.split('|')
+          if (err_split[0] === '102') {
+            this.isAvailable = true;
+            this.timerService.setTimer(1);
+          } else {
+            this.isAvailable = true;
+            this.error.emit("Une erreur est survenue lors de la suppression du pneu du panier");
+          }
         },
       });
     }

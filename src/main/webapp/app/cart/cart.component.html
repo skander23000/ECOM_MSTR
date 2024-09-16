@@ -1,3 +1,9 @@
+<div *ngIf="showItemError" class="alert alert-error">
+  {{ this.errorMessage}}
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="hideError()">×</button>
+  </div>
+</div>
 <div class="container">
   <div class="head-title" jhiTranslate="cart_header.title"></div>
   @if (!isCartEmpty()) {
@@ -15,7 +21,7 @@
 } @else {
   <div class="title_separator"></div>
   @for (cart_item of cart_items; track cart_item.tire?.id) {
-    <jhi-cart-item (countChanged)="updateTireItemCount($event)" (destroy)="this.destroyItem($event)" [cart_item]="cart_item"></jhi-cart-item>
+    <jhi-cart-item (countChanged)="updateTireItemCount($event)" (destroy)="this.destroyItem($event)" (error)="showError($event)" [cart_item]="cart_item"></jhi-cart-item>
   }
   <div class="total-box">
     <span class="total-title" jhiTranslate="cart_infos.total"></span>

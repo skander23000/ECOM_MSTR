@@ -18,6 +18,8 @@ export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   subscription: any;
   totalPrice = 0;
+  showItemError = false;
+  errorMessage = '';
 
   constructor(
     private router: Router,
@@ -88,6 +90,15 @@ export class CartComponent implements OnInit {
     }
   }
 
+  showError(msg: string){
+    this.errorMessage = msg;
+    this.showItemError = true;
+  }
+
+  hideError(){
+    this.showItemError = false;
+  }
+
   // On vide le panier quand on appuie dessus
   protected emptyCart(): void {
     // On relance le timer
@@ -97,6 +108,14 @@ export class CartComponent implements OnInit {
       next: () => {
         this.cart_items = [];
       },
+      error: (err: string) => {
+        const err_split = err.split('|')
+        if (err_split[0] === '102') {
+          this.timerService.setTimer(1);
+        } else {
+          this.showError("Impossible de vider le panier");
+        }
+      }
     });
   }
 

@@ -89,3 +89,26 @@
   font-size: 3rem;
   margin-right: 2rem;
 }
+
+.alert {
+  margin-left: 0.5rem;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-error {
+  color: $error_color;
+  background-color: $error_background;
+  border-color: $error_border;
+}
+
+.close-button {
+  top:-14px;
+  position: absolute;
+  background: none;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+}
