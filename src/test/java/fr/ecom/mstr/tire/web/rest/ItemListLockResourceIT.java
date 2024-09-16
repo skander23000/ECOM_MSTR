@@ -604,6 +604,42 @@ class ItemListLockResourceIT {
             .andExpect(jsonPath("$").value(false));
     }
 
+    @Test
+    @Transactional
+    void emptyShoppingCart() throws Exception {
+        // Initialize the database
+        Tire tire = TireResourceIT.createEntity();
+        tire.setQuantity(2);
+        tire = tireRepository.saveAndFlush(tire);
+        UUID userUuid = UUID.randomUUID();
+
+        itemListLock.setTire(tire);
+        itemListLock.setQuantity(10);
+        itemListLock.setUserUuid(userUuid);
+        itemListLock.setLockTime(Instant.now().plus(5, ChronoUnit.HOURS));
+        itemListLockRepository.saveAndFlush(itemListLock);
+
+        ItemListLock item = createEntity();
+        item.setQuantity(200);
+        item.setTire(tire);
+        item.setLockTime(Instant.now().plus(5, ChronoUnit.HOURS));
+        itemListLockRepository.saveAndFlush(item);
+
+        int databaseCount = itemListLockRepository.findAll().size();
+        // has a lock
+        restItemListLockMockMvc
+            .perform(delete(ENTITY_API_URL + "/delete-all?userUuid=" + itemListLock.getUserUuid().toString()))
+            .andExpect(status().isNoContent());
+
+        Optional<Tire> finalTire = this.tireRepository.findById(tire.getId());
+        int databaseCountFinal = itemListLockRepository.findAll().size();
+
+        assertThat(databaseCount).isGreaterThan(databaseCountFinal);
+        assertThat(databaseCountFinal).isOne();
+        assertThat(finalTire).isPresent();
+        assertThat(finalTire.orElseThrow().getQuantity()).isEqualTo(12);
+    }
+
     protected long getRepositoryCount() {
         return itemListLockRepository.count();
     }
