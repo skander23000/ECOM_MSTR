@@ -4,24 +4,29 @@ import { FormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { GetIconsService } from '../shared/get-icons.service';
+import { BasketService } from '../basket.service';
+import { TireImageComponent } from '../image/image.component';
 
 @Component({
   selector: 'jhi-cart-item',
   standalone: true,
-  imports: [FormsModule, NgOptimizedImage, TranslateDirective],
+  imports: [FormsModule, NgOptimizedImage, TranslateDirective, TireImageComponent],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })
 export class CartItemComponent implements OnInit {
-  @Input() cart_item: TireContainer = {};
+  @Input() cart_item: TireContainer = { tire: null, count: 0 };
   @Output() countChanged = new EventEmitter<{ id: number; count: number }>();
   @Output() destroy = new EventEmitter<number>();
+  showError = false;
   total_price = 0;
   isAvailable = true;
   getIconservice: GetIconsService;
+  basktService: BasketService;
 
-  constructor(getIconservice: GetIconsService) {
+  constructor(getIconservice: GetIconsService, basketService: BasketService) {
     this.getIconservice = getIconservice;
+    this.basktService = basketService;
   }
 
   updateTotalPrice(): void {
@@ -47,51 +52,45 @@ export class CartItemComponent implements OnInit {
 
   decreaseQuantity(): void {
     this.isAvailable = false;
-    if (!this.cart_item.count) {
-      this.isAvailable = true;
+    if (!this.cart_item.count || !this.cart_item.tire) {
+      this.isAvailable = false;
       return;
     }
-    if (this.cart_item.count > 1) {
-      this.cart_item.count--;
-      this.updateTotalPrice();
-    }
-    // [TODO] Ajouter la logique concernant l'ajout d'un pneu au panier
-
-    this.isAvailable = true;
+    this.basktService.removeATire(this.cart_item.tire).subscribe({
+      next: () => {
+        if (this.cart_item.count && this.cart_item.count > 1) {
+          this.cart_item.count--;
+          this.updateTotalPrice();
+        }
+        this.isAvailable = true;
+      },
+      error: () => {
+        this.isAvailable = true;
+        console.error('Erreur lors de la suppression du pneu');
+        this.showError = true;
+      },
+    });
   }
 
   increaseQuantity(): void {
     this.isAvailable = false;
-    if (!this.cart_item.count) {
+    if (!this.cart_item.count || !this.cart_item.tire) {
       this.isAvailable = true;
       return;
     }
-    this.cart_item.count++;
-    this.updateTotalPrice();
-    // [TODO] Ajouter la logique concernant l'ajout d'un pneu au panier
-    this.isAvailable = true;
-  }
-
-  onCountChange(): void {
-    this.isAvailable = false;
-    if (!this.cart_item.count) {
-      this.cart_item.count = 1;
-      this.updateTotalPrice();
-      this.isAvailable = true;
-      return;
-    }
-
-    const countValue = parseFloat(String(this.cart_item.count));
-
-    if (isNaN(countValue) || countValue <= 0) {
-      // Réinitialiser à 1 si la valeur est non numérique ou inférieure ou égale à 0
-      this.cart_item.count = 1;
-    } else {
-      // Sinon, utilisez la valeur validée
-      this.cart_item.count = countValue;
-    }
-    this.updateTotalPrice();
-    this.isAvailable = true;
+    this.basktService.addTire(this.cart_item.tire, 1).subscribe({
+      next: () => {
+        if (this.cart_item.count) {
+          this.cart_item.count++;
+          this.updateTotalPrice();
+        }
+        this.isAvailable = true;
+      },
+      error: () => {
+        this.isAvailable = true;
+        this.showError = true;
+      },
+    });
   }
 
   onDestroy(): void {
@@ -99,7 +98,16 @@ export class CartItemComponent implements OnInit {
       return;
     }
     if (this.cart_item.tire?.id) {
-      this.destroy.emit(this.cart_item.tire.id);
+      this.basktService.removeTires(this.cart_item.tire).subscribe({
+        next: () => {
+          if (this.cart_item.tire) {
+            this.destroy.emit(this.cart_item.tire.id);
+          }
+        },
+        error() {
+          console.error('Erreur lors de la suppression du pneu');
+        },
+      });
     }
   }
 }

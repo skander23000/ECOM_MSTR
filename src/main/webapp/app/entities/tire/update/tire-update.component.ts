@@ -15,6 +15,7 @@ import { ChargeIndex } from 'app/entities/enumerations/charge-index.model';
 import { TireService } from '../service/tire.service';
 import { ITire } from '../tire.model';
 import { TireFormGroup, TireFormService } from './tire-form.service';
+import { S3Service } from '../../../s3.service';
 
 @Component({
   standalone: true,
@@ -32,9 +33,11 @@ export class TireUpdateComponent implements OnInit {
   tireBrandsSharedCollection: ITireBrand[] = [];
 
   protected tireService = inject(TireService);
+  protected s3Service: S3Service = inject(S3Service);
   protected tireFormService = inject(TireFormService);
   protected tireBrandService = inject(TireBrandService);
   protected activatedRoute = inject(ActivatedRoute);
+  private file: File | null = null;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: TireFormGroup = this.tireFormService.createTireFormGroup();
@@ -44,6 +47,9 @@ export class TireUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tire }) => {
       this.tire = tire;
+      if (this.tire?.imageUrl) {
+        this.tire.imageUrl = '';
+      }
       if (tire) {
         this.updateForm(tire);
       }
@@ -56,9 +62,23 @@ export class TireUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  public handleFileInput(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement;
+    const fileList: FileList | null = element.files;
+
+    if (fileList) {
+      this.file = fileList[0];
+    } else {
+      this.file = null;
+    }
+  }
   save(): void {
     this.isSaving = true;
     const tire = this.tireFormService.getTire(this.editForm);
+    if (this.file) {
+      this.s3Service.uploadImage(this.file);
+    }
+
     if (tire.id !== null) {
       this.subscribeToSaveResponse(this.tireService.update(tire));
     } else {

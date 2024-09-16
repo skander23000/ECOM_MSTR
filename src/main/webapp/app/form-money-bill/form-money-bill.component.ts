@@ -1,37 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgClass, NgIf, NgOptimizedImage, ViewportScroller } from '@angular/common';
+import { DatePipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
+import { FrontTimerService } from '../shared/front-timer.service';
+import { BasketService } from '../basket.service';
 
 @Component({
   selector: 'jhi-form-money-bill',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage],
+  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage, DatePipe],
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
-export class FormMoneyBillComponent implements OnInit {
+export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
 
   useDeliveryAddress = false;
   isSubmitted = false;
-
+  endTime: Date | null = null;
+  @ViewChild('firstInput') firstInputElement!: ElementRef;
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
+    private timerService: FrontTimerService,
+    private basketService: BasketService,
   ) {
     this.paymentInfo = {};
   }
 
   ngOnInit(): void {
-    this.sharedDataService.userInfo$.subscribe(data => {
-      this.user_infos = data;
+    this.user_infos = this.sharedDataService.getUserInfo();
+    this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
+      const currentTime = new Date(); // Heure actuelle
+      this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
     });
+  }
+  ngAfterViewInit(): void {
+    this.firstInputElement.nativeElement.focus();
   }
 
   toggleAddressFields(): void {
@@ -67,6 +77,9 @@ export class FormMoneyBillComponent implements OnInit {
 
   // Méthode pour valider la date d'expiration
   validateIsExpired(monthValue: NgModel): boolean | null {
+    if (!monthValue.value) {
+      return null;
+    }
     const [inputMonth, inputYear] = monthValue.value.split('/');
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Les mois dans JS sont indexés de 0 à 11
@@ -75,9 +88,6 @@ export class FormMoneyBillComponent implements OnInit {
     // Comparaison de la date
     const inputMonthNumber = parseInt(inputMonth, 10);
     const inputYearNumber = parseInt(inputYear, 10);
-    if (!monthValue.value) {
-      return null;
-    }
     return monthValue.touched && !(inputYearNumber > currentYear || (inputYearNumber === currentYear && inputMonthNumber >= currentMonth));
   }
 
@@ -90,9 +100,16 @@ export class FormMoneyBillComponent implements OnInit {
     this.isSubmitted = true;
 
     if (form.valid) {
+      if (!confirm('Êtes-vous sûr de vouloir passer la commande ?')) {
+        return;
+      }
       this.sharedDataService.setPaymentInfo(this.paymentInfo);
 
       this.sharedDataService.setSuccessMessage(true);
+      this.timerService.stopTimer();
+
+      // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
+      this.basketService.wipe().subscribe();
 
       this.router.navigate(['/']);
       // eslint-disable-next-line no-console
@@ -109,6 +126,7 @@ export class FormMoneyBillComponent implements OnInit {
   }
   // Méthode pour retourner au panier
   goBackToCart(): void {
+    this.timerService.addActivity();
     this.router.navigate(['/panier']);
   }
   onDivClick(event: MouseEvent): void {

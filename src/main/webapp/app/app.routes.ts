@@ -11,9 +11,14 @@ const routes: Routes = [
     loadComponent: () => import('./home/home.component'),
     title: 'home.title',
   },
+
   {
     path: 'payment',
     loadComponent: () => import('./form-money-bill/form-money-bill.component').then(m => m.FormMoneyBillComponent),
+  },
+  {
+    path: 'comparaison',
+    loadComponent: () => import('./comparaison/comparaison.component').then(m => m.ComparaisonComponent),
   },
   {
     path: 'informations',
@@ -22,6 +27,10 @@ const routes: Routes = [
   {
     path: 'panier',
     loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent),
+  },
+  {
+    path: 'credits',
+    loadComponent: () => import('./credits/credits.component').then(m => m.CreditsComponent),
   },
   {
     path: '',

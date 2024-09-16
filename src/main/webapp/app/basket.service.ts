@@ -1,41 +1,42 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ITire } from './entities/tire/tire.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from './core/config/application-config.service';
 import { createRequestOption } from './core/request/request-util';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, concatMap, from, Observable, of } from 'rxjs';
+import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
   tire: ITire;
   count: number;
 }
 
-interface IDContainer {
-  id: number;
-  count: number;
+interface RequestContainer {
+  userUuid: string;
+  tireId: number;
+  quantity: number;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
-  totalItemsSubject = new BehaviorSubject<number>(0);
+  totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
 
-  constructor() {
-    const empty: TireContainer[] = [];
-    localStorage.setItem('basket', JSON.stringify(empty));
+  constructor(private userinfo: SharedUserDataService) {
+    userinfo.generateUserId();
     this.updateTotalItems();
   }
 
   addTire(t_tire: ITire, t_count = 1): Observable<boolean> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
-        next: value => {
-          let nbtire = 0;
+        next: () => {
+          let nbtire;
           let basket = this.getContent();
           if (basket.length > 0) {
             const item: any = basket.find(x => x.tire.id === t_tire.id);
@@ -53,18 +54,18 @@ export class BasketService {
             nbtire = t_count;
           }
           this.setTireBDD(t_tire, nbtire).subscribe({
-            next: value2 => {
+            next: () => {
               sub.next(true);
               sub.complete();
               localStorage.setItem('basket', JSON.stringify(basket));
               this.updateTotalItems();
             },
-            error(err) {
+            error() {
               sub.error('101|No Enough Items !');
             },
           });
         },
-        error(err) {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -73,8 +74,13 @@ export class BasketService {
 
   getContent(): TireContainer[] {
     const basket: string = localStorage.getItem('basket') ?? '{}';
-    const result: TireContainer[] = JSON.parse(basket);
-    return result;
+    return JSON.parse(basket) as TireContainer[];
+  }
+
+  getObservableContent(): Observable<TireContainer[]> {
+    const basket: string = localStorage.getItem('basket') ?? '[]'; // Remplacer '{}' par '[]' car un tableau vide est plus approprié
+    const parsedBasket: TireContainer[] = JSON.parse(basket) as TireContainer[];
+    return of(parsedBasket); // Retourne l'Observable contenant le tableau
   }
 
   refreshContent(): Observable<HttpResponse<TireContainer>> {
@@ -85,7 +91,7 @@ export class BasketService {
   removeATire(t_tire: ITire): Observable<boolean> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
-        next: value => {
+        next: () => {
           const basket = this.getContent();
           let nbtire = 0;
           if (basket.length > 0) {
@@ -100,19 +106,19 @@ export class BasketService {
               nbtire = basket[index].count;
             }
             this.setTireBDD(t_tire, nbtire).subscribe({
-              next: value2 => {
+              next: () => {
                 sub.next(true);
                 sub.complete();
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
               },
-              error(err) {
+              error() {
                 sub.error("104|can't add -1 tire!");
               },
             });
           }
         },
-        error(err) {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -122,16 +128,18 @@ export class BasketService {
   removeTires(t_tire: ITire): Observable<any> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
-        next: value => {
+        next: () => {
           let basket: TireContainer[] = this.getContent();
           if (basket.find(p => p.tire.id === t_tire.id)) {
             basket = basket.filter(p => p.tire.id !== t_tire.id);
             this.setTireBDD(t_tire, 0).subscribe({
-              next: value2 => {
+              next: () => {
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
+                sub.next(); // Émet une valeur de succès
+                sub.complete(); // Complète l'observable
               },
-              error(err) {
+              error() {
                 sub.error('103|Item has to exist !');
               },
             });
@@ -139,7 +147,7 @@ export class BasketService {
             sub.error('100|Item has to exist !');
           }
         },
-        error(err) {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -162,22 +170,34 @@ export class BasketService {
     if (!Array.isArray(basket)) return 0;
     return basket.length;
   }
-
   wipe(): Observable<boolean> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
-        next: value => {
+        next: () => {
           const basket = this.getContent();
-          for (const tire of basket) {
-            this.removeTires(tire.tire).subscribe();
 
-            localStorage.setItem('basket', JSON.stringify('{}'));
+          if (basket.length === 0) {
             this.updateTotalItems();
             sub.next(true);
             sub.complete();
+            return;
           }
+
+          from(basket)
+            .pipe(concatMap(tire => this.removeTires(tire.tire)))
+            .subscribe({
+              next: () => {
+                // Once all tires are removed
+                this.updateTotalItems();
+                sub.next(true);
+                sub.complete();
+              },
+              error(err) {
+                sub.error(err || 'Error removing tires.');
+              },
+            });
         },
-        error(err) {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -185,7 +205,6 @@ export class BasketService {
   }
 
   checkAccountValidity(): Observable<HttpResponse<boolean>> {
-    const options = createRequestOption('test');
     return new Observable<HttpResponse<boolean>>(hey => {
       hey.next(new HttpResponse<boolean>());
       hey.complete();
@@ -195,7 +214,7 @@ export class BasketService {
   setTire(t_tire: ITire, t_count: number): Observable<boolean> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
-        next: value => {
+        next: () => {
           let basket = this.getContent();
           if (t_count <= 0) {
             sub.error("104|can't add -1 tire!");
@@ -213,19 +232,19 @@ export class BasketService {
               basket[0] = { count: t_count, tire: t_tire };
             }
             this.setTireBDD(t_tire, t_count).subscribe({
-              next: value2 => {
+              next: () => {
                 localStorage.setItem('basket', JSON.stringify(basket));
                 this.updateTotalItems();
                 sub.next(true);
                 sub.complete();
               },
-              error(err) {
+              error() {
                 sub.error('101|No Enough Items !');
               },
             });
           }
         },
-        error(err) {
+        error() {
           sub.error('102|Account timeout !');
         },
       });
@@ -233,7 +252,7 @@ export class BasketService {
   }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
-    const container: IDContainer = { id: t_tire.id, count: t_count };
+    const container: RequestContainer = { userUuid: this.userinfo.getUserId(), tireId: t_tire.id, quantity: t_count };
     const options = createRequestOption(container);
     return this.http.get<boolean>(`${this.resourceUrl}/check-availability`, { params: options, observe: 'response' });
   }

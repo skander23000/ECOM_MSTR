@@ -1,6 +1,6 @@
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="head-title" jhiTranslate="form_header.payment_form.main_title"></div>
-
+  <div class="timer">Les produits sont réservé jusqu'à {{ this.endTime | date:'HH:mm'}}</div>
   <div class="form-part">
     <div>
       <span class="title" jhiTranslate="form_header.payment_form.billing_title"></span>
@@ -16,6 +16,7 @@
     <div class="input-container">
       <label for="adress" jhiTranslate="form_input_header.address"></label>
       <input
+        #firstInput
         type="text"
         id="adress"
         name="adress"
@@ -183,9 +184,9 @@
   <!-- Boutons -->
   <div class="button-container">
     <div class="button-row">
-      <button type="button" class="btn btn-back" (click)="goBackToCart()" jhiTranslate="form_button.cancel"></button>
+      <button type="button" class="btn btn-back" (click)="goBackToCart()" >Retourner au panier</button>
       <button type="submit" class="btn btn-primary">
-        <span jhiTranslate="form_button.submit"></span>
+        <span>Valider et payer la commande</span>
         <img src="../../content/images/website_icon_pack/icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />
       </button>
     </div>

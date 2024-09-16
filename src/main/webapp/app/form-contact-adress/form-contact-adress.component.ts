@@ -1,39 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { ICustomer } from '../entities/customer/customer.model';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { Router } from '@angular/router';
+import { FrontTimerService } from '../shared/front-timer.service';
 
 @Component({
   selector: 'jhi-form-contact-adress',
   standalone: true,
-  imports: [FormsModule, NgIf, TranslateDirective, NgOptimizedImage],
+  imports: [FormsModule, NgIf, TranslateDirective, NgOptimizedImage, DatePipe],
   templateUrl: './form-contact-adress.component.html',
   styleUrl: './form-contact-adress.component.scss',
 })
-export class FormContactAdressComponent implements OnInit {
+export class FormContactAdressComponent implements OnInit, AfterViewInit {
   // [TODO] Pass the required id to a possibly null id
   user_info: ICustomer = {
     id: 0,
   };
-
+  @ViewChild('firstInput') firstInputElement!: ElementRef;
   isSubmitted = false;
+  endTime: Date | null = null;
 
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
+    private timerService: FrontTimerService,
   ) {}
 
   ngOnInit(): void {
-    this.sharedDataService.userId$.subscribe(data => {
-      if (data) {
-        this.user_info.id = data;
-      }
+    this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
+      const currentTime = new Date(); // Heure actuelle
+      this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
     });
+
+    // [TODO] Modifier l'id pour qu'il soit une chaîne dans le JDL
+    // this.user_info.id = this.sharedDataService.getUserId()
   }
 
+  ngAfterViewInit(): void {
+    this.firstInputElement.nativeElement.focus();
+  }
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;
     return emailInput.touched && !emailPattern.test(emailInput.value);
@@ -67,6 +75,7 @@ export class FormContactAdressComponent implements OnInit {
 
   // Méthode pour retourner au panier
   goBackToCart(): void {
+    this.timerService.addActivity();
     this.router.navigate(['/panier']);
   }
 }

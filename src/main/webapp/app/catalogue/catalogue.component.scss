@@ -1,3 +1,5 @@
+@import '../../content/scss/colors';
+
 .container {
   margin: 20px 0 0 0;
   min-width: 100%;
@@ -28,12 +30,7 @@
 
 }
 
-.image {
-  padding: 2rem 0 1rem 0;
-  margin: auto;
-  width:200px;
-  height:200px;
- }
+
 .card-footer{
   border: none;
   display: flex;
@@ -59,18 +56,7 @@ a.custom-link {
 .details span{
   margin: 0.1rem;
 }
-/* Filtre*/
-.filter-panel{
-  padding: 1rem 2rem 1rem 1rem;
-  min-width: 8rem;
-  max-width: 100%;
-  height: 260px;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-right: 2rem;
-  display: flex;
-  flex-direction: column;
-}
+
 /*Trier*/
 .sorting-panel {
   padding: 1rem 2rem 1rem 1rem;
@@ -83,6 +69,19 @@ a.custom-link {
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
+}
+/* Filtre*/
+.filter-panel{
+  padding: 1rem 2rem 1rem 1rem;
+  min-width: 8rem;
+  max-width: 100%;
+  height: 310px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 /* Aligner le texte et les inputs radio */
@@ -142,7 +141,7 @@ a.custom-link {
   width: 100px;
   padding: 0.25rem;
   border-radius: 10px;
-  background-color: white;
+  background-color: $button_grey;
   cursor: pointer;
 }
 
@@ -159,6 +158,10 @@ a.custom-link {
     }
   }
 }
+.image {
+margin: auto;
+}
+
 .search-panel {
   display: flex;
   align-items: center;
@@ -183,7 +186,6 @@ a.custom-link {
 }
 
 .alert {
-  width: 95%;
   margin-left: 0.5rem;
   padding: 15px;
   margin-bottom: 20px;
@@ -196,12 +198,53 @@ a.custom-link {
   background-color: #d4edda;
   border-color: #c3e6cb;
 }
+.alert-error {
+  color: $error_color;
+  background-color: $error_background;
+  border-color: $error_border;
+}
 
 .close-button {
-  margin-top: -3.25 rem;
+  top:-14px;
   position: absolute;
   background: none;
   border: none;
   font-size: 50px;
   cursor: pointer;
 }
+
+
+.error-text {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.error-close {
+  cursor: pointer;
+  font-size: 18px;
+  color: $error_color;
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+}
+.compare-panel{
+
+  border-radius: 10px;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.compare{
+  padding: 1rem 2rem ;
+    margin: 0.5rem auto;
+    background-color: $button_grey;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+

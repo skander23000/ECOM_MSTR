@@ -11,6 +11,7 @@
 <!-- Affichage de tous les items du panier -->
 @if (isCartEmpty()) {
   <div class="alert alert-warning" jhiTranslate="cart_infos.empty"></div>
+  <div class="separator"></div>
 } @else {
   <div class="title_separator"></div>
   @for (cart_item of cart_items; track cart_item.tire?.id) {

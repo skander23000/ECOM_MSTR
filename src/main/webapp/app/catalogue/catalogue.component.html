@@ -4,13 +4,25 @@
     <button class="close-button" (click)="closeSuccessMessage()">×</button>
   </div>
 </div>
+<div *ngIf="showSuccessProductMessage" class="alert alert-success">
+  Votre produit a bien été ajouté au panier !
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="closeSuccessProductMessage()">×</button>
+  </div>
+</div>
+<div *ngIf="this.timerService.getShowTimerError()" class="alert alert-error">
+  <span class="error-text" jhiTranslate="error_text.inactivity"></span>
+  <div style="display: flex; justify-content: flex-end;">
+  <button class="close-button" (click)="closeTimerError()">&times;</button>
+  </div>
+</div>
 <div class="container">
 
   <div style="display: flex; flex-direction: column">
 
     <div class="sorting-panel">
-    <div style="display: flex; margin: 0.5rem 0rem">
-    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" >
+    <div style="display: flex; margin: 0.5rem 0">
+    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" alt="SortIcon">
     <h4>Tri :</h4>
     </div>
     <div class="sort-group">
@@ -58,8 +70,8 @@
     </div>
   </div>
     <div class="filter-panel">
-    <div style="display: flex; margin: 0.5rem 0rem">
-      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png">
+    <div style="display: flex; margin: 0.5rem 0">
+      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png" alt="filterIcon">
       <h4>Filtrer :</h4>
       </div>
       <div class="filter-group">
@@ -72,23 +84,23 @@
         </select>
       </div>
 
-
       <div class="filter-group">
-        <label class="label" for="priceRange">Par prix :</label>
+        <label class="label">Par prix :</label>
         <div class="custom-slider">
         <ngx-slider  [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions" (userChangeEnd)="onFilterChange()"></ngx-slider>
         </div>
-
+        <div>
+          <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
+        </div>
       </div>
     </div>
-    <div>
-      <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
-    </div>
+    <div class="compare-panel"><a class="compare" href="/comparaison">Comparer deux pneu </a></div>
+
   </div>
   <div class="row" style="height: 100%;width:100%">
 
     <div class="search-panel" style="position: relative;">
-      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png">
+      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png" alt="SearchIcon">
       <input
         type="text"
         placeholder="Rechercher un produit"
@@ -98,10 +110,9 @@
     </div>
 
 
-
     <div *ngFor="let tire of tires" class="col-md-4"   (click)="openDetails(tire)" style="margin-top: 0.75rem; margin-bottom: 0.75rem">
       <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black; width:95%; height:100%">
-        <img src="https://picsum.photos/200/200" class="image" alt="{{ tire.name }}">
+        <jhi-image class="image" [tire]="tire"></jhi-image>
         <div class="card-body">
           <div class="card-title-price">
             <h5 class="card-title">{{ (tire.name ?? '') | truncate:15}}</h5>
@@ -109,16 +120,16 @@
           </div>
           <div class="details">
           <span class="card-text">Ref : {{ tire.description }}</span>
-          <span class="card-text">Poids : {{ tire.weightIndex }}</span>
+          <span class="card-text">Indice de poids : {{ tire.weightIndex }}</span>
           </div>
           <div class="card-footer">
             <div>
-              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/snowflakes_icon.png">
-              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png">
+              <img class="footer-images" src="{{this.getIcon(tire)}}" alt="TypeIcon">
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png" alt="CertifiedIcon">
             </div>
             <div>
               <a>
-                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);">
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);" alt="AddToCartIcon">
               </a>
             </div>
           </div>
