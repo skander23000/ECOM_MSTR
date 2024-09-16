@@ -21,7 +21,7 @@
 } @else {
   <div class="title_separator"></div>
   @for (cart_item of cart_items; track cart_item.tire?.id) {
-    <jhi-cart-item (countChanged)="updateTireItemCount($event)" (destroy)="this.destroyItem($event)" (error)="showError($event)" [cart_item]="cart_item"></jhi-cart-item>
+    <jhi-cart-item (countChanged)="updateTireItemCount($event)" (destroy)="this.destroyItem($event)" (itemError)="showError($event)" [cart_item]="cart_item"></jhi-cart-item>
   }
   <div class="total-box">
     <span class="total-title" jhiTranslate="cart_infos.total"></span>

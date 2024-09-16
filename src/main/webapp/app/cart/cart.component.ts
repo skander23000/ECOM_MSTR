@@ -90,12 +90,12 @@ export class CartComponent implements OnInit {
     }
   }
 
-  showError(msg: string){
+  showError(msg: string): void {
     this.errorMessage = msg;
     this.showItemError = true;
   }
 
-  hideError(){
+  hideError(): void {
     this.showItemError = false;
   }
 
@@ -109,13 +109,13 @@ export class CartComponent implements OnInit {
         this.cart_items = [];
       },
       error: (err: string) => {
-        const err_split = err.split('|')
+        const err_split = err.split('|');
         if (err_split[0] === '102') {
           this.timerService.setTimer(1);
         } else {
-          this.showError("Impossible de vider le panier");
+          this.showError('Impossible de vider le panier');
         }
-      }
+      },
     });
   }
 
