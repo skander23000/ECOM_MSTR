@@ -5,11 +5,12 @@ import { BasketService } from '../basket.service';
 import { GetIconsService } from '../shared/get-icons.service';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { S3Service } from '../s3.service';
+import { TireImageComponent } from '../image/image.component';
 
 @Component({
   selector: 'jhi-detail',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TireImageComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })

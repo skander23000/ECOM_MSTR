@@ -5,16 +5,17 @@ import { NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { GetIconsService } from '../shared/get-icons.service';
 import { BasketService } from '../basket.service';
+import { TireImageComponent } from '../image/image.component';
 
 @Component({
   selector: 'jhi-cart-item',
   standalone: true,
-  imports: [FormsModule, NgOptimizedImage, TranslateDirective],
+  imports: [FormsModule, NgOptimizedImage, TranslateDirective, TireImageComponent],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })
 export class CartItemComponent implements OnInit {
-  @Input() cart_item: TireContainer = {};
+  @Input() cart_item: TireContainer = { tire: null, count: 0 };
   @Output() countChanged = new EventEmitter<{ id: number; count: number }>();
   @Output() destroy = new EventEmitter<number>();
   showError = false;
