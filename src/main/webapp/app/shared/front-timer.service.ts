@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class FrontTimerService {
-  private initialTime = 60; // 30 minutes en secondes
+  private initialTime = 30 * 60; // 30 minutes en secondes
   private remainingTime: number = this.initialTime;
   private timerSubscription!: Subscription;
   private isInitialized = false; // Vérifie si le timer est initialisé
