@@ -7,6 +7,7 @@ import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
 import { FrontTimerService } from '../shared/front-timer.service';
+import { BasketService } from '../basket.service';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -26,6 +27,7 @@ export class FormMoneyBillComponent implements OnInit {
     private sharedDataService: SharedUserDataService,
     private router: Router,
     private timerService: FrontTimerService,
+    private basketService: BasketService,
   ) {
     this.paymentInfo = {};
   }
@@ -98,6 +100,9 @@ export class FormMoneyBillComponent implements OnInit {
 
       this.sharedDataService.setSuccessMessage(true);
       this.timerService.stopTimer();
+
+      // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
+      this.basketService.wipe().subscribe();
 
       this.router.navigate(['/']);
       // eslint-disable-next-line no-console
