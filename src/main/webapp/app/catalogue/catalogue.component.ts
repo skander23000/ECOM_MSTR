@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TireService } from 'app/entities/tire/service/tire.service';
@@ -32,7 +32,7 @@ import TranslateDirective from '../shared/language/translate.directive';
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
-export class CatalogueComponent implements OnInit {
+export class CatalogueComponent implements OnInit, OnDestroy {
   tires: ITire[] = [];
   selectedTire: ITire | null = null;
   showModal = false;
@@ -77,6 +77,7 @@ export class CatalogueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    document.addEventListener('keydown', this.handleKeyboardEvent.bind(this));
     // Si le minuteur n'est pas initialisé, démarrer le timer
     if (!this.timerService.getIsInitialized()) {
       this.timerService.startTimer();
@@ -179,6 +180,7 @@ export class CatalogueComponent implements OnInit {
   }
 
   onAddToCart(tire: ITire): void {
+    this.showSuccessProductMessage = true;
     this.timerService.addActivity();
     this.basketService.addTire(tire).subscribe();
   }
@@ -203,5 +205,13 @@ export class CatalogueComponent implements OnInit {
 
   closeTimerError(): void {
     this.timerService.setShowTimerError(false);
+  }
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.showModal) {
+      this.closeModal();
+    }
+  }
+  ngOnDestroy(): void {
+    document.removeEventListener('keydown', this.handleKeyboardEvent.bind(this));
   }
 }

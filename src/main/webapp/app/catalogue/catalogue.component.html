@@ -85,16 +85,17 @@
       </div>
 
       <div class="filter-group">
-        <label class="label" for="priceRange">Par prix :</label>
+        <label class="label">Par prix :</label>
         <div class="custom-slider">
         <ngx-slider  [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions" (userChangeEnd)="onFilterChange()"></ngx-slider>
         </div>
-
+        <div>
+          <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
+        </div>
       </div>
     </div>
-    <div>
-      <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
-    </div>
+    <div class="compare-panel"><a class="compare" href="/comparaison">Comparer deux pneu </a></div>
+
   </div>
   <div class="row" style="height: 100%;width:100%">
 

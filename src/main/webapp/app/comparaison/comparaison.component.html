@@ -1,0 +1,47 @@
+<div class="tire-comparison">
+  <p class="head-title">Comparer deux pneus</p>
+
+  <div class="selection-container">
+    <div class="tire-selection">
+      <label for="tire1"><h2>Sélectionner le premier pneu :</h2></label>
+      <select id="tire1" [(ngModel)]="selectedTire1">
+        <option [ngValue]="null" disabled selected>Sélectionnez un pneu</option>
+        <option *ngFor="let tire of tires" [ngValue]="tire">{{ tire.name }}</option>
+      </select>
+    </div>
+
+    <div class="tire-selection">
+      <label for="tire2"><h2>Sélectionner le deuxième pneu :</h2></label>
+      <select id="tire2" [(ngModel)]="selectedTire2">
+        <option [ngValue]="null" disabled selected>Sélectionnez un pneu</option>
+        <option *ngFor="let tire of tires" [ngValue]="tire">{{ tire.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Comparaison des pneus -->
+  <div *ngIf="compareReady()" class="comparison-container">
+    <h4 style="margin: 2rem 0">Comparaison des pneus sélectionnés</h4>
+    <div class="comparison-columns">
+      <div class="tire-details">
+        <jhi-image class="image" [tire]="selectedTire1"></jhi-image>
+        <h4>{{ selectedTire1?.name }}</h4>
+        <p>Prix : {{ selectedTire1?.price }} €</p>
+        <p>Largeur : {{ selectedTire1?.tireWidth }}</p>
+        <p>Hauteur : {{ selectedTire1?.tireHeight }}</p>
+        <p>Diamètre : {{ selectedTire1?.tireDiameter }}</p>
+        <p>Type : {{ selectedTire1?.tireType }}</p>
+      </div>
+
+      <div class="tire-details">
+        <jhi-image class="image" [tire]="selectedTire2"></jhi-image>
+        <h4>{{ selectedTire2?.name }}</h4>
+        <p>Prix : {{ selectedTire2?.price }} €</p>
+        <p>Largeur : {{ selectedTire2?.tireWidth }}</p>
+        <p>Hauteur : {{ selectedTire2?.tireHeight }}</p>
+        <p>Diamètre : {{ selectedTire2?.tireDiameter }}</p>
+        <p>Type : {{ selectedTire2?.tireType }}</p>
+      </div>
+    </div>
+  </div>
+</div>

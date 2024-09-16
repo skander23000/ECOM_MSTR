@@ -11,9 +11,14 @@ const routes: Routes = [
     loadComponent: () => import('./home/home.component'),
     title: 'home.title',
   },
+
   {
     path: 'payment',
     loadComponent: () => import('./form-money-bill/form-money-bill.component').then(m => m.FormMoneyBillComponent),
+  },
+  {
+    path: 'comparaison',
+    loadComponent: () => import('./comparaison/comparaison.component').then(m => m.ComparaisonComponent),
   },
   {
     path: 'informations',
