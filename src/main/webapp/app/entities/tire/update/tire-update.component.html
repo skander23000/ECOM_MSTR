@@ -127,7 +127,16 @@
         @let imageUrlRef = editForm.get('imageUrl')!;
         <div class="mb-3">
           <label class="form-label" for="field_imageUrl" jhiTranslate="mstrtireApp.tire.imageUrl">Image Url</label>
-          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
+          <input
+            type="file"
+            accept="image/*"
+            class="form-control"
+            id="field_imageUrl"
+            (change)="handleFileInput($event)"
+            name="imageUrl"
+            data-cy="imageUrl"
+            formControlName="imageUrl"
+          />
           @if (imageUrlRef.invalid && (imageUrlRef.dirty || imageUrlRef.touched)) {
             <div>
               @if (editForm.get('imageUrl')?.errors?.required) {

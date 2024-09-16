@@ -1,0 +1,10 @@
+<div class="image-container">
+  <!-- Loading spinner or placeholder -->
+  <div *ngIf="loading" class="spinner">Loading...</div>
+
+  <!-- Render the <img> tag only after imageSrc is loaded -->
+  <img *ngIf="imageSrc" [src]="imageSrc" alt="{{ tire?.name }}" class="image" />
+
+  <!-- Fallback image if imageSrc is not found -->
+  <img *ngIf="!loading && !imageSrc" src="./content/images/website_icon_pack/icon_pack/image_not_found.png" alt="Image not found" />
+</div>

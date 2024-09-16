@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
 import { GetIconsService } from '../shared/get-icons.service';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
+import { S3Service } from '../s3.service';
 
 @Component({
   selector: 'jhi-detail',
@@ -21,6 +22,7 @@ export class DetailComponent {
     private basketService: BasketService,
     private iconService: GetIconsService,
     private sharedDataService: SharedUserDataService,
+    private s3: S3Service,
   ) {}
 
   decreaseQuantity(): void {

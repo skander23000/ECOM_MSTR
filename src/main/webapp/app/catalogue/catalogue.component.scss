@@ -30,12 +30,7 @@
 
 }
 
-.image {
-  padding: 2rem 0 1rem 0;
-  margin: auto;
-  width:200px;
-  height:200px;
- }
+
 .card-footer{
   border: none;
   display: flex;
@@ -161,6 +156,10 @@ a.custom-link {
     }
   }
 }
+.image {
+margin: auto;
+}
+
 .search-panel {
   display: flex;
   align-items: center;

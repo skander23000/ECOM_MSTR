@@ -10,6 +10,8 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
+import { S3Service } from '../s3.service';
+import { TireImageComponent } from 'app/image/image.component';
 import { GetIconsService } from '../shared/get-icons.service';
 import { FrontTimerService } from '../shared/front-timer.service';
 import TranslateDirective from '../shared/language/translate.directive';
@@ -17,7 +19,7 @@ import TranslateDirective from '../shared/language/translate.directive';
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe, TranslateDirective],
+  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe,TireImageComponent, TranslateDirective],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -60,6 +62,7 @@ export class CatalogueComponent implements OnInit {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
+    private s3: S3Service,
     private iconService: GetIconsService,
     protected timerService: FrontTimerService,
   ) {}
@@ -82,13 +85,14 @@ export class CatalogueComponent implements OnInit {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessMessage = data;
     });
-
     // S'abonner à la variable successInfoProduct pour afficher un message de succès produit
     this.sharedDataService.successInfoProduct$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessProductMessage = data;
     });
   }
+
+
   loadTires(): void {
     // On relance le timer
     this.timerService.addActivity();
