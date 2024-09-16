@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ITire } from '../entities/tire/tire.model';
 import { TireService } from '../entities/tire/service/tire.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { TireImageComponent } from '../image/image.component';
   templateUrl: './comparaison.component.html',
   styleUrl: './comparaison.component.scss',
 })
-export class ComparaisonComponent {
+export class ComparaisonComponent implements OnInit {
   tires: ITire[] = [];
   selectedTire1: ITire | null = null;
   selectedTire2: ITire | null = null;

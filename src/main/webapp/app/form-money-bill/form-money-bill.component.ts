@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { DatePipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
@@ -16,7 +16,7 @@ import { BasketService } from '../basket.service';
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
-export class FormMoneyBillComponent implements OnInit {
+export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
 
