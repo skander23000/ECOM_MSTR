@@ -11,7 +11,7 @@ import { BasketService } from '../basket.service';
   styleUrls: ['./my-header.component.scss'],
 })
 export class MyHeaderComponent implements OnInit {
-  totalItems = 0;
+  totalItems: number | null = 0;
   constructor(private basketService: BasketService) {}
   ngOnInit(): void {
     // S'abonner au total des items

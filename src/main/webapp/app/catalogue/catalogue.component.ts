@@ -19,7 +19,16 @@ import TranslateDirective from '../shared/language/translate.directive';
 @Component({
   selector: 'jhi-catalogue',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DetailComponent, FormsModule, NgxSliderModule, TruncatePipe,TireImageComponent, TranslateDirective],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    DetailComponent,
+    FormsModule,
+    NgxSliderModule,
+    TruncatePipe,
+    TireImageComponent,
+    TranslateDirective,
+  ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
 })
@@ -91,7 +100,6 @@ export class CatalogueComponent implements OnInit {
       this.showSuccessProductMessage = data;
     });
   }
-
 
   loadTires(): void {
     // On relance le timer

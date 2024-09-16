@@ -19,9 +19,12 @@ $line-height: 2px; // Hauteur de la barre
     text-decoration: none;
     color: $text_black;
     font-family: 'Arial', sans-serif;
-
     .bold {
       font-weight: bold;
+    }
+    img{
+      width: 10rem;
+      height: 8rem;
     }
   }
 
