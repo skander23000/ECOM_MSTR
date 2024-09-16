@@ -71,6 +71,9 @@ export class FormMoneyBillComponent implements OnInit {
 
   // Méthode pour valider la date d'expiration
   validateIsExpired(monthValue: NgModel): boolean | null {
+    if (!monthValue.value) {
+      return null;
+    }
     const [inputMonth, inputYear] = monthValue.value.split('/');
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Les mois dans JS sont indexés de 0 à 11
@@ -79,9 +82,6 @@ export class FormMoneyBillComponent implements OnInit {
     // Comparaison de la date
     const inputMonthNumber = parseInt(inputMonth, 10);
     const inputYearNumber = parseInt(inputYear, 10);
-    if (!monthValue.value) {
-      return null;
-    }
     return monthValue.touched && !(inputYearNumber > currentYear || (inputYearNumber === currentYear && inputMonthNumber >= currentMonth));
   }
 
