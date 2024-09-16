@@ -24,6 +24,10 @@ const routes: Routes = [
     loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent),
   },
   {
+    path: 'credits',
+    loadComponent: () => import('./credits/credits.component').then(m => m.CreditsComponent),
+  },
+  {
     path: '',
     loadComponent: () => import('./layouts/navbar/navbar.component'),
     outlet: 'navbar',
