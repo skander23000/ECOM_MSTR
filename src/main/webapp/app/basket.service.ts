@@ -3,7 +3,7 @@ import { ITire } from './entities/tire/tire.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from './core/config/application-config.service';
 import { createRequestOption } from './core/request/request-util';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, concatMap, from, Observable, of } from 'rxjs';
 import { SharedUserDataService } from './shared/shared-user-data.service';
 
 interface TireContainer {
@@ -170,21 +170,32 @@ export class BasketService {
     if (!Array.isArray(basket)) return 0;
     return basket.length;
   }
-
   wipe(): Observable<boolean> {
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
         next: () => {
           const basket = this.getContent();
-          for (const tire of basket) {
-            this.removeTires(tire.tire).subscribe();
 
-            const empty: TireContainer[] = [];
-            localStorage.setItem('basket', JSON.stringify(empty));
+          if (basket.length === 0) {
             this.updateTotalItems();
             sub.next(true);
             sub.complete();
+            return;
           }
+
+          from(basket)
+            .pipe(concatMap(tire => this.removeTires(tire.tire)))
+            .subscribe({
+              next: () => {
+                // Once all tires are removed
+                this.updateTotalItems();
+                sub.next(true);
+                sub.complete();
+              },
+              error(err) {
+                sub.error(err || 'Error removing tires.');
+              },
+            });
         },
         error() {
           sub.error('102|Account timeout !');
