@@ -93,33 +93,6 @@ export class CartItemComponent implements OnInit {
     });
   }
 
-  onCountChange(): void {
-    this.isAvailable = false;
-    if (!this.cart_item.count || !this.cart_item.tire) {
-      return;
-    }
-
-    let countValue = parseFloat(String(this.cart_item.count));
-
-    if (isNaN(countValue) || countValue <= 0 || countValue >= 255) {
-      // Réinitialiser à 1 si la valeur est non numérique ou inférieure ou égale à 0
-      countValue = 1;
-    }
-    this.basktService.setTire(this.cart_item.tire, countValue).subscribe({
-      next: () => {
-        if (this.cart_item.count && this.cart_item.count > 1) {
-          this.cart_item.count = countValue;
-          this.isAvailable = true;
-          this.updateTotalPrice();
-        }
-      },
-      error: () => {
-        this.isAvailable = true;
-        this.showError = true;
-      },
-    });
-  }
-
   onDestroy(): void {
     if (!confirm('Voulez vous vraiment retirer ce pneu de votre panier ?')) {
       return;

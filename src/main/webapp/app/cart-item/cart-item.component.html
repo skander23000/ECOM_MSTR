@@ -32,7 +32,7 @@
 
     <div class="plus-moins">
       <button (click)="decreaseQuantity()" [disabled]="!isAvailable">-</button>
-      <input type="text" [(ngModel)]="cart_item.count" (ngModelChange)="onCountChange()" [disabled]="!isAvailable">
+      <span class="text-area">{{ this.cart_item.count }}</span>
       <button (click)="increaseQuantity()" [disabled]="!isAvailable">+</button>
     </div>
   </div>
