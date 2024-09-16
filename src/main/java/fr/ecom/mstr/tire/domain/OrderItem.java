@@ -30,11 +30,11 @@ public class OrderItem implements Serializable {
     @Column(name = "price", precision = 21, scale = 2, nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "customer" }, allowSetters = true)
     private CustomerOrder customerOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "itemListLocks", "tireBrand" }, allowSetters = true)
     private Tire tire;
 

@@ -35,6 +35,8 @@ public class CustomerOrderDTO implements Serializable {
     @NotNull
     private PaymentStatus paymentStatus;
 
+    private CustomerDTO customer;
+
     public Long getId() {
         return id;
     }
@@ -91,6 +93,14 @@ public class CustomerOrderDTO implements Serializable {
         this.paymentStatus = paymentStatus;
     }
 
+    public CustomerDTO getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerDTO customer) {
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -123,6 +133,7 @@ public class CustomerOrderDTO implements Serializable {
             ", paymentDate='" + getPaymentDate() + "'" +
             ", paymentMethod='" + getPaymentMethod() + "'" +
             ", paymentStatus='" + getPaymentStatus() + "'" +
+            ", customer='" + getCustomer() + "'" +
             "}";
     }
 }

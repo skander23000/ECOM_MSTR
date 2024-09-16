@@ -1,23 +1,13 @@
 package fr.ecom.mstr.tire.web.rest;
 
-import static fr.ecom.mstr.tire.domain.OrderItemAsserts.*;
-import static fr.ecom.mstr.tire.web.rest.TestUtil.createUpdateProxyForBean;
-import static fr.ecom.mstr.tire.web.rest.TestUtil.sameNumber;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ecom.mstr.tire.IntegrationTest;
-import fr.ecom.mstr.tire.domain.OrderItem;
-import fr.ecom.mstr.tire.repository.OrderItemRepository;
+import fr.ecom.mstr.tire.domain.*;
+import fr.ecom.mstr.tire.repository.*;
+import fr.ecom.mstr.tire.service.ItemListLockService;
 import fr.ecom.mstr.tire.service.dto.OrderItemDTO;
 import fr.ecom.mstr.tire.service.mapper.OrderItemMapper;
 import jakarta.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +17,19 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static fr.ecom.mstr.tire.domain.OrderItemAsserts.*;
+import static fr.ecom.mstr.tire.web.rest.TestUtil.createUpdateProxyForBean;
+import static fr.ecom.mstr.tire.web.rest.TestUtil.sameNumber;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link OrderItemResource} REST controller.
@@ -55,7 +58,22 @@ class OrderItemResourceIT {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerOrderRepository customerOrderRepository;
+
+    @Autowired
+    private TireRepository tireRepository;
+
+    @Autowired
+    private ItemListLockRepository itemListLockRepository;
+
+    @Autowired
     private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private ItemListLockService itemListLockService;
 
     @Autowired
     private EntityManager em;
@@ -69,7 +87,7 @@ class OrderItemResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -79,7 +97,7 @@ class OrderItemResourceIT {
 
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -122,6 +140,83 @@ class OrderItemResourceIT {
         assertOrderItemUpdatableFieldsEquals(returnedOrderItem, getPersistedOrderItem(returnedOrderItem));
 
         insertedOrderItem = returnedOrderItem;
+    }
+
+    @Test
+    @Transactional
+    void createListOfOrderItemsForPayment() throws Exception {
+        long databaseSizeBeforeCreate = getRepositoryCount();
+        long databaseCustomerSizeBeforeCreate = customerRepository.count();
+        long databaseCustomerOrderSizeBeforeCreate = customerOrderRepository.count();
+
+        Tire tire1 = TireResourceIT.createEntity();
+        Tire tire2 = TireResourceIT.createEntity();
+        tire2.setReference("ABABABABABAB");
+
+        tire1 = tireRepository.saveAndFlush(tire1);
+        tire2 = tireRepository.saveAndFlush(tire2);
+
+        ItemListLock itemLock1 = ItemListLockResourceIT.createEntity();
+        itemLock1.setTire(tire1);
+        ItemListLock itemLock2 = ItemListLockResourceIT.createEntity();
+        itemLock2.setTire(tire2);
+        itemLock2.setUserUuid(itemLock1.getUserUuid());
+        itemLock2.setQuantity(50);
+
+        itemLock1 = itemListLockRepository.saveAndFlush(itemLock1);
+        itemLock2 = itemListLockRepository.saveAndFlush(itemLock2);
+
+        Customer customer = CustomerResourceIT.createEntity();
+        CustomerOrder customerOrder = CustomerOrderResourceIT.createEntity();
+        customerOrder.setCustomer(customer);
+
+        OrderItem or1 = createEntity();
+        or1.setCustomerOrder(customerOrder);
+        or1.setTire(tire1);
+
+        OrderItem or2 = createEntity();
+        or2.setCustomerOrder(customerOrder);
+        or2.setTire(tire2);
+        or2.setQuantity(50);
+
+        List<OrderItemDTO> orderItemList = List.of(orderItemMapper.toDto(or1), orderItemMapper.toDto(or2));
+        long lockCount = itemListLockRepository.count();
+
+        // Get the orderItem
+        restOrderItemMockMvc
+            .perform(post(ENTITY_API_URL + "/payment?userUuid=" + itemLock1.getUserUuid().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsBytes(orderItemList)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(notNullValue()))
+            .andExpect(jsonPath("$.[*].quantity").value(contains(or1.getQuantity(), or2.getQuantity())))
+            .andExpect(jsonPath("$.[*].price").value(contains(sameNumber(or1.getPrice()), sameNumber(or2.getPrice()))))
+            .andExpect(jsonPath("$.[*].tire.id").value(contains(tire1.getId().intValue(), tire2.getId().intValue())))
+            .andExpect(jsonPath("$.[*].customerOrder.id").value(notNullValue()))
+            .andExpect(jsonPath("$.[*].customerOrder.orderDate").value(hasItem(customerOrder.getOrderDate().toString())))
+            .andExpect(jsonPath("$.[*].customerOrder.status").value(hasItem(customerOrder.getStatus().toString())))
+            .andExpect(jsonPath("$.[*].customerOrder.totalAmount").value(hasItem(sameNumber(customerOrder.getTotalAmount()))))
+            .andExpect(jsonPath("$.[*].customerOrder.paymentDate").value(hasItem(customerOrder.getPaymentDate().toString())))
+            .andExpect(jsonPath("$.[*].customerOrder.paymentMethod").value(hasItem(customerOrder.getPaymentMethod().toString())))
+            .andExpect(jsonPath("$.[*].customerOrder.paymentStatus").value(hasItem(customerOrder.getPaymentStatus().toString())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.id").value(notNullValue()))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.firstName").value(hasItem(customer.getFirstName())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.lastName").value(hasItem(customer.getLastName())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.email").value(hasItem(customer.getEmail())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.address").value(hasItem(customer.getAddress())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.city").value(hasItem(customer.getCity())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.zipCode").value(hasItem(customer.getZipCode())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.country").value(hasItem(customer.getCountry())))
+            .andExpect(jsonPath("$.[*].customerOrder.customer.phoneNumber").value(hasItem(customer.getPhoneNumber())));
+
+        long databaseSizeAfterCreate = getRepositoryCount();
+        long databaseCustomerSizeAfterCreate = customerRepository.count();
+        long databaseCustomerOrderSizeAfterCreate = customerOrderRepository.count();
+        assertThat(databaseSizeBeforeCreate).isEqualTo(databaseSizeAfterCreate - 2);
+        assertThat(databaseCustomerSizeBeforeCreate).isEqualTo(databaseCustomerSizeAfterCreate - 1);
+        assertThat(databaseCustomerOrderSizeBeforeCreate).isEqualTo(databaseCustomerOrderSizeAfterCreate - 1);
+        assertThat(lockCount).isEqualTo(itemListLockRepository.count() + 2);
     }
 
     @Test
