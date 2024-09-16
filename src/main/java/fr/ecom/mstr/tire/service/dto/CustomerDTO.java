@@ -35,8 +35,6 @@ public class CustomerDTO implements Serializable {
 
     private String phoneNumber;
 
-    private CustomerOrderDTO customerOrder;
-
     public Long getId() {
         return id;
     }
@@ -109,14 +107,6 @@ public class CustomerDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public CustomerOrderDTO getCustomerOrder() {
-        return customerOrder;
-    }
-
-    public void setCustomerOrder(CustomerOrderDTO customerOrder) {
-        this.customerOrder = customerOrder;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -151,7 +141,6 @@ public class CustomerDTO implements Serializable {
             ", zipCode='" + getZipCode() + "'" +
             ", country='" + getCountry() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", customerOrder=" + getCustomerOrder() +
             "}";
     }
 }

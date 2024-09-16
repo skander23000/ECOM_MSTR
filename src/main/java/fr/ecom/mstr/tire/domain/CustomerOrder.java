@@ -54,7 +54,7 @@ public class CustomerOrder implements Serializable {
     private PaymentStatus paymentStatus;
 
     @JsonIgnoreProperties(value = { "customerOrder" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "customerOrder")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "customerOrder")
     private Customer customer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -11,6 +11,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,10 +62,28 @@ public class OrderItemResource {
         if (orderItemDTO.getId() != null) {
             throw new BadRequestAlertException("A new orderItem cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        orderItemDTO = orderItemService.save(orderItemDTO);
+        orderItemDTO = this.orderItemService.save(orderItemDTO);
         return ResponseEntity.created(new URI("/api/order-items/" + orderItemDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, orderItemDTO.getId().toString()))
             .body(orderItemDTO);
+    }
+
+    /**
+     * {@code POST  /order-items} : Create a new orderItem.
+     *
+     * @param orderItemDTO the orderItemDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new orderItemDTO, or with status {@code 400 (Bad Request)} if the orderItem has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/payment")
+    public ResponseEntity<List<OrderItemDTO>> createOrderItemForPayment(@RequestParam("userUuid") UUID userUuid, @Valid @RequestBody List<OrderItemDTO> orderItemDTO) throws URISyntaxException {
+        LOG.debug("REST request to save OrderItem : {}", orderItemDTO);
+        if (orderItemDTO != null && !orderItemDTO.isEmpty() &&
+            orderItemDTO.stream().anyMatch(order -> order.getId() != null)) {
+            throw new BadRequestAlertException("A new orderItem cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        orderItemDTO = this.orderItemService.saveAll(orderItemDTO, userUuid);
+        return ResponseEntity.ok().body(orderItemDTO);
     }
 
     /**
@@ -93,7 +113,7 @@ public class OrderItemResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        orderItemDTO = orderItemService.update(orderItemDTO);
+        orderItemDTO = this.orderItemService.update(orderItemDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orderItemDTO.getId().toString()))
             .body(orderItemDTO);
@@ -127,7 +147,7 @@ public class OrderItemResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<OrderItemDTO> result = orderItemService.partialUpdate(orderItemDTO);
+        Optional<OrderItemDTO> result = this.orderItemService.partialUpdate(orderItemDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -144,7 +164,7 @@ public class OrderItemResource {
     @GetMapping("")
     public ResponseEntity<List<OrderItemDTO>> getAllOrderItems(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of OrderItems");
-        Page<OrderItemDTO> page = orderItemService.findAll(pageable);
+        Page<OrderItemDTO> page = this.orderItemService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -158,7 +178,7 @@ public class OrderItemResource {
     @GetMapping("/{id}")
     public ResponseEntity<OrderItemDTO> getOrderItem(@PathVariable("id") Long id) {
         LOG.debug("REST request to get OrderItem : {}", id);
-        Optional<OrderItemDTO> orderItemDTO = orderItemService.findOne(id);
+        Optional<OrderItemDTO> orderItemDTO = this.orderItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(orderItemDTO);
     }
 
@@ -171,7 +191,7 @@ public class OrderItemResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderItem(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete OrderItem : {}", id);
-        orderItemService.delete(id);
+        this.orderItemService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

@@ -159,7 +159,7 @@ public class ItemListLockService {
         return this.itemListLockRepository.isItemListLockByUuid(userUuid);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<ItemListLockDTO> findAllItemListLockByUserUuid(UUID userUuid) {
         return this.itemListLockRepository.findByUuid(userUuid)
             .stream().map(this.itemListLockMapper::toDto)
@@ -207,5 +207,16 @@ public class ItemListLockService {
     public void delete(Long id) {
         LOG.debug("Request to delete ItemListLock : {}", id);
         itemListLockRepository.deleteById(id);
+    }
+
+    /**
+     * Delete the itemListLock by ids.
+     *
+     * @param ids the list of ids of entities.
+     */
+    @Transactional
+    public void deleteAll(List<Long> ids) {
+        LOG.debug("Request to delete ItemListLock : {}", ids);
+        itemListLockRepository.deleteAllById(ids);
     }
 }
