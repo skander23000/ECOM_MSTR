@@ -1,11 +1,30 @@
 id;reference;name;price;tire_width;tire_height;tire_diameter;tire_type;image_url;speed_index;weight_index;quantity;disable;disable_reason;description
-1;quand même si;secouriste séculaire;18558.3;fidèle de crainte que en outre de;tchou tchouu à l'encontre de;commissionnaire;WINTER;parce que smack ha ha;A_EIGHT;SIXTY;11609;true;permettre oui boum;hé responsable
-2;souhaiter;secours admirablement;27938.89;étant donné que placide apaiser;décider aïe aussi;à bas de cocorico dans la mesure où;WINTER;même;A_ONE;ONE_HUNDRED_TWENTY;2086;true;aux alentours de sombrer;orange svelte aux environs de
-3;gestionnaire jusqu’à ce que;ah accentuer;9960.12;amorphe;refaire;pff confronter boum;SUMMER;sincère délectable cocorico;N;ONE_HUNDRED_TWENTY;4194;true;d'entre sombre;effrayer
-4;hôte;au cas où lors;12674.2;pourvu que toc-toc lectorat;pour que concurrence triathlète;agréable chez fouiller;SUMMER;corps enseignant lunatique;Y;TWENTY;23840;true;manipuler dans la mesure où;concentrer mépriser
-5;camarade chez psitt;assez de peur que auparavant;9869.45;antique connaître;affronter athlète;assez apte ci;ALL_SEASON;que atténuer extatique;A_ONE;NINETY;15335;false;réduire énoncer;atchoum vite au moyen de
-6;aux alentours de quand;personnel;14200.78;psitt de sorte que;tendre;complètement triathlète placide;WINTER;conseil d’administration;A_EIGHT;SIXTY;31726;false;aimer trop à défaut de ;durant quant à
-7;reconstruire adorable;dès que bang;6013.6;ouin marquer;dissocier badaboum biathlète;paf suivant conduire;ALL_SEASON;mairie pourpre téméraire;N;SIXTY;10429;false;entièrement;splendide pin-pon
-8;conseil d’administration étant donné que immense;proche toc-toc;4783.45;formuler;dense;électorat;WINTER;circulaire laisser exprès;A_ONE;TWENTY;1191;true;combien vroum géométrique;vite
-9;conférer alors que;gagner plic badaboum;11812.42;personnel professionnel d’autant que raide;presque placide;ouah d'avec smack;ALL_SEASON;puisque;N;ONE_HUNDRED_TWENTY;8533;false;cocorico demain téméraire;responsable comment craquer
-10;varier;fidèle;2767.74;sitôt que équipe;ci zzzz;habile pallier atchoum;SUMMER;pas mal si bien que parce que;N;SIXTY;26497;true;de peur que quelque;de façon à ce que puisque tranquille
+1;205/55 R16 90Y;UltraGrip 5000;89.99;205.00;55.00;16.00;ALL_SEASON;http://example.com/images/tire1.jpg;Y;NINETY;10;false;;All-season tire with enhanced grip and durability.
+2;195/65 R15 60N;EcoDrive X1;79.50;195.00;65.00;15.00;ALL_SEASON;http://example.com/images/tire2.jpg;N;SIXTY;15;false;;Fuel-efficient tire designed for smooth rides.
+8;195/65 R15 60N 8;EcoDrive Plus;79.00;195.00;65.00;15.00;ALL_SEASON;http://example.com/images/tire8.jpg;N;SIXTY;18;false;;Updated version of EcoDrive with improved efficiency.
+21;195/65 R15 60N 21;EcoJourney;80.00;195.00;65.00;15.00;ALL_SEASON;http://example.com/images/tire21.jpg;N;SIXTY;20;false;;Fuel-efficient tire for economical driving.
+26;195/65 R15 60N 26;UrbanRide;90.00;195.00;65.00;15.00;ALL_SEASON;http://example.com/images/tire26.jpg;N;SIXTY;18;false;;Ideal for urban driving with a focus on comfort.
+31;195/65 R15 60N 31;EcoPlus;85.00;195.00;65.00;15.00;ALL_SEASON;http://example.com/images/tire31.jpg;N;SIXTY;16;false;;Eco-friendly tire with an emphasis on fuel efficiency.
+3;225/45 R17 120Y;SportMax Pro;120.00;225.00;45.00;17.00;SUMMER;http://example.com/images/tire3.jpg;Y;ONE_HUNDRED_TWENTY;8;false;;High-performance tire for sporty vehicles.
+13;225/45 R18 120Y;SportEdge;125.00;225.00;45.00;18.00;SUMMER;http://example.com/images/tire13.jpg;Y;ONE_HUNDRED_TWENTY;10;false;;Sporty tire with high-speed performance.
+22;225/45 R18 120Y 22;SportGrip;125.00;225.00;45.00;18.00;SUMMER;http://example.com/images/tire22.jpg;Y;ONE_HUNDRED_TWENTY;10;false;;High-performance tire with excellent handling.
+30;225/45 R18 120Y 30;SportDrive;130.00;225.00;45.00;18.00;SUMMER;http://example.com/images/tire30.jpg;Y;ONE_HUNDRED_TWENTY;10;false;;Sport tire designed for high-speed and agile handling.
+4;215/60 R16 90N;WinterSafe 360;99.99;215.00;60.00;16.00;WINTER;http://example.com/images/tire4.jpg;N;NINETY;12;true;Out of stock;Winter tire with superior traction in icy conditions.
+12;215/60 R16 90Y;AllSeason Prime;100.00;215.00;60.00;16.00;ALL_SEASON;http://example.com/images/tire12.jpg;Y;NINETY;14;false;;Reliable all-season tire with good grip.
+9;215/55 R17 90N;WinterWarrior;130.00;215.00;55.00;17.00;WINTER;http://example.com/images/tire9.jpg;N;NINETY;12;false;;Premium winter tire for extreme conditions.
+17;215/55 R17 90N 17;SnowShield;120.00;215.00;55.00;17.00;WINTER;http://example.com/images/tire17.jpg;N;NINETY;14;false;;Designed for snowy and icy conditions.
+10;205/50 R16 60Y;CityCommuter;90.50;205.00;50.00;16.00;ALL_SEASON;http://example.com/images/tire10.jpg;Y;SIXTY;20;false;;Ideal for city driving with a focus on durability.
+18;205/60 R16 60Y;RoadKing;85.00;205.00;60.00;16.00;ALL_SEASON;http://example.com/images/tire18.jpg;Y;SIXTY;18;false;;Durable tire for everyday road use.
+23;205/60 R16 60Y 23;RoadComfort;95.00;205.00;60.00;16.00;ALL_SEASON;http://example.com/images/tire23.jpg;Y;SIXTY;15;false;;Comfortable ride with a focus on reducing road noise.
+28;205/60 R16 60Y 28;ComfortTrail;100.00;205.00;60.00;16.00;ALL_SEASON;http://example.com/images/tire28.jpg;Y;SIXTY;16;false;;Comfortable tire for both highway and trail.
+5;235/70 R17 120A8;AllTerrain Plus;105.75;235.00;70.00;17.00;ALL_SEASON;http://example.com/images/tire5.jpg;A_EIGHT;ONE_HUNDRED_TWENTY;6;false;;Versatile tire suitable for off-road adventures.
+11;235/75 R17 120A8;OffRoad Xtreme;140.00;235.00;75.00;17.00;ALL_SEASON;http://example.com/images/tire11.jpg;A_EIGHT;ONE_HUNDRED_TWENTY;8;false;;Heavy-duty off-road tire for rugged terrains.
+19;235/70 R17 120A8 19;AllRoad Pro;140.00;235.00;70.00;17.00;ALL_SEASON;http://example.com/images/tire19.jpg;A_EIGHT;ONE_HUNDRED_TWENTY;8;false;;Premium tire for all-terrain driving.
+24;235/75 R17 120A8 24;TrailMaster;135.00;235.00;75.00;17.00;ALL_SEASON;http://example.com/images/tire24.jpg;A_EIGHT;ONE_HUNDRED_TWENTY;8;false;;Designed for off-road adventures and rugged conditions.
+32;235/70 R17 120A8 32;TrailBlazer;140.00;235.00;70.00;17.00;ALL_SEASON;http://example.com/images/tire32.jpg;A_EIGHT;ONE_HUNDRED_TWENTY;8;false;;Durable off-road tire for challenging terrains.
+6;205/60 R16 90Y;ComfortRide 200;85.00;205.00;60.00;16.00;ALL_SEASON;http://example.com/images/tire6.jpg;Y;NINETY;14;false;;Comfort-oriented tire for a smooth ride.
+7;225/50 R17 120A1;TractionMaster;115.00;225.00;50.00;17.00;SUMMER;http://example.com/images/tire7.jpg;A_ONE;ONE_HUNDRED_TWENTY;10;false;;High-traction tire ideal for performance vehicles.
+16;225/50 R17 120A1 16;TreadMaster;110.00;225.00;50.00;17.00;SUMMER;http://example.com/images/tire16.jpg;A_ONE;ONE_HUNDRED_TWENTY;10;false;;Tire with advanced tread patterns for better grip.
+25;215/50 R17 90Y;SummerSpeed;105.00;215.00;50.00;17.00;SUMMER;http://example.com/images/tire25.jpg;Y;NINETY;12;false;;Summer tire optimized for high-speed driving.
+27;205/55 R16 90N;SnowMaster;125.00;205.00;55.00;16.00;WINTER;http://example.com/images/tire27.jpg;N;NINETY;14;false;;Snow tire with excellent traction on icy roads.
+29;225/55 R17 90Y;AllWeather X;110.00;225.00;55.00;17.00;ALL_SEASON;http://example.com/images/tire29.jpg;Y;NINETY;12;false;;All-weather tire with versatile performance.

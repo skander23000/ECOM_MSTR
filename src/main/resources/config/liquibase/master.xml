@@ -22,4 +22,6 @@
     <include file="config/liquibase/changelog/20240909111744_added_entity_constraints_OrderItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240909111745_added_entity_constraints_ItemListLock.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240912164950_updated_entity_Tire_add_column_version.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/202409161352_InitializeData.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

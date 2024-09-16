@@ -39,7 +39,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   // Variables de pagination
   currentPage = 0;
-  itemsPerPage = 5;
+  itemsPerPage = 6;
   totalItems = 0;
 
   // Variables de tri
@@ -49,7 +49,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   // Variables de filtrage
   tireType = '';
   priceMin = 0;
-  priceMax = 50000;
+  priceMax = 300;
 
   // Variable de recherche
   searchQuery = '';
@@ -59,8 +59,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   sliderOptions: Options = {
     floor: 0,
-    ceil: 50000,
-    step: 100,
+    ceil: 300,
+    step: 5,
     translate(value: number) {
       return `${value} + €`;
     },
@@ -117,11 +117,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     }
 
     if (this.priceMin > 0) {
-      params['price.greaterThan'] = this.priceMin;
+      params['price.greaterThanOrEqual'] = this.priceMin;
     }
 
     if (this.priceMax) {
-      params['price.lessThan'] = this.priceMax;
+      params['price.lessThanOrEqual'] = this.priceMax;
     }
 
     if (this.searchQuery) {
