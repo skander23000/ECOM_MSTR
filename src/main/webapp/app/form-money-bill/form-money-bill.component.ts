@@ -20,7 +20,7 @@ import { IOrderItem } from '../entities/order-item/order-item.model';
 export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
-
+  totalItems: number | null = 0;
   useDeliveryAddress = false;
   isSubmitted = false;
   endTime: Date | null = null;
@@ -36,6 +36,10 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.user_infos = this.sharedDataService.getUserInfo();
+
+    this.basketService.totalItems$.subscribe(total => {
+      this.totalItems = total;
+    });
     this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
       const currentTime = new Date(); // Heure actuelle
       this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
@@ -122,13 +126,14 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
         console.warn('Aucune information utilisateur disponible.');
         return;
       }
+      const now = new Date().toISOString();
       const orderItems: any[] = this.basketService.getContent().map(item => ({
         quantity: item.count,
         price: item.tire.price,
         customerOrder: {
-          totalAmount: (item.tire.price ?? 0) * item.count,
-          paymentDate: new Date().toISOString(),
-          orderDate: new Date().toISOString(),
+          totalAmount: (this.totalItems ?? 0) * item.count,
+          paymentDate: now,
+          orderDate: now,
           status: 'PENDING',
           paymentMethod: 'CREDIT_CARD',
           paymentStatus: 'PENDING',

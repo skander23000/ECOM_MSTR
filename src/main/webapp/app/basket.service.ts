@@ -24,6 +24,7 @@ interface RequestContainer {
 export class BasketService {
   totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
+
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
