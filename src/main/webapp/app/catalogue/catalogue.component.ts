@@ -10,7 +10,6 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
-import { S3Service } from '../s3.service';
 import { TireImageComponent } from 'app/image/image.component';
 import { GetIconsService } from '../shared/get-icons.service';
 import { FrontTimerService } from '../shared/front-timer.service';
@@ -56,6 +55,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
+  showerError = false;
+  errorMessage = '';
 
   sliderOptions: Options = {
     floor: 0,
@@ -71,7 +72,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
-    private s3: S3Service,
     private iconService: GetIconsService,
     protected timerService: FrontTimerService,
   ) {}
@@ -180,9 +180,28 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   onAddToCart(tire: ITire): void {
-    this.showSuccessProductMessage = true;
     this.timerService.addActivity();
-    this.basketService.addTire(tire).subscribe();
+    this.basketService.addTire(tire).subscribe({
+      next: () => {
+        this.showSuccessProductMessage = true;
+      },
+      error: (err: string) => {
+        const err_split = err.split('|');
+        if (err_split[0] === '102') {
+          this.timerService.setTimer(1);
+        } else {
+          this.errorMessage = 'Pas assez de pneu en stock';
+          this.showerError = true;
+        }
+      },
+    });
+  }
+  treatError(err: string): void {
+    this.errorMessage = err;
+    this.showerError = true;
+  }
+  hideError(): void {
+    this.showerError = false;
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();
