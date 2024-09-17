@@ -5,7 +5,7 @@ import { ApplicationConfigService } from './core/config/application-config.servi
 import { createRequestOption } from './core/request/request-util';
 import { BehaviorSubject, concatMap, from, Observable, of, Subscriber } from 'rxjs';
 import { SharedUserDataService } from './shared/shared-user-data.service';
-import { OrderItem } from './orderItem';
+import { IOrderItem } from './entities/order-item/order-item.model';
 
 interface TireContainer {
   tire: ITire;
@@ -290,6 +290,11 @@ export class BasketService {
       });
     });
   }
+  createOrderItemsForPayment(userUuid: string, orderItems: IOrderItem[]): Observable<IOrderItem[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams().set('userUuid', userUuid);
+    return this.http.post<IOrderItem[]>(`${this.resourceUrl}/payment`, orderItems, { headers, params });
+  }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
     const container: RequestContainer = { userUuid: this.userinfo.getUserId(), tireId: t_tire.id, quantity: t_count };
@@ -300,12 +305,5 @@ export class BasketService {
     const basket = this.getContent();
     const totalItems = basket.reduce((total, item) => total + item.count, 0);
     this.totalItemsSubject.next(totalItems);
-  }
-  private createOrderItemsForPayment(userUuid: string, orderItems: OrderItem[]): Observable<OrderItem[]> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    const params = new HttpParams().set('userUuid', userUuid);
-
-    return this.http.post<OrderItem[]>(`${this.resourceUrl}/payment`, orderItems, { headers, params });
   }
 }

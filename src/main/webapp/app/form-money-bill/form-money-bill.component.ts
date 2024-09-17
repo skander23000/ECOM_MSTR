@@ -8,6 +8,7 @@ import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
 import { FrontTimerService } from '../shared/front-timer.service';
 import { BasketService } from '../basket.service';
+import { IOrderItem } from '../entities/order-item/order-item.model';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -98,7 +99,6 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   onSubmit(form: NgForm): void {
     this.isSubmitted = true;
-
     if (form.valid) {
       if (!confirm('Êtes-vous sûr de vouloir passer la commande ?')) {
         return;
@@ -110,12 +110,33 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
       // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
       this.basketService.wipe().subscribe();
+      // Logique supplémentaire, comme l'envoi des données au serveur
+      const userUuid = this.sharedDataService.getUserId();
+      if (this.user_infos) {
+        const { id, ...userInfoWithoutId } = this.user_infos;
+      }
+      const orderItems: any[] = this.basketService.getContent().map(item => ({
+        quantity: item.count,
+        price: item.tire.price,
+        customerOrder: {
+          totalAmount: (item.tire.price ?? 0) * item.count,
+          paymentDate: new Date().toISOString(),
+          orderDate: new Date().toISOString(),
+          status: 'PENDING',
+          paymentMethod: 'CREDIT_CARD',
+          paymentStatus: 'PENDING',
+          customer: { country: 'France', ...this.user_infos },
+        },
+        tire: item.tire,
+      }));
+      /*eslint-disable */
+      console.log('orderItems', orderItems);
+      // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
+      this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe();
 
       this.router.navigate(['/']);
       // eslint-disable-next-line no-console
       console.log('Formulaire soumis avec succès');
-
-      // Logique supplémentaire, comme l'envoi des données au serveur
     } else {
       // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
       const firstInvalidControl = document.querySelector('.ng-invalid');

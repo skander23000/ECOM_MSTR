@@ -50,7 +50,7 @@ export class OrderItemComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
-  trackId = (_index: number, item: IOrderItem): number => this.orderItemService.getOrderItemIdentifier(item);
+  trackId = (_index: number, item: IOrderItem): number | undefined => this.orderItemService.getOrderItemIdentifier(item);
 
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
