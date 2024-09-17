@@ -191,9 +191,6 @@ public class ItemListLockResource {
         @RequestParam Integer quantity
     ) {
 
-        User user = userService.getUserWithAuthoritiesByLogin("admin").get();
-        user.setEmail("romain.barbier2@etu.univ-grenoble-alpes.fr");
-        mailService.sendActivationEmail(user);
         LOG.debug("REST request to check " +
             "the item availability");
         if (!UUID_REGEX.matcher(userUuid).matches()) {

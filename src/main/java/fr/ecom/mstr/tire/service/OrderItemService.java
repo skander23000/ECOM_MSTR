@@ -34,12 +34,14 @@ public class OrderItemService {
     private final OrderItemRepository orderItemRepository;
 
     private final OrderItemMapper orderItemMapper;
+    private final MailService mailService;
 
-    public OrderItemService(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, ItemListLockService itemListLockService, CustomerOrderService customerOrderService) {
+    public OrderItemService(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, ItemListLockService itemListLockService, CustomerOrderService customerOrderService, MailService mailService) {
         this.orderItemRepository = orderItemRepository;
         this.orderItemMapper = orderItemMapper;
         this.itemListLockService = itemListLockService;
         this.customerOrderService = customerOrderService;
+        this.mailService = mailService;
     }
 
     /**
@@ -84,7 +86,9 @@ public class OrderItemService {
         // Delete lock
         this.itemListLockService.deleteAll(reservationIds);
 
-        // TODO: Mail
+        mailService.sendInvoicingEmail(this.orderItemRepository.saveAll(orderItems)
+            .stream().map(this.orderItemMapper::toDto).collect(Collectors.toList()),customerOrder);
+
         return this.orderItemRepository.saveAll(orderItems)
             .stream().map(this.orderItemMapper::toDto).collect(Collectors.toList());
     }

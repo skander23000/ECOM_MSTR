@@ -116,64 +116,11 @@ public class MailService {
     @Async
     public void sendActivationEmail(User user) {
         LOG.debug("Sending activation email to '{}'", user.getEmail());
-        CustomerOrderDTO order = new CustomerOrderDTO();
-
-        // Valeurs fictives
-        order.setId(123L);
-
-        // Dates et montants fictifs
-        order.setOrderDate(Instant.parse("2024-09-17T10:00:00Z"));
-        order.setPaymentDate(Instant.parse("2024-09-17T10:30:00Z"));
-        order.setTotalAmount(new BigDecimal("99.99"));
-
-        // Enum fictifs
-        order.setStatus(OrderStatus.PENDING);
-        order.setPaymentMethod(PaymentMethod.CREDIT_CARD);
-        order.setPaymentStatus(PaymentStatus.PENDING);
-
-        // Informations client fictives
-        CustomerDTO customer = new CustomerDTO();
-        customer.setFirstName("Jean");
-        customer.setLastName("Dupont");
-        customer.setEmail("romain.barbier2@etu.univ-grenoble-alpes.fr");
-        customer.setAddress("123 Rue de l'Exemple");
-        customer.setCity("Paris");
-        customer.setZipCode("75001");
-        customer.setCountry("France");
-        customer.setPhoneNumber("0123456789");
-        order.setCustomer(customer);
-
-
-        List<OrderItemDTO> orderItems = new ArrayList<>();
-        // Création de trois éléments OrderItemDTO avec des valeurs non-nulles
-        OrderItemDTO item1 = new OrderItemDTO();
-        item1.setId(1L);
-        item1.setQuantity(4);
-        item1.setPrice(new BigDecimal("29.99"));
-
-        OrderItemDTO item2 = new OrderItemDTO();
-        item2.setId(2L);
-        item2.setQuantity(2);
-        item2.setPrice(new BigDecimal("49.99"));
-
-        OrderItemDTO item3 = new OrderItemDTO();
-        item3.setId(3L);
-        item3.setQuantity(1);
-        item3.setPrice(new BigDecimal("89.99"));
-
-        // Ajouter les éléments à la liste
-        item1.setCustomerOrder(order);
-        item2.setCustomerOrder(order);
-        item3.setCustomerOrder(order);
-        orderItems.add(item1);
-        orderItems.add(item2);
-        orderItems.add(item3);
-
-        this.sendInvoicingEmail(orderItems,order);
-        //this.sendEmailFromTemplateSync(user, "mail/activationEmail", "email.activation.title");
+        this.sendEmailFromTemplateSync(user, "mail/activationEmail", "email.activation.title");
     }
 
-    private void sendInvoicingEmail(List<OrderItemDTO> items, CustomerOrderDTO customerOrder){
+    @Async
+    public void sendInvoicingEmail(List<OrderItemDTO> items, CustomerOrderDTO customerOrder){
         Locale locale = Locale.forLanguageTag("fr");
         Context context = new Context(locale);
         context.setVariable("customerOrder", customerOrder);
