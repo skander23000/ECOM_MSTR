@@ -34,7 +34,7 @@ export class SharedUserDataService {
   }
 
   generateUserId(): void {
-    localStorage.setItem('uuserid', uuidv4());
+    if (!localStorage.getItem('uuserid')) localStorage.setItem('uuserid', uuidv4());
   }
 
   getUserId(): string {
