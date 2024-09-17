@@ -78,6 +78,10 @@ export class CartItemComponent implements OnInit {
       this.isAvailable = true;
       return;
     }
+    if (this.cart_item.count >= 9) {
+      this.isAvailable = true;
+      return;
+    }
     this.basktService.addTire(this.cart_item.tire, 1).subscribe({
       next: () => {
         if (this.cart_item.count) {

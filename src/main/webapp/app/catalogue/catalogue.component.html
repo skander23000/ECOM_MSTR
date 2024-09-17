@@ -16,6 +16,12 @@
   <button class="close-button" (click)="closeTimerError()">&times;</button>
   </div>
 </div>
+<div *ngIf="lotOfTires || showErrorProductMessage" class="alert alert-error">
+  Vous avez atteint la limite de produits par article dans votre panier .
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="closeLotOfTires()">×</button>
+  </div>
+</div>
 <div class="container">
 
   <div style="display: flex; flex-direction: column">

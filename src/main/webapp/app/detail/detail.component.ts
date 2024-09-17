@@ -35,6 +35,10 @@ export class DetailComponent {
     if (tire === null) {
       return;
     }
+    if (this.quantity + this.basketService.getNumberOfATire(tire) > 9) {
+      this.sharedDataService.setErrorMessage(true);
+      return;
+    }
     this.basketService.addTire(tire, this.quantity).subscribe();
     this.sharedDataService.setSuccessMessageProduct(true);
     this.close();

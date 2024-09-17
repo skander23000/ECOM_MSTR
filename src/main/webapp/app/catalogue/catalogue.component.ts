@@ -56,6 +56,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
+  showErrorProductMessage: boolean | null = false;
+  lotOfTires = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -99,6 +101,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.sharedDataService.successInfoProduct$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessProductMessage = data;
+    });
+    // S'abonner à la variable showErrorProductMessage pour afficher un message de succès produit
+    this.sharedDataService.errorInfo$.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showErrorProductMessage = data;
     });
   }
 
@@ -171,7 +178,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
   closeSuccessMessage(): void {
     this.showSuccessMessage = false;
-    this.showSuccessMessage = false;
     this.sharedDataService.setSuccessMessage(false);
   }
   closeSuccessProductMessage(): void {
@@ -180,9 +186,17 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   onAddToCart(tire: ITire): void {
-    this.showSuccessProductMessage = true;
+    if (this.basketService.getNumberOfATire(tire) > 9) {
+      this.lotOfTires = true;
+      return;
+    }
     this.timerService.addActivity();
     this.basketService.addTire(tire).subscribe();
+    this.showSuccessProductMessage = true;
+  }
+  closeLotOfTires(): void {
+    this.lotOfTires = false;
+    this.sharedDataService.setErrorMessage(false);
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();

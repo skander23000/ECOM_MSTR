@@ -190,14 +190,8 @@ export class BasketService {
 
   getNumberOfATire(t_tire: ITire): number {
     const basket: TireContainer[] = this.getContent();
-    if (basket.length > 0) {
-      const item: any = basket.find(x => x.tire === t_tire);
-      if (item !== undefined) {
-        const index: number = basket.indexOf(item);
-        return basket[index].count;
-      }
-    }
-    return 0;
+    const item = basket.find(x => x.tire.id === t_tire.id); // Comparer par une propriété unique, comme 'id'
+    return item ? item.count : 0;
   }
 
   getNumberOfTires(): number {

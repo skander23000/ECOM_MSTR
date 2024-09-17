@@ -10,10 +10,13 @@ import { v4 as uuidv4 } from 'uuid';
 export class SharedUserDataService {
   // Subjects to manage the data
   successInfoSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoErrorSubject = new BehaviorSubject<boolean | null>(null);
+
   // Observables to expose the data as streams
   successInfo$ = this.successInfoSubject.asObservable();
-  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
   successInfoProduct$ = this.successInfoProductSubject.asObservable();
+  errorInfo$ = this.successInfoErrorSubject.asObservable();
 
   setUserInfo(userInfo: ICustomer): void {
     localStorage.setItem('userinfo', JSON.stringify(userInfo));
@@ -45,5 +48,8 @@ export class SharedUserDataService {
   }
   setSuccessMessageProduct(isSuccessMessage: boolean): void {
     this.successInfoProductSubject.next(isSuccessMessage);
+  }
+  setErrorMessage(isErrorMessage: boolean): void {
+    this.successInfoErrorSubject.next(isErrorMessage);
   }
 }
