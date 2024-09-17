@@ -6,11 +6,12 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { BasketService } from '../basket.service';
 import { FrontTimerService } from '../shared/front-timer.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-cart',
   standalone: true,
-  imports: [TranslateDirective, CartItemComponent, NgOptimizedImage, NgIf],
+  imports: [TranslateDirective, CartItemComponent, NgOptimizedImage, NgIf, PopUpComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -18,6 +19,11 @@ export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   subscription: any;
   totalPrice = 0;
+  errorMessage = '';
+  isPopupVisible = false;
+  errorTitle = 'Attention';
+  popUpCancellable = true;
+  isError = false;
 
   constructor(
     private router: Router,
@@ -81,11 +87,35 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  // Assurez-vous que cette méthode est dans le composant correspondant
-  confirmAndEmptyCart(): void {
-    if (confirm('Êtes-vous sûr de vouloir vider le panier ?')) {
+  confirmAction(): void {
+    if (this.isError) {
+      this.isError = false;
+    } else {
       this.emptyCart();
     }
+    this.hideError();
+  }
+
+  cancelAction(): void {
+    this.hideError();
+  }
+
+  // Assurez-vous que cette méthode est dans le composant correspondant
+  validateEmptyCart(): void {
+    this.errorMessage = 'Êtes-vous sûr de vouloir vider le panier ?';
+    this.isPopupVisible = true;
+  }
+
+  showError(msg: string): void {
+    this.errorMessage = msg;
+    this.errorTitle = 'Erreur';
+    this.popUpCancellable = false;
+    this.isError = true;
+    this.isPopupVisible = true;
+  }
+
+  hideError(): void {
+    this.isPopupVisible = false;
   }
 
   // On vide le panier quand on appuie dessus
@@ -97,16 +127,6 @@ export class CartComponent implements OnInit {
       next: () => {
         this.cart_items = [];
       },
-    });
-  }
-
-  // On récupère le prix total dans le cas ou on voudrait l'afficher
-  protected computeTotalPrice(): void {
-    this.totalPrice = 0;
-    this.cart_items.forEach(item => {
-      if (item.tire?.price) {
-        this.totalPrice += item.tire.price;
-      }
     });
   }
 }

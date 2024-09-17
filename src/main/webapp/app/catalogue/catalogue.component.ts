@@ -10,11 +10,11 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
-import { S3Service } from '../s3.service';
 import { TireImageComponent } from 'app/image/image.component';
 import { GetIconsService } from '../shared/get-icons.service';
 import { FrontTimerService } from '../shared/front-timer.service';
 import TranslateDirective from '../shared/language/translate.directive';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-catalogue',
@@ -28,6 +28,7 @@ import TranslateDirective from '../shared/language/translate.directive';
     TruncatePipe,
     TireImageComponent,
     TranslateDirective,
+    PopUpComponent,
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
@@ -58,6 +59,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   showSuccessProductMessage: boolean | null = false;
   showErrorProductMessage: boolean | null = false;
   lotOfTires = false;
+  isPopupVisible = false;
+  errorMessage = '';
+  errorTitle = 'Erreur';
 
   sliderOptions: Options = {
     floor: 0,
@@ -73,7 +77,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
-    private s3: S3Service,
     private iconService: GetIconsService,
     protected timerService: FrontTimerService,
   ) {}
@@ -86,6 +89,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     }
     // S'abonner à l'événement de fin du minuteur et mettre à jour l'état
     this.timerService.getTimerComplete().subscribe(() => {
+      this.showSuccessMessage = false;
+      this.showSuccessProductMessage = false;
       this.timerService.setShowTimerError(true); // Sauvegarder l'état de showTimerError dans le service
     });
 
@@ -184,6 +189,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.showSuccessProductMessage = false;
     this.sharedDataService.setSuccessMessageProduct(false);
   }
+  closePopup(): void {
+    this.isPopupVisible = false;
+  }
 
   onAddToCart(tire: ITire): void {
     if (this.basketService.getNumberOfATire(tire) > 9) {
@@ -191,12 +199,28 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.timerService.addActivity();
-    this.basketService.addTire(tire).subscribe();
-    this.showSuccessProductMessage = true;
+    this.basketService.addTire(tire).subscribe({
+      next: () => {
+        this.showSuccessProductMessage = true;
+      },
+      error: (err: string) => {
+        const err_split = err.split('|');
+        if (err_split[0] === '102') {
+          this.timerService.setTimer(1);
+        } else {
+          this.errorMessage = 'Pas assez de pneu en stock';
+          this.isPopupVisible = true;
+        }
+      },
+    });
   }
   closeLotOfTires(): void {
     this.lotOfTires = false;
     this.sharedDataService.setErrorMessage(false);
+  }
+  treatError(err: string): void {
+    this.errorMessage = err;
+    this.isPopupVisible = true;
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();

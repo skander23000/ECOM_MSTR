@@ -22,6 +22,9 @@
     <button class="close-button" (click)="closeLotOfTires()">×</button>
   </div>
 </div>
+<div *ngIf="this.isPopupVisible">
+  <jhi-pop-up [title]="errorTitle" [message]="this.errorMessage" [cancellable]="false" (Confirm)="this.closePopup()"></jhi-pop-up>
+</div>
 <div class="container">
 
   <div style="display: flex; flex-direction: column">
@@ -150,4 +153,4 @@
   </div>
 
 </div>
-<jhi-detail *ngIf="showModal" [tire]="selectedTire" (closeModal)="closeModal()"></jhi-detail>
+<jhi-detail *ngIf="showModal" [tire]="selectedTire" (closeModal)="closeModal()" (detailError)="treatError($event)"></jhi-detail>
