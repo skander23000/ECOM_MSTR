@@ -8,7 +8,6 @@ import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
 import { FrontTimerService } from '../shared/front-timer.service';
 import { BasketService } from '../basket.service';
-import { IOrderItem } from '../entities/order-item/order-item.model';
 import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
@@ -131,8 +130,6 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   validateCart(): void {
     this.sharedDataService.setPaymentInfo(this.paymentInfo);
-
-    this.sharedDataService.setSuccessMessage(true);
     this.timerService.stopTimer();
 
     // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
@@ -164,14 +161,17 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       },
       tire: item.tire,
     }));
-    /*eslint-disable */
-    console.log('orderItems', orderItems);
     // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
-    this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe();
-
-    this.router.navigate(['/']);
-    // eslint-disable-next-line no-console
-    console.log('Formulaire soumis avec succès');
+    this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
+      next: () => {
+        this.sharedDataService.setSuccessMessage(true);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.sharedDataService.setErrorPaiementMessage(true);
+        this.router.navigate(['/']);
+      },
+    });
   }
 
   // Méthode pour retourner au panier

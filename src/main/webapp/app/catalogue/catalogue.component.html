@@ -22,6 +22,12 @@
     <button class="close-button" (click)="closeLotOfTires()">×</button>
   </div>
 </div>
+<div *ngIf="this.showErrorPaiementMessage" class="alert alert-error">
+  Une erreur est survenue lors du paiement de la commande.
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="close-button" (click)="closePaiementError()">×</button>
+  </div>
+</div>
 <div *ngIf="this.isPopupVisible">
   <jhi-pop-up [title]="errorTitle" [message]="this.errorMessage" [cancellable]="false" (Confirm)="this.closePopup()"></jhi-pop-up>
 </div>
