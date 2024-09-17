@@ -13,7 +13,7 @@
 <div *ngIf="this.timerService.getShowTimerError()" class="alert alert-error">
   <span class="error-text" jhiTranslate="error_text.inactivity"></span>
   <div style="display: flex; justify-content: flex-end;">
-  <button class="close-button" (click)="closeTimerError()">&times;</button>
+    <button class="close-button" (click)="closeTimerError()">&times;</button>
   </div>
 </div>
 <div *ngIf="lotOfTires || showErrorProductMessage" class="alert alert-error">
@@ -36,58 +36,48 @@
   <div style="display: flex; flex-direction: column">
 
     <div class="sorting-panel">
-    <div style="display: flex; margin: 0.5rem 0">
-    <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png" alt="SortIcon">
-    <h4>Tri :</h4>
-    </div>
-    <div class="sort-group">
-      <label class="label" >Par prix</label>
-      <div class="radio-group">
-        <label>
-          <input
-            type="radio"
-            name="sortPrice"
-            (click)="onSortChange('price', 'asc')"
-            [checked]="currentSortField === 'price' && currentSortDirection === 'asc'">
-          Ascendant
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="sortPrice"
-            (click)="onSortChange('price', 'desc')"
-            [checked]="currentSortField === 'price' && currentSortDirection === 'desc'">
-          Descendant
-        </label>
+      <div style="display: flex; margin: 0.5rem 0">
+        <img style="width: 2rem;height: 2rem;" src="content/images/website_icon_pack/icon_pack/sort_icon.png"
+          alt="SortIcon">
+        <h4>Tri :</h4>
       </div>
-    </div>
+      <div class="sort-group">
+        <label class="label">Par prix</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="sortPrice" (click)="onSortChange('price', 'asc')"
+              [checked]="currentSortField === 'price' && currentSortDirection === 'asc'">
+            Ascendant
+          </label>
+          <label>
+            <input type="radio" name="sortPrice" (click)="onSortChange('price', 'desc')"
+              [checked]="currentSortField === 'price' && currentSortDirection === 'desc'">
+            Descendant
+          </label>
+        </div>
+      </div>
 
-    <div class="sort-group">
-      <label class="label">Par poids</label>
-      <div class="radio-group">
-        <label>
-          <input
-            type="radio"
-            name="sortWeight"
-            (click)="onSortChange('weightIndex', 'asc')"
-            [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'asc'">
-          Ascendant
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="sortWeight"
-            (click)="onSortChange('weightIndex', 'desc')"
-            [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'desc'">
-          Descendant
-        </label>
+      <div class="sort-group">
+        <label class="label">Par poids</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="sortWeight" (click)="onSortChange('weightIndex', 'asc')"
+              [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'asc'">
+            Ascendant
+          </label>
+          <label>
+            <input type="radio" name="sortWeight" (click)="onSortChange('weightIndex', 'desc')"
+              [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'desc'">
+            Descendant
+          </label>
+        </div>
       </div>
     </div>
-  </div>
     <div class="filter-panel">
-    <div style="display: flex; margin: 0.5rem 0">
-      <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px" src="content/images/website_icon_pack/icon_pack/filter_icon.png" alt="filterIcon">
-      <h4>Filtrer :</h4>
+      <div style="display: flex; margin: 0.5rem 0">
+        <img style="width: 1.7rem;height: 1.7rem; margin-right: 5px"
+          src="content/images/website_icon_pack/icon_pack/filter_icon.png" alt="filterIcon">
+        <h4>Filtrer :</h4>
       </div>
       <div class="filter-group">
         <label class="label" for="brand">Par type :</label>
@@ -102,7 +92,8 @@
       <div class="filter-group">
         <label class="label">Par prix :</label>
         <div class="custom-slider">
-        <ngx-slider  [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions" (userChangeEnd)="onFilterChange()"></ngx-slider>
+          <ngx-slider [(value)]="priceMin" [(highValue)]="priceMax" [options]="sliderOptions"
+            (userChangeEnd)="onFilterChange()"></ngx-slider>
         </div>
         <div>
           <button class="reset-button" (click)="onResetFilters()">Réinitialiser les filtres</button>
@@ -115,17 +106,14 @@
   <div class="row" style="height: 100%;width:100%">
 
     <div class="search-panel" style="position: relative;">
-      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png" alt="SearchIcon">
-      <input
-        type="text"
-        placeholder="Rechercher un produit"
-        [(ngModel)]="searchQuery"
-        (input)="onSearchChange()"
-        >
+      <img class="search-icon" src="content/images/website_icon_pack/icon_pack/magnifying_glass_icon.png"
+        alt="SearchIcon">
+      <input type="text" placeholder="Rechercher un produit" [(ngModel)]="searchQuery" (input)="onSearchChange()">
     </div>
 
 
-    <div *ngFor="let tire of tires" class="col-md-4"   (click)="openDetails(tire)" style="margin-top: 0.75rem; margin-bottom: 0.75rem">
+    <div *ngFor="let tire of tires" class="col-md-4" (click)="openDetails(tire)"
+      style="margin-top: 0.75rem; margin-bottom: 0.75rem">
       <div class="card mb-4 shadow-sm" style="border-radius: 50px; border: 1px solid black; width:95%; height:100%">
         <jhi-image class="image" [tire]="tire"></jhi-image>
         <div class="card-body">
@@ -134,17 +122,27 @@
             <h5>{{ tire.price }}€</h5>
           </div>
           <div class="details">
-          <span class="card-text">Ref : {{ tire.description }}</span>
-          <span class="card-text">Indice de poids : {{ tire.weightIndex }}</span>
+            <span class="card-text">Ref : {{ tire.reference }}</span>
+            <span class="card-text">Indice de poids : {{
+              { null: '', TWENTY: '80', SIXTY: '250', NINETY: '600', ONE_HUNDRED_TWENTY: '1400' }[tire.weightIndex ??
+              'null']
+              }}</span>
+            <span class="card-text">Indice de vitesse : {{
+              { null: '', A_ONE: '5', A_EIGHT: '40', N: '140', Y: '300' }[tire.speedIndex ?? 'null']
+            }}</span>
+            <span class="card-text">Stock : {{ tire.quantity && tire.quantity < 100 ? tire.quantity: '+99' }}</span>
           </div>
           <div class="card-footer">
             <div>
               <img class="footer-images" src="{{this.getIcon(tire)}}" alt="TypeIcon">
-              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png" alt="CertifiedIcon">
+              <img class="footer-images" src="../../content/images/website_icon_pack/icon_pack/certified_icon.png"
+                alt="CertifiedIcon">
             </div>
             <div>
               <a>
-                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images" src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png" (click)="onAddToCart(tire);stopPropagation($event);" alt="AddToCartIcon">
+                <img style="border: 3px solid black; border-radius: 10px; padding:2px" class="footer-images"
+                  src="../../content/images/website_icon_pack/icon_pack/add_carteicon.png"
+                  (click)="onAddToCart(tire);stopPropagation($event);" alt="AddToCartIcon">
               </a>
             </div>
           </div>
