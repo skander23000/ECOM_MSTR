@@ -15,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.IntegerFilter;
 
 /**
  * Service for executing complex queries for {@link Tire} entities in the database.
@@ -44,8 +46,16 @@ public class TireQueryService extends QueryService<Tire> {
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<TireDTO> findByCriteria(TireCriteria criteria, Pageable page) {
+    public Page<TireDTO> findByCriteria(TireCriteria criteria, Pageable page, boolean isAdminUser) {
         LOG.debug("find by criteria : {}, page: {}", criteria, page);
+        if(!isAdminUser) {
+            BooleanFilter booleanFilter = new BooleanFilter();
+            IntegerFilter integerFilter = new IntegerFilter();
+            booleanFilter.setEquals(true);
+            integerFilter.setGreaterThan(0);
+            criteria.setDisable(booleanFilter);
+            criteria.setQuantity(integerFilter);
+        }
         final Specification<Tire> specification = createSpecification(criteria);
         return tireRepository.findAll(specification, page).map(tireMapper::toDto);
     }
