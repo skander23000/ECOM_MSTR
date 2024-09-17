@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'jhi-pop-up',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './pop-up.component.html',
   styleUrl: './pop-up.component.scss',
 })

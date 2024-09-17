@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TireContainer } from '../entities/entity.tire-container';
 import { FormsModule } from '@angular/forms';
-import { NgOptimizedImage } from '@angular/common';
+import { NgIf, NgOptimizedImage } from '@angular/common';
 import TranslateDirective from '../shared/language/translate.directive';
 import { GetIconsService } from '../shared/get-icons.service';
 import { BasketService } from '../basket.service';
 import { TireImageComponent } from '../image/image.component';
 import { FrontTimerService } from '../shared/front-timer.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-cart-item',
   standalone: true,
-  imports: [FormsModule, NgOptimizedImage, TranslateDirective, TireImageComponent],
+  imports: [FormsModule, NgOptimizedImage, TranslateDirective, TireImageComponent, PopUpComponent, NgIf],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })
@@ -25,6 +26,10 @@ export class CartItemComponent implements OnInit {
   getIconservice: GetIconsService;
   basktService: BasketService;
   timerService: FrontTimerService;
+  showPopUp = false;
+  popUpTitle = 'Attention';
+  popUpMessage = 'Voulez-vous vraiment supprimer ce pneu de votre panier ?';
+  isCancellable = true;
 
   constructor(getIconservice: GetIconsService, basketService: BasketService, timerService: FrontTimerService) {
     this.getIconservice = getIconservice;
@@ -74,7 +79,7 @@ export class CartItemComponent implements OnInit {
           this.timerService.setTimer(1);
         } else {
           this.isAvailable = true;
-          this.itemError.emit('Impossible de retirer ce nombre de pneu du panier');
+          this.validateDestroy();
         }
       },
     });
@@ -107,10 +112,20 @@ export class CartItemComponent implements OnInit {
     });
   }
 
+  validateDestroy(): void {
+    this.showPopUp = true;
+  }
+
+  confirmDestroy(): void {
+    this.onDestroy();
+    this.showPopUp = false;
+  }
+
+  cancelDestroy(): void {
+    this.showPopUp = false;
+  }
+
   onDestroy(): void {
-    if (!confirm('Voulez vous vraiment retirer ce pneu de votre panier ?')) {
-      return;
-    }
     if (this.cart_item.tire?.id) {
       this.basktService.removeTires(this.cart_item.tire).subscribe({
         next: () => {

@@ -1,11 +1,11 @@
 <div *ngIf="isPopupVisible">
-  <jhi-pop-up [title]="errorTitle" [message]="this.errorMessage" [cancellable]="false" (Confirm)="this.hideError()"></jhi-pop-up>
+  <jhi-pop-up [title]="errorTitle" [message]="this.errorMessage" [cancellable]="this.popUpCancellable" (Confirm)="this.confirmAction()" (Cancel)="this.cancelAction()"></jhi-pop-up>
 </div>
 <div class="container">
   <div class="head-title" jhiTranslate="cart_header.title"></div>
   @if (!isCartEmpty()) {
     <div class="button-box">
-      <button type="button" class="btn btn-back" (click)="confirmAndEmptyCart()">
+      <button type="button" class="btn btn-back" (click)="validateEmptyCart()">
         <span jhiTranslate="cart_button.empty"></span>
       </button>
     </div>

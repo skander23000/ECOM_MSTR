@@ -21,7 +21,9 @@ export class CartComponent implements OnInit {
   totalPrice = 0;
   errorMessage = '';
   isPopupVisible = false;
-  errorTitle = 'Erreur';
+  errorTitle = 'Attention';
+  popUpCancellable = true;
+  isError = false;
 
   constructor(
     private router: Router,
@@ -85,15 +87,30 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  // Assurez-vous que cette méthode est dans le composant correspondant
-  confirmAndEmptyCart(): void {
-    if (confirm('Êtes-vous sûr de vouloir vider le panier ?')) {
+  confirmAction(): void {
+    if (this.isError) {
+      this.isError = false;
+    } else {
       this.emptyCart();
     }
+    this.hideError();
+  }
+
+  cancelAction(): void {
+    this.hideError();
+  }
+
+  // Assurez-vous que cette méthode est dans le composant correspondant
+  validateEmptyCart(): void {
+    this.errorMessage = 'Êtes-vous sûr de vouloir vider le panier ?';
+    this.isPopupVisible = true;
   }
 
   showError(msg: string): void {
     this.errorMessage = msg;
+    this.errorTitle = 'Erreur';
+    this.popUpCancellable = false;
+    this.isError = true;
     this.isPopupVisible = true;
   }
 
@@ -110,24 +127,6 @@ export class CartComponent implements OnInit {
       next: () => {
         this.cart_items = [];
       },
-      error: (err: string) => {
-        const err_split = err.split('|');
-        if (err_split[0] === '102') {
-          this.timerService.setTimer(1);
-        } else {
-          this.showError('Impossible de vider le panier');
-        }
-      },
-    });
-  }
-
-  // On récupère le prix total dans le cas ou on voudrait l'afficher
-  protected computeTotalPrice(): void {
-    this.totalPrice = 0;
-    this.cart_items.forEach(item => {
-      if (item.tire?.price) {
-        this.totalPrice += item.tire.price;
-      }
     });
   }
 }
