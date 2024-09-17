@@ -1,8 +1,5 @@
-<div *ngIf="showItemError" class="alert alert-error">
-  {{ this.errorMessage}}
-  <div style="display: flex; justify-content: flex-end;">
-    <button class="close-button" (click)="hideError()">×</button>
-  </div>
+<div *ngIf="isPopupVisible">
+  <jhi-pop-up [title]="errorTitle" [message]="this.errorMessage" [cancellable]="false" (Confirm)="this.hideError()"></jhi-pop-up>
 </div>
 <div class="container">
   <div class="head-title" jhiTranslate="cart_header.title"></div>

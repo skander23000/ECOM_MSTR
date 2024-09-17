@@ -6,11 +6,12 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { BasketService } from '../basket.service';
 import { FrontTimerService } from '../shared/front-timer.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-cart',
   standalone: true,
-  imports: [TranslateDirective, CartItemComponent, NgOptimizedImage, NgIf],
+  imports: [TranslateDirective, CartItemComponent, NgOptimizedImage, NgIf, PopUpComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -18,8 +19,9 @@ export class CartComponent implements OnInit {
   cart_items: TireContainer[] = [];
   subscription: any;
   totalPrice = 0;
-  showItemError = false;
   errorMessage = '';
+  isPopupVisible = false;
+  errorTitle = 'Erreur';
 
   constructor(
     private router: Router,
@@ -92,11 +94,11 @@ export class CartComponent implements OnInit {
 
   showError(msg: string): void {
     this.errorMessage = msg;
-    this.showItemError = true;
+    this.isPopupVisible = true;
   }
 
   hideError(): void {
-    this.showItemError = false;
+    this.isPopupVisible = false;
   }
 
   // On vide le panier quand on appuie dessus

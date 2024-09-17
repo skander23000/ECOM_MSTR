@@ -14,6 +14,7 @@ import { TireImageComponent } from 'app/image/image.component';
 import { GetIconsService } from '../shared/get-icons.service';
 import { FrontTimerService } from '../shared/front-timer.service';
 import TranslateDirective from '../shared/language/translate.directive';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-catalogue',
@@ -27,6 +28,7 @@ import TranslateDirective from '../shared/language/translate.directive';
     TruncatePipe,
     TireImageComponent,
     TranslateDirective,
+    PopUpComponent,
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
@@ -55,8 +57,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
-  showerError = false;
+  isPopupVisible = false;
   errorMessage = '';
+  errorTitle = 'Erreur';
 
   sliderOptions: Options = {
     floor: 0,
@@ -178,6 +181,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.showSuccessProductMessage = false;
     this.sharedDataService.setSuccessMessageProduct(false);
   }
+  closePopup(): void {
+    this.isPopupVisible = false;
+  }
 
   onAddToCart(tire: ITire): void {
     this.timerService.addActivity();
@@ -191,17 +197,14 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           this.timerService.setTimer(1);
         } else {
           this.errorMessage = 'Pas assez de pneu en stock';
-          this.showerError = true;
+          this.isPopupVisible = true;
         }
       },
     });
   }
   treatError(err: string): void {
     this.errorMessage = err;
-    this.showerError = true;
-  }
-  hideError(): void {
-    this.showerError = false;
+    this.isPopupVisible = true;
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();
