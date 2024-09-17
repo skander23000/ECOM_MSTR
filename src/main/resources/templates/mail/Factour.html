@@ -8,7 +8,7 @@
 
 <p>Bonjour <span th:text="${customerOrder.customer.firstName}">[Prénom]</span> <span th:text="${customerOrder.customer.lastName}">[Nom]</span>,</p>
 
-<p>Merci pour votre commande effectuée le <span th:text="${customerOrder.orderDate}">[Date de commande]</span>.</p>
+<p>Merci pour votre commande effectuée le <span th:text="${#dates.format(customerOrder.orderDate, 'dd/MM/yyyy - HH:mm')}">[Date de commande]</span>.</p>
 
 <h2>Détails de la commande</h2>
 <table>
@@ -39,8 +39,6 @@
 </table>
 
 <p>Total de la commande : <strong th:text="${customerOrder.totalAmount}">[Montant total] €</strong></p>
-
-<p>Vous pouvez consulter le statut de votre commande à tout moment en visitant <a th:href="@{${baseUrl}}">notre site</a>.</p>
 
 <p>Merci pour votre achat !</p>
 </body>

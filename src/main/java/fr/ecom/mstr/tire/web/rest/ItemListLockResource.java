@@ -1,6 +1,5 @@
 package fr.ecom.mstr.tire.web.rest;
 
-import fr.ecom.mstr.tire.domain.User;
 import fr.ecom.mstr.tire.repository.ItemListLockRepository;
 import fr.ecom.mstr.tire.service.ItemListLockService;
 import fr.ecom.mstr.tire.service.MailService;
@@ -47,8 +46,6 @@ public class ItemListLockResource {
     );
     private final ItemListLockService itemListLockService;
     private final ItemListLockRepository itemListLockRepository;
-    private final MailService mailService;
-    private final UserService userService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -56,8 +53,6 @@ public class ItemListLockResource {
     public ItemListLockResource(ItemListLockService itemListLockService, ItemListLockRepository itemListLockRepository, MailService mailService, UserService userService) {
         this.itemListLockService = itemListLockService;
         this.itemListLockRepository = itemListLockRepository;
-        this.mailService = mailService;
-        this.userService = userService;
     }
 
     /**
@@ -190,10 +185,6 @@ public class ItemListLockResource {
         @RequestParam Long tireId,
         @RequestParam Integer quantity
     ) {
-
-        User user = userService.getUserWithAuthoritiesByLogin("admin").get();
-        user.setEmail("romain.barbier2@etu.univ-grenoble-alpes.fr");
-        mailService.sendActivationEmail(user);
         LOG.debug("REST request to check " +
             "the item availability");
         if (!UUID_REGEX.matcher(userUuid).matches()) {
