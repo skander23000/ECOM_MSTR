@@ -200,6 +200,7 @@ export class BasketService {
     return basket.length;
   }
   wipe(): Observable<boolean> {
+    this.totalItemsSubject.next(0);
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
         next: check => {
@@ -293,7 +294,8 @@ export class BasketService {
   createOrderItemsForPayment(userUuid: string, orderItems: IOrderItem[]): Observable<IOrderItem[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const params = new HttpParams().set('userUuid', userUuid);
-    return this.http.post<IOrderItem[]>(`${this.resourceUrl}/payment`, orderItems, { headers, params });
+    const paymentApi = this.applicationConfigService.getEndpointFor('api/order-items/payment');
+    return this.http.post<IOrderItem[]>(paymentApi, orderItems, { headers, params });
   }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {
