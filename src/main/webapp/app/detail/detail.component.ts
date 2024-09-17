@@ -6,11 +6,13 @@ import { GetIconsService } from '../shared/get-icons.service';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { TireImageComponent } from '../image/image.component';
 import { FrontTimerService } from '../shared/front-timer.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'jhi-detail',
   standalone: true,
-  imports: [FormsModule, TireImageComponent],
+  imports: [FormsModule, TireImageComponent, PopUpComponent, NgIf],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })
@@ -19,6 +21,9 @@ export class DetailComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() detailError = new EventEmitter<string>();
   quantity = 1;
+  showPopUpError = false;
+  popUpMessage = 'Vous avec atteint le nombre maximum de cet article dans votre panier';
+  popUpTitle = 'Attention';
 
   constructor(
     private basketService: BasketService,
@@ -27,6 +32,9 @@ export class DetailComponent {
     private timerService: FrontTimerService,
   ) {}
 
+  onDismissPopUp(): void {
+    this.showPopUpError = false;
+  }
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -37,7 +45,7 @@ export class DetailComponent {
       return;
     }
     if (this.quantity + this.basketService.getNumberOfATire(tire) > 9) {
-      this.sharedDataService.setErrorMessage(true);
+      this.showPopUpError = true;
       return;
     }
     this.basketService.addTire(tire, this.quantity).subscribe({

@@ -1,3 +1,4 @@
+<jhi-pop-up style="z-index:1000;" *ngIf="showPopUpError" [cancellable]="false" [title]="this.popUpTitle" [message]="popUpMessage" (Confirm)="onDismissPopUp()"></jhi-pop-up>
 <div class="modal-background" (click)="close()">
   <div class="modal-container" (click)="$event.stopPropagation()"> <!-- Empêche la fermeture quand on clique sur la fenêtre -->
     <div style="display: flex; justify-content: flex-end;">
