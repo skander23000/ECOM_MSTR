@@ -112,8 +112,15 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       this.basketService.wipe().subscribe();
       // Logique supplémentaire, comme l'envoi des données au serveur
       const userUuid = this.sharedDataService.getUserId();
+      let userInfoWithoutId;
+
+      // Vérifier que this.user_infos existe et est un objet avant de le déstructurer
       if (this.user_infos) {
-        const { id, ...userInfoWithoutId } = this.user_infos;
+        const { id, ...rest } = this.user_infos;
+        userInfoWithoutId = rest; // Stocker les infos utilisateur sans l'id
+      } else {
+        console.warn('Aucune information utilisateur disponible.');
+        return;
       }
       const orderItems: any[] = this.basketService.getContent().map(item => ({
         quantity: item.count,
@@ -125,7 +132,7 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
           status: 'PENDING',
           paymentMethod: 'CREDIT_CARD',
           paymentStatus: 'PENDING',
-          customer: { country: 'France', ...this.user_infos },
+          customer: { country: 'France', ...userInfoWithoutId },
         },
         tire: item.tire,
       }));
