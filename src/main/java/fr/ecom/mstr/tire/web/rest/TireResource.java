@@ -1,6 +1,7 @@
 package fr.ecom.mstr.tire.web.rest;
 
 import fr.ecom.mstr.tire.repository.TireRepository;
+import fr.ecom.mstr.tire.security.SecurityUtils;
 import fr.ecom.mstr.tire.service.TireQueryService;
 import fr.ecom.mstr.tire.service.TireService;
 import fr.ecom.mstr.tire.service.criteria.TireCriteria;
@@ -148,13 +149,10 @@ public class TireResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tires in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TireDTO>> getAllTires(
-        TireCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
+    public ResponseEntity<List<TireDTO>> getAllTires(TireCriteria criteria, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get Tires by criteria: {}", criteria);
-
-        Page<TireDTO> page = tireQueryService.findByCriteria(criteria, pageable);
+        boolean isAdminUser = SecurityUtils.getCurrentUserLogin().isPresent();
+        Page<TireDTO> page = tireQueryService.findByCriteria(criteria, pageable, isAdminUser);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

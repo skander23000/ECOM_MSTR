@@ -44,17 +44,22 @@ export class FormContactAdressComponent implements OnInit, AfterViewInit {
   }
   validateEmail(emailInput: NgModel): boolean | null {
     const emailPattern = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/;
-    return emailInput.touched && !emailPattern.test(emailInput.value);
+    return emailInput.value !== null && emailInput.value !== undefined && emailInput.touched && !emailPattern.test(emailInput.value);
   }
 
   validatePhoneNumber(phoneNumber: NgModel): boolean | null {
     const phonePattern = /^(?:\+33\s?|0)[1-9](?:[\s.-]?\d{2}){4}$/; // Formats: +33 6 53 63 33 33 or 06 53 63 33 33
-    return phoneNumber.touched && !phonePattern.test(phoneNumber.value.replace(/\s+/g, ''));
+    return (
+      phoneNumber.value !== null &&
+      phoneNumber.value !== undefined &&
+      phoneNumber.touched &&
+      !phonePattern.test(phoneNumber.value.replace(/\s+/g, ''))
+    );
   }
 
   validatePostCode(postCode: NgModel): boolean | null {
     const postCodePattern = /^\d{5}$/; // Code postal de 5 chiffres
-    return postCode.touched && !postCodePattern.test(postCode.value);
+    return postCode.value !== null && postCode.value !== undefined && postCode.touched && !postCodePattern.test(postCode.value);
   }
 
   // Méthode pour valider le formulaire
