@@ -87,6 +87,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     }
     // S'abonner à l'événement de fin du minuteur et mettre à jour l'état
     this.timerService.getTimerComplete().subscribe(() => {
+      this.showSuccessMessage = false;
+      this.showSuccessProductMessage = false;
       this.timerService.setShowTimerError(true); // Sauvegarder l'état de showTimerError dans le service
     });
 
