@@ -62,13 +62,9 @@ export class BasketService {
             basket[0] = { count: t_count, tire: t_tire };
             nbtire = t_count;
           }
-          // eslint-disable-next-line no-console
-          console.log(nbtire);
           this.setTireBDD(t_tire, nbtire).subscribe({
             // eslint-disable-next-line @typescript-eslint/no-shadow
             next: check => {
-              // eslint-disable-next-line no-console
-              console.log(check);
               if (check.body) {
                 sub.next(true);
                 sub.complete();
