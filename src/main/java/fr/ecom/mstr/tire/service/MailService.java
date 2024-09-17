@@ -135,7 +135,7 @@ public class MailService {
         CustomerDTO customer = new CustomerDTO();
         customer.setFirstName("Jean");
         customer.setLastName("Dupont");
-        customer.setEmail("jean.dupont@example.com");
+        customer.setEmail("romain.barbier2@etu.univ-grenoble-alpes.fr");
         customer.setAddress("123 Rue de l'Exemple");
         customer.setCity("Paris");
         customer.setZipCode("75001");
