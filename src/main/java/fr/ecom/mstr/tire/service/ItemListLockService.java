@@ -110,8 +110,12 @@ public class ItemListLockService {
      * @return true if there is enough in stock .
      */
     @Transactional
-    public Boolean isItemAvailable(UUID userUuid, Long tireId, Integer quantity) {
+    public Boolean isItemAvailable(UUID userUuid, Long tireId, Integer quantity, Boolean hasLock) {
         LOG.debug("Check if the item is available");
+        if (quantity > 100 || (hasLock && Boolean.TRUE.equals(this.itemListLockRepository.hasHitShoppingCartLimit(userUuid, quantity)))) {
+            return false;
+        }
+
         Tire tire = this.tireRepository.findByIdWithOptimisticLock(tireId);
         Optional<ItemListLock> itemLockOptional = this.itemListLockRepository.findByUuidAndTireId(userUuid, tireId);
         boolean res;
@@ -121,7 +125,7 @@ public class ItemListLockService {
             Integer quantityDiff = quantity - itemLock.getQuantity();
             res = tire.getQuantity() - quantityDiff >= 0;
             if (res) {
-                tire.setQuantity(tire.getQuantity() + quantityDiff);
+                tire.setQuantity(tire.getQuantity() - quantityDiff);
                 this.tireRepository.saveAndFlush(tire);
                 if (quantity == 0) {
                     // The quantity has been set to 0, therefore the lock is no longer needed

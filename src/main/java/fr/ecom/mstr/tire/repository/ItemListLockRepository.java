@@ -33,6 +33,9 @@ public interface ItemListLockRepository extends JpaRepository<ItemListLock, Long
     @Query("Select exists (Select 1 from ItemListLock ill where ill.userUuid = :userUuid)")
     Boolean isItemListLockByUuid(@Param("userUuid") UUID userUuid);
 
+    @Query("Select case when ((sum(ill.quantity) + :quantity) > 100) then true else false end from ItemListLock ill where ill.userUuid = :userUuid")
+    Boolean hasHitShoppingCartLimit(@Param("userUuid") UUID userUuid, @Param("quantity") Integer quantity);
+
     @Modifying
     @Query("Update ItemListLock ill set ill.quantity = :quantity where ill.id = :id")
     void updateItemQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);

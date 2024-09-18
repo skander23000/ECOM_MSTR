@@ -550,9 +550,38 @@ class ItemListLockResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").value(true));
+
+        Tire tire2 = TireResourceIT.createEntity();
+        tire2.setQuantity(200);
+        tire2.setReference("ABABAB");
+        tire2 = tireRepository.saveAndFlush(tire2);
+        // Check availability for 101 item of a non-existing lock
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                UUID.randomUUID().toString() + "&tireId=" + tire2.getId() + "&quantity=101"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(false));
+
+        // Check availability for 100 item of a non-existing lock
+        String userUuid = UUID.randomUUID().toString();
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                userUuid + "&tireId=" + tire2.getId() + "&quantity=100"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(true));
+
+        restItemListLockMockMvc
+            .perform(get(ENTITY_API_URL + "/check-availability?userUuid=" +
+                userUuid + "&tireId=" + tire2.getId() + "&quantity=101"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").value(false));
+
         int databaseCountAfter = itemListLockRepository.findAll().size();
-        // 2 lock should be present
-        assertThat(databaseCount + 1).isEqualTo(databaseCountAfter);
+        // 3 lock should be present
+        assertThat(databaseCount + 2).isEqualTo(databaseCountAfter);
 
         itemListLockRepository.deleteAll();
         tireRepository.deleteAll();
