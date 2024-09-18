@@ -10,6 +10,7 @@ import { FrontTimerService } from '../shared/front-timer.service';
 import { BasketService } from '../basket.service';
 import { IOrderItem } from '../entities/order-item/order-item.model';
 import { PopUpComponent } from '../pop-up/pop-up.component';
+import { TireContainer } from '../entities/entity.tire-container';
 
 @Component({
   selector: 'jhi-form-money-bill',
@@ -21,13 +22,13 @@ import { PopUpComponent } from '../pop-up/pop-up.component';
 export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
-  totalItems: number | null = 0;
   useDeliveryAddress = false;
   isSubmitted = false;
   endTime: Date | null = null;
   showValidationPopUp = false;
   popUpTitle = 'Notification';
   popUpMessage = 'Voulez-vous vraiment passer la commande ?';
+  total = 0;
   @ViewChild('firstInput') firstInputElement!: ElementRef;
 
   constructor(
@@ -41,9 +42,10 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.user_infos = this.sharedDataService.getUserInfo();
-
-    this.basketService.totalItems$.subscribe(total => {
-      this.totalItems = total;
+    this.basketService.getObservableContent().subscribe((content: TireContainer[]) => {
+      this.calculateTotal(content);
+      // eslint-disable-next-line no-console
+      console.log(this.calculateTotal(content));
     });
     this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
       const currentTime = new Date(); // Heure actuelle
@@ -51,6 +53,9 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     });
   }
 
+  calculateTotal(content: TireContainer[]): void {
+    this.total = content.reduce((sum, item) => sum + (item.count ?? 0) * (item.tire?.price ?? 0), 0);
+  }
   ngAfterViewInit(): void {
     this.firstInputElement.nativeElement.focus();
   }
@@ -154,7 +159,7 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       quantity: item.count,
       price: item.tire.price,
       customerOrder: {
-        totalAmount: (this.totalItems ?? 0) * item.count,
+        totalAmount: this.total,
         paymentDate: now,
         orderDate: now,
         status: 'PENDING',
