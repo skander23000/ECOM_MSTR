@@ -102,6 +102,9 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   }
 
   validateSecurityCode(securityCode: NgModel): boolean | null {
+    if (!securityCode.value) {
+      return false;
+    }
     const securityCodePattern = /^\d{3}$/; // Code postal de 5 chiffres
     return securityCode.touched && !securityCodePattern.test(securityCode.value);
   }
@@ -132,8 +135,6 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     this.sharedDataService.setPaymentInfo(this.paymentInfo);
     this.timerService.stopTimer();
 
-    // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
-    this.basketService.wipe().subscribe();
     // Logique supplémentaire, comme l'envoi des données au serveur
     const userUuid = this.sharedDataService.getUserId();
     let userInfoWithoutId;
@@ -165,6 +166,9 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
       next: () => {
         this.sharedDataService.setSuccessMessage(true);
+        this.basketService.wipe().subscribe();
+        // eslint-disable-next-line no-console
+        console.log('Commande succès');
         this.router.navigate(['/']);
       },
       error: () => {

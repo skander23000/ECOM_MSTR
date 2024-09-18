@@ -101,6 +101,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     // S'abonner à la variable successInfo pour afficher un message de succès
     this.sharedDataService.successInfo$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
+      // eslint-disable-next-line no-console
+      console.log(data);
       this.showSuccessMessage = data;
     });
     // S'abonner à la variable successInfoProduct pour afficher un message de succès produit
@@ -117,7 +119,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.sharedDataService.errorPaiementSubject.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showErrorPaiementMessage = data;
-      this.showSuccessMessage = false;
       this.showSuccessProductMessage = false;
     });
   }

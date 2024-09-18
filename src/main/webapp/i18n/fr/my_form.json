@@ -28,7 +28,7 @@
     "cvv": "CVV*"
   },
   "form_button": {
-    "use_delivery_address": "Utiliser cette adresse pour la facturation",
+    "use_delivery_address": "Utiliser l'addresse de livraison",
     "cancel": "Retour au panier",
     "next": "Suivant",
     "submit": "Valider et payer la commande"
