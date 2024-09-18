@@ -1,6 +1,7 @@
 package fr.ecom.mstr.tire.web.rest;
 
 import fr.ecom.mstr.tire.repository.CustomerOrderRepository;
+import fr.ecom.mstr.tire.security.AuthoritiesConstants;
 import fr.ecom.mstr.tire.service.CustomerOrderService;
 import fr.ecom.mstr.tire.service.dto.CustomerOrderDTO;
 import fr.ecom.mstr.tire.web.rest.errors.BadRequestAlertException;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -56,6 +58,7 @@ public class CustomerOrderResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CustomerOrderDTO> createCustomerOrder(@Valid @RequestBody CustomerOrderDTO customerOrderDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save CustomerOrder : {}", customerOrderDTO);
@@ -79,6 +82,7 @@ public class CustomerOrderResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CustomerOrderDTO> updateCustomerOrder(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody CustomerOrderDTO customerOrderDTO
@@ -113,6 +117,7 @@ public class CustomerOrderResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CustomerOrderDTO> partialUpdateCustomerOrder(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody CustomerOrderDTO customerOrderDTO
@@ -145,6 +150,7 @@ public class CustomerOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customerOrders in body.
      */
     @GetMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<CustomerOrderDTO>> getAllCustomerOrders(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "filter", required = false) String filter
@@ -166,6 +172,7 @@ public class CustomerOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the customerOrderDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<CustomerOrderDTO> getCustomerOrder(@PathVariable("id") Long id) {
         LOG.debug("REST request to get CustomerOrder : {}", id);
         Optional<CustomerOrderDTO> customerOrderDTO = customerOrderService.findOne(id);
@@ -179,6 +186,7 @@ public class CustomerOrderResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteCustomerOrder(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete CustomerOrder : {}", id);
         customerOrderService.delete(id);

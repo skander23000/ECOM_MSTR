@@ -1,6 +1,7 @@
 package fr.ecom.mstr.tire.web.rest;
 
 import fr.ecom.mstr.tire.repository.ItemListLockRepository;
+import fr.ecom.mstr.tire.security.AuthoritiesConstants;
 import fr.ecom.mstr.tire.service.ItemListLockService;
 import fr.ecom.mstr.tire.service.dto.ItemListLockDTO;
 import fr.ecom.mstr.tire.web.rest.errors.BadRequestAlertException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -61,6 +63,7 @@ public class ItemListLockResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ItemListLockDTO> createItemListLock(@Valid @RequestBody ItemListLockDTO itemListLockDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save ItemListLock : {}", itemListLockDTO);
@@ -84,6 +87,7 @@ public class ItemListLockResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ItemListLockDTO> updateItemListLock(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ItemListLockDTO itemListLockDTO
@@ -118,6 +122,7 @@ public class ItemListLockResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = {"application/json", "application/merge-patch+json"})
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ItemListLockDTO> partialUpdateItemListLock(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody ItemListLockDTO itemListLockDTO
@@ -149,6 +154,7 @@ public class ItemListLockResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of itemListLocks in body.
      */
     @GetMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<ItemListLockDTO>> getAllItemListLocks(@ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of ItemListLocks");
         Page<ItemListLockDTO> page = this.itemListLockService.findAll(pageable);
@@ -163,6 +169,7 @@ public class ItemListLockResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the itemListLockDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ItemListLockDTO> getItemListLock(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ItemListLock : {}", id);
         Optional<ItemListLockDTO> itemListLockDTO = this.itemListLockService.findOne(id);
@@ -263,6 +270,7 @@ public class ItemListLockResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteItemListLock(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ItemListLock : {}", id);
         itemListLockService.delete(id);

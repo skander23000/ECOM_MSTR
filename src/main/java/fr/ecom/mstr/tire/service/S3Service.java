@@ -15,9 +15,9 @@ import java.io.InputStream;
 
 @Service
 public class S3Service {
-    @Value("${aws.s3.access.key}")
+    @Value("${aws.s3.access-key}")
     private String awsS3AccessKey;
-    @Value("${aws.s3.secret.key}")
+    @Value("${aws.s3.secret-key}")
     private String awsS3SecretKey;
 
     public String saveFileToAWSS3Bucket(MultipartFile file) {

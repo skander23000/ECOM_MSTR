@@ -72,14 +72,13 @@ export class TireUpdateComponent implements OnInit {
       this.file = null;
     }
   }
+
   save(): void {
     this.isSaving = true;
     const tire: any = this.tireFormService.getTire(this.editForm);
-    /*eslint-disable */
-    console.log('version', this.tire.version);
-    tire.version = this.tire.version;
+    tire.version = this.tire ? this.tire.version : 1;
     if (this.file) {
-      //[TODO] UPLOAD IMAGE TO S3
+      this.tireService.publishImage(this.file).subscribe(value => (tire.imageUrl = value));
     }
 
     if (tire.id !== null) {
