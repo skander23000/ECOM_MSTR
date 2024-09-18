@@ -120,6 +120,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createOrderItem() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the OrderItem
@@ -221,6 +222,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createOrderItemWithExistingId() throws Exception {
         // Create the OrderItem with an existing ID
         orderItem.setId(1L);
@@ -239,6 +241,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkQuantityIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -256,6 +259,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkPriceIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -273,6 +277,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getAllOrderItems() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);
@@ -289,6 +294,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getOrderItem() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);
@@ -305,6 +311,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getNonExistingOrderItem() throws Exception {
         // Get the orderItem
         restOrderItemMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
@@ -312,6 +319,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putExistingOrderItem() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);
@@ -340,6 +348,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putNonExistingOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -362,6 +371,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithIdMismatchOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -384,6 +394,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithMissingIdPathParamOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -402,6 +413,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void partialUpdateOrderItemWithPatch() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);
@@ -431,6 +443,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void fullUpdateOrderItemWithPatch() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);
@@ -459,6 +472,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchNonExistingOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -481,6 +495,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithIdMismatchOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -503,6 +518,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithMissingIdPathParamOrderItem() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         orderItem.setId(longCount.incrementAndGet());
@@ -521,6 +537,7 @@ class OrderItemResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void deleteOrderItem() throws Exception {
         // Initialize the database
         insertedOrderItem = orderItemRepository.saveAndFlush(orderItem);

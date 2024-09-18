@@ -33,3 +33,9 @@ spring:
       hibernate.jdbc.time_zone: UTC
       hibernate.timezone.default_storage: NORMALIZE
       hibernate.query.fail_on_pagination_over_collection_fetch: true
+aws:
+  s3:
+    access-key: 'AKIAZVMTU2KRILEX4RIX'
+    secret-key: '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'
+    region: 'eu-west-3'
+    bucket: 'image-upload-skander'

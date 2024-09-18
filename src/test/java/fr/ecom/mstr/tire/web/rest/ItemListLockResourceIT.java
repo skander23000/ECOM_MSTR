@@ -119,6 +119,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createItemListLock() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the ItemListLock
@@ -143,6 +144,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createItemListLockWithExistingId() throws Exception {
         // Create the ItemListLock with an existing ID
         itemListLock.setId(1L);
@@ -161,6 +163,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkUserUuidIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -178,6 +181,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkQuantityIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -195,6 +199,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkLockTimeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -212,6 +217,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getAllItemListLocks() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
@@ -229,6 +235,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getItemListLock() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
@@ -246,6 +253,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getNonExistingItemListLock() throws Exception {
         // Get the itemListLock
         restItemListLockMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
@@ -253,6 +261,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putExistingItemListLock() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
@@ -281,6 +290,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putNonExistingItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -303,6 +313,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithIdMismatchItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -325,6 +336,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithMissingIdPathParamItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -343,6 +355,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void partialUpdateItemListLockWithPatch() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
@@ -372,6 +385,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void fullUpdateItemListLockWithPatch() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);
@@ -400,6 +414,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchNonExistingItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -422,6 +437,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithIdMismatchItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -444,6 +460,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithMissingIdPathParamItemListLock() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         itemListLock.setId(longCount.incrementAndGet());
@@ -462,6 +479,7 @@ class ItemListLockResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void deleteItemListLock() throws Exception {
         // Initialize the database
         insertedItemListLock = itemListLockRepository.saveAndFlush(itemListLock);

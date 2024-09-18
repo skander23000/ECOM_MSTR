@@ -193,6 +193,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createTire() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Tire
@@ -217,6 +218,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createTireWithExistingId() throws Exception {
         // Create the Tire with an existing ID
         tire.setId(1L);
@@ -235,6 +237,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -252,6 +255,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkPriceIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -269,6 +273,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkTireWidthIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -286,6 +291,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkTireHeightIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -303,6 +309,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkTireDiameterIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -320,6 +327,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkTireTypeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -337,6 +345,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkImageUrlIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -354,6 +363,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkSpeedIndexIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -371,6 +381,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkWeightIndexIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -388,6 +399,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkQuantityIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -405,6 +417,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkDisableIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -1328,6 +1341,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putExistingTire() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
@@ -1369,6 +1383,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putNonExistingTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1387,6 +1402,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithIdMismatchTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1409,6 +1425,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithMissingIdPathParamTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1427,6 +1444,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void partialUpdateTireWithPatch() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
@@ -1463,6 +1481,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void fullUpdateTireWithPatch() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
@@ -1506,6 +1525,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchNonExistingTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1526,6 +1546,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithIdMismatchTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1548,6 +1569,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithMissingIdPathParamTire() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tire.setId(longCount.incrementAndGet());
@@ -1566,6 +1588,7 @@ class TireResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void deleteTire() throws Exception {
         // Initialize the database
         insertedTire = tireRepository.saveAndFlush(tire);
