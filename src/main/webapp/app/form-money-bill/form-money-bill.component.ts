@@ -76,16 +76,25 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   }
 
   validatePostCode(postCode: NgModel): boolean | null {
+    if (!postCode.value) {
+      return false;
+    }
     const postCodePattern = /^\d{5}$/; // Code postal de 5 chiffres
     return postCode.touched && !postCodePattern.test(postCode.value);
   }
 
   validateCardNumber(cardNumber: NgModel): boolean | null {
+    if (!cardNumber.value) {
+      return false;
+    }
     const cardNumberPattern = /^\d{13,19}$/; // Numéro de carte de 13 à 19 chiffres
     return cardNumber.touched && !cardNumberPattern.test(cardNumber.value.replace(/\s+/g, ''));
   }
 
   validateMonth(monthValue: NgModel): boolean | null {
+    if (!monthValue.value) {
+      return false;
+    }
     const monthPattern = /^(0[1-9]|1[0-2])\/\d{2}$/; // Mois au format MM/AA
     return monthValue.touched && !monthPattern.test(monthValue.value);
   }

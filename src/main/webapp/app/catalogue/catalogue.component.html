@@ -58,16 +58,16 @@
       </div>
 
       <div class="sort-group">
-        <label class="label">Par poids</label>
+        <label class="label">Par quantité</label>
         <div class="radio-group">
           <label>
-            <input type="radio" name="sortWeight" (click)="onSortChange('weightIndex', 'asc')"
-              [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'asc'">
+            <input type="radio" name="sortWeight" (click)="onSortChange('quantity', 'asc')"
+              [checked]="currentSortField === 'quantity' && currentSortDirection === 'asc'">
             Ascendant
           </label>
           <label>
-            <input type="radio" name="sortWeight" (click)="onSortChange('weightIndex', 'desc')"
-              [checked]="currentSortField === 'weightIndex' && currentSortDirection === 'desc'">
+            <input type="radio" name="sortWeight" (click)="onSortChange('quantity', 'desc')"
+              [checked]="currentSortField === 'quantity' && currentSortDirection === 'desc'">
             Descendant
           </label>
         </div>
