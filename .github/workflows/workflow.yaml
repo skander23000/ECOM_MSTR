@@ -89,6 +89,34 @@ jobs:
       - name: Build application
         run: ./mvnw clean package -Pprod -DskipTests
 
+  build-docker:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build Docker image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        run: ./mvnw package -Pprod -DskipTests verify jib:build -Djib.to.image=romb38/mstr-tire
+
   skip_checks:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'test') || contains(github.ref, 'TEST') || contains(github.ref, 'tests')
