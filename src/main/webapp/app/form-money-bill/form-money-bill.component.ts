@@ -164,8 +164,6 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       },
       tire: item.tire,
     }));
-    /*eslint-disable */
-    console.log('orderItems', orderItems);
     // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
     this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe();
 

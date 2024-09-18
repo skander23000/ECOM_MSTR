@@ -79,7 +79,7 @@ export class TireUpdateComponent implements OnInit {
     console.log('version', this.tire.version);
     tire.version = this.tire.version;
     if (this.file) {
-      this.s3Service.uploadImage(this.file);
+      //[TODO] UPLOAD IMAGE TO S3
     }
 
     if (tire.id !== null) {

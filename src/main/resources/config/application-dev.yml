@@ -101,3 +101,9 @@ jhipster:
 # ===================================================================
 
 # application:
+aws:
+  s3:
+    access-key: 'AKIAZVMTU2KRILEX4RIX'
+    secret-key: '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'
+    region: 'eu-west-3'
+    bucket: 'image-upload-skander'
