@@ -3,6 +3,8 @@ package fr.ecom.mstr.tire.web.rest;
 import fr.ecom.mstr.tire.repository.ItemListLockRepository;
 import fr.ecom.mstr.tire.security.AuthoritiesConstants;
 import fr.ecom.mstr.tire.service.ItemListLockService;
+import fr.ecom.mstr.tire.service.MailService;
+import fr.ecom.mstr.tire.service.UserService;
 import fr.ecom.mstr.tire.service.dto.ItemListLockDTO;
 import fr.ecom.mstr.tire.web.rest.errors.BadRequestAlertException;
 import jakarta.persistence.OptimisticLockException;
@@ -50,7 +52,7 @@ public class ItemListLockResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public ItemListLockResource(ItemListLockService itemListLockService, ItemListLockRepository itemListLockRepository) {
+    public ItemListLockResource(ItemListLockService itemListLockService, ItemListLockRepository itemListLockRepository, MailService mailService, UserService userService) {
         this.itemListLockService = itemListLockService;
         this.itemListLockRepository = itemListLockRepository;
     }
@@ -190,7 +192,8 @@ public class ItemListLockResource {
         @RequestParam Long tireId,
         @RequestParam Integer quantity
     ) {
-        LOG.debug("REST request to check the item availability");
+        LOG.debug("REST request to check " +
+            "the item availability");
         if (!UUID_REGEX.matcher(userUuid).matches()) {
             throw new BadRequestAlertException("Bad UUID format", "", "");
         }

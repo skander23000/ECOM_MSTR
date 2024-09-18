@@ -51,7 +51,7 @@ public class TireQueryService extends QueryService<Tire> {
         if(!isAdminUser) {
             BooleanFilter booleanFilter = new BooleanFilter();
             IntegerFilter integerFilter = new IntegerFilter();
-            booleanFilter.setEquals(true);
+            booleanFilter.setEquals(false);
             integerFilter.setGreaterThan(0);
             criteria.setDisable(booleanFilter);
             criteria.setQuantity(integerFilter);

@@ -8,7 +8,6 @@ import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
 import { FrontTimerService } from '../shared/front-timer.service';
 import { BasketService } from '../basket.service';
-import { IOrderItem } from '../entities/order-item/order-item.model';
 import { PopUpComponent } from '../pop-up/pop-up.component';
 import { TireContainer } from '../entities/entity.tire-container';
 
@@ -108,6 +107,9 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   }
 
   validateSecurityCode(securityCode: NgModel): boolean | null {
+    if (!securityCode.value) {
+      return false;
+    }
     const securityCodePattern = /^\d{3}$/; // Code postal de 5 chiffres
     return securityCode.touched && !securityCodePattern.test(securityCode.value);
   }
@@ -136,12 +138,8 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   validateCart(): void {
     this.sharedDataService.setPaymentInfo(this.paymentInfo);
-
-    this.sharedDataService.setSuccessMessage(true);
     this.timerService.stopTimer();
 
-    // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
-    this.basketService.wipe().subscribe();
     // Logique supplémentaire, comme l'envoi des données au serveur
     const userUuid = this.sharedDataService.getUserId();
     let userInfoWithoutId;
@@ -170,11 +168,18 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       tire: item.tire,
     }));
     // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
-    this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe();
-
-    this.router.navigate(['/']);
-    // eslint-disable-next-line no-console
-    console.log('Formulaire soumis avec succès');
+    this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
+      next: () => {
+        localStorage.setItem('basket', '[]');
+        this.basketService.totalItemsSubject.next(0);
+        this.sharedDataService.setSuccessMessage(true);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.sharedDataService.setErrorPaiementMessage(true);
+        this.router.navigate(['/']);
+      },
+    });
   }
 
   // Méthode pour retourner au panier

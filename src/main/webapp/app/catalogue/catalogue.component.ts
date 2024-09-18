@@ -58,6 +58,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
   showErrorProductMessage: boolean | null = false;
+  showErrorPaiementMessage: boolean | null = false;
   lotOfTires = false;
   isPopupVisible = false;
   errorMessage = '';
@@ -111,6 +112,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.sharedDataService.errorInfo$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showErrorProductMessage = data;
+    });
+
+    this.sharedDataService.errorPaiementSubject.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showErrorPaiementMessage = data;
     });
   }
 
@@ -217,6 +223,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   closeLotOfTires(): void {
     this.lotOfTires = false;
     this.sharedDataService.setErrorMessage(false);
+  }
+  closePaiementError(): void {
+    this.sharedDataService.setErrorPaiementMessage(false);
   }
   treatError(err: string): void {
     this.errorMessage = err;
