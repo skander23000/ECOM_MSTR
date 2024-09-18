@@ -165,10 +165,8 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
     this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
       next: () => {
+        localStorage.setItem('basket', '[]');
         this.sharedDataService.setSuccessMessage(true);
-        this.basketService.wipe().subscribe();
-        // eslint-disable-next-line no-console
-        console.log('Commande succès');
         this.router.navigate(['/']);
       },
       error: () => {

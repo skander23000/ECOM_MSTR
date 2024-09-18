@@ -91,8 +91,7 @@ public class OrderItemService {
         this.itemListLockService.deleteAll(reservationIds);
 
         // Send mail
-        // this.mailService.sendInvoicingEmail(Items, customerOrder);
-
+        this.mailService.sendInvoicingEmail(Items, customerOrder);
 
         return Items;
     }
