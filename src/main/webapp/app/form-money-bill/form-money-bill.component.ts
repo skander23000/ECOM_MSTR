@@ -166,6 +166,7 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
       next: () => {
         localStorage.setItem('basket', '[]');
+        this.basketService.totalItemsSubject.next(0);
         this.sharedDataService.setSuccessMessage(true);
         this.router.navigate(['/']);
       },
