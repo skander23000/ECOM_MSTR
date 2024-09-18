@@ -4,7 +4,7 @@
     <button class="close-button" (click)="closeSuccessMessage()">×</button>
   </div>
 </div>
-<div *ngIf="showSuccessProductMessage" class="alert alert-success">
+<div *ngIf="showSuccessProductMessage && !showSuccessMessage && !showErrorPaiementMessage" class="alert alert-success">
   Votre produit a bien été ajouté au panier !
   <div style="display: flex; justify-content: flex-end;">
     <button class="close-button" (click)="closeSuccessProductMessage()">×</button>
@@ -16,7 +16,7 @@
     <button class="close-button" (click)="closeTimerError()">&times;</button>
   </div>
 </div>
-<div *ngIf="lotOfTires || showErrorProductMessage" class="alert alert-error">
+<div *ngIf="(lotOfTires || showErrorProductMessage) && !showSuccessMessage && !showErrorPaiementMessage" class="alert alert-error">
   Vous avez atteint la limite de produits par article dans votre panier .
   <div style="display: flex; justify-content: flex-end;">
     <button class="close-button" (click)="closeLotOfTires()">×</button>

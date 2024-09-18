@@ -119,7 +119,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.sharedDataService.errorPaiementSubject.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showErrorPaiementMessage = data;
-      this.showSuccessProductMessage = false;
     });
   }
 
