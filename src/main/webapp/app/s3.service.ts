@@ -21,7 +21,7 @@ export class S3Service {
       }
       return response.url;
     } catch (e: any) {
-      return './content/imgages/website_icon_pack/icon_pack/image_not_found.jpg';
+      return './content/images/website_icon_pack/icon_pack/image_not_found.jpg';
     }
   }
 }

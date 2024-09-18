@@ -185,6 +185,8 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/']);
       },
       error: () => {
+        localStorage.setItem('basket', '[]');
+        this.basketService.totalItemsSubject.next(0);
         this.sharedDataService.setErrorPaiementMessage(true);
         this.router.navigate(['/']);
       },

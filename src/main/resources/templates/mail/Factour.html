@@ -7,9 +7,11 @@
 <img src=\"cid:image\">
 <h1>Facture de votre commande</h1>
 
-<p>Bonjour <span th:text="${customerOrder.customer.firstName}">[Prénom]</span> <span th:text="${customerOrder.customer.lastName}">[Nom]</span>,</p>
+<p>Bonjour <span th:text="${customerOrder.customer.firstName}">[Prénom]</span> <span
+  th:text="${customerOrder.customer.lastName}">[Nom]</span>,</p>
 
-<p>Merci pour votre commande effectuée le <span th:text="${#dates.format(customerOrder.orderDate, 'dd/MM/yyyy - HH:mm')}">[Date de commande]</span>.</p>
+<p>Merci pour votre commande effectuée le <span
+  th:text="${#dates.format(customerOrder.orderDate, 'dd/MM/yyyy - HH:mm')}">[Date de commande]</span>.</p>
 
 <h2>Détails de la commande</h2>
 <table>
@@ -17,8 +19,8 @@
   <tr>
     <th>Produit</th>
     <th>Quantité</th>
-    <th>Prix unitaire</th>
-    <th>Total</th>
+    <th>Prix unitaire (&euro;)</th>
+    <th>Total (&euro;)</th>
   </tr>
   </thead>
   <tbody>
@@ -34,7 +36,7 @@
     <td th:text="${item.tire != null ? item.tire.price : 'Prix non disponible'}">[Prix unitaire] €</td>
 
     <!-- Prix total -->
-    <td th:text="${item.price != null ? item.price : 'Prix total non disponible'}">[Prix total] €</td>
+    <td th:text="${item.price != null ? item.price*item.quantity : 'Prix total non disponible'}">[Prix total] €</td>
   </tr>
   </tbody>
 </table>

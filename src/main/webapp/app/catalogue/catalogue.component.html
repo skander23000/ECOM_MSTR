@@ -130,7 +130,7 @@
             <span class="card-text">Indice de vitesse : {{
               { null: '', A_ONE: '5', A_EIGHT: '40', N: '140', Y: '300' }[tire.speedIndex ?? 'null']
             }}</span>
-            <span class="card-text">Stock : {{ tire.quantity && tire.quantity < 100 ? tire.quantity: '+99' }}</span>
+            <span class="card-text">Stock : {{ this.computeQuantity(tire.quantity) }}</span>
           </div>
           <div class="card-footer">
             <div>
