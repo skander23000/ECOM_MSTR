@@ -100,6 +100,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createTireBrand() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the TireBrand
@@ -124,6 +125,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createTireBrandWithExistingId() throws Exception {
         // Create the TireBrand with an existing ID
         tireBrand.setId(1L);
@@ -142,6 +144,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -159,6 +162,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkLogoUrlIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -176,6 +180,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getAllTireBrands() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
@@ -192,6 +197,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getTireBrand() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
@@ -208,6 +214,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getNonExistingTireBrand() throws Exception {
         // Get the tireBrand
         restTireBrandMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
@@ -215,6 +222,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putExistingTireBrand() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
@@ -243,6 +251,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putNonExistingTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -265,6 +274,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithIdMismatchTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -287,6 +297,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithMissingIdPathParamTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -305,6 +316,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void partialUpdateTireBrandWithPatch() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
@@ -334,6 +346,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void fullUpdateTireBrandWithPatch() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
@@ -362,6 +375,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchNonExistingTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -384,6 +398,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithIdMismatchTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -406,6 +421,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithMissingIdPathParamTireBrand() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         tireBrand.setId(longCount.incrementAndGet());
@@ -424,6 +440,7 @@ class TireBrandResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void deleteTireBrand() throws Exception {
         // Initialize the database
         insertedTireBrand = tireBrandRepository.saveAndFlush(tireBrand);
