@@ -193,7 +193,7 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: mstrtire@localhost
+    from: mstrtire.retire@gmail.com
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
@@ -218,3 +218,6 @@ jhipster:
 # ===================================================================
 
 # application:
+
+
+

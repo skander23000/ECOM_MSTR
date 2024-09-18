@@ -134,6 +134,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createCustomer() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Customer
@@ -158,6 +159,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void createCustomerWithExistingId() throws Exception {
         // Create the Customer with an existing ID
         customer.setId(1L);
@@ -176,6 +178,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkFirstNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -193,6 +196,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkLastNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -210,6 +214,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkEmailIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -227,6 +232,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkAddressIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -244,6 +250,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkCityIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -261,6 +268,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkZipCodeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -278,6 +286,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void checkCountryIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -295,6 +304,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getAllCustomers() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);
@@ -317,6 +327,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getCustomer() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);
@@ -339,6 +350,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void getNonExistingCustomer() throws Exception {
         // Get the customer
         restCustomerMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
@@ -346,6 +358,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putExistingCustomer() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);
@@ -382,6 +395,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putNonExistingCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -404,6 +418,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithIdMismatchCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -426,6 +441,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void putWithMissingIdPathParamCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -444,6 +460,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void partialUpdateCustomerWithPatch() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);
@@ -478,6 +495,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void fullUpdateCustomerWithPatch() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);
@@ -514,6 +532,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchNonExistingCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -536,6 +555,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithIdMismatchCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -558,6 +578,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void patchWithMissingIdPathParamCustomer() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         customer.setId(longCount.incrementAndGet());
@@ -576,6 +597,7 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     void deleteCustomer() throws Exception {
         // Initialize the database
         insertedCustomer = customerRepository.saveAndFlush(customer);

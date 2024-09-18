@@ -4,28 +4,37 @@ import { FormsModule } from '@angular/forms';
 import { BasketService } from '../basket.service';
 import { GetIconsService } from '../shared/get-icons.service';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
-import { S3Service } from '../s3.service';
 import { TireImageComponent } from '../image/image.component';
+import { FrontTimerService } from '../shared/front-timer.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'jhi-detail',
   standalone: true,
-  imports: [FormsModule, TireImageComponent],
+  imports: [FormsModule, TireImageComponent, PopUpComponent, NgIf],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })
 export class DetailComponent {
   @Input() tire: ITire | null = null;
   @Output() closeModal = new EventEmitter<void>();
+  @Output() detailError = new EventEmitter<string>();
   quantity = 1;
+  showPopUpError = false;
+  popUpMessage = 'Vous avec atteint le nombre maximum de cet article dans votre panier';
+  popUpTitle = 'Attention';
 
   constructor(
     private basketService: BasketService,
     private iconService: GetIconsService,
     private sharedDataService: SharedUserDataService,
-    private s3: S3Service,
+    private timerService: FrontTimerService,
   ) {}
 
+  onDismissPopUp(): void {
+    this.showPopUpError = false;
+  }
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -35,9 +44,25 @@ export class DetailComponent {
     if (tire === null) {
       return;
     }
-    this.basketService.addTire(tire, this.quantity).subscribe();
-    this.sharedDataService.setSuccessMessageProduct(true);
-    this.close();
+    if (this.quantity + this.basketService.getNumberOfATire(tire) > 9) {
+      this.showPopUpError = true;
+      return;
+    }
+    this.basketService.addTire(tire, this.quantity).subscribe({
+      next: () => {
+        this.sharedDataService.setSuccessMessageProduct(true);
+        this.close();
+      },
+      error: (err: string) => {
+        const err_split = err.split('|');
+        if (err_split[0] === '102') {
+          this.timerService.setTimer(1);
+        } else {
+          this.detailError.emit('Pas assez de pneu en stock');
+        }
+        this.close();
+      },
+    });
   }
 
   increaseQuantity(): void {

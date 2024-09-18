@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { ITire } from './entities/tire/tire.model';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { ApplicationConfigService } from './core/config/application-config.service';
 import { createRequestOption } from './core/request/request-util';
 import { BehaviorSubject, concatMap, from, Observable, of, Subscriber } from 'rxjs';
 import { SharedUserDataService } from './shared/shared-user-data.service';
+import { IOrderItem } from './entities/order-item/order-item.model';
 
 interface TireContainer {
   tire: ITire;
@@ -23,6 +24,7 @@ interface RequestContainer {
 export class BasketService {
   totalItemsSubject = new BehaviorSubject<number | null>(0);
   totalItems$ = this.totalItemsSubject.asObservable();
+
   private http = inject(HttpClient);
   private applicationConfigService = inject(ApplicationConfigService);
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/item-list-locks');
@@ -189,14 +191,8 @@ export class BasketService {
 
   getNumberOfATire(t_tire: ITire): number {
     const basket: TireContainer[] = this.getContent();
-    if (basket.length > 0) {
-      const item: any = basket.find(x => x.tire === t_tire);
-      if (item !== undefined) {
-        const index: number = basket.indexOf(item);
-        return basket[index].count;
-      }
-    }
-    return 0;
+    const item = basket.find(x => x.tire.id === t_tire.id); // Comparer par une propriété unique, comme 'id'
+    return item ? item.count : 0;
   }
 
   getNumberOfTires(): number {
@@ -205,6 +201,7 @@ export class BasketService {
     return basket.length;
   }
   wipe(): Observable<boolean> {
+    this.totalItemsSubject.next(0);
     return new Observable<boolean>(sub => {
       this.checkAccountValidity().subscribe({
         next: check => {
@@ -294,6 +291,12 @@ export class BasketService {
         },
       });
     });
+  }
+  createOrderItemsForPayment(userUuid: string, orderItems: IOrderItem[]): Observable<IOrderItem[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams().set('userUuid', userUuid);
+    const paymentApi = this.applicationConfigService.getEndpointFor('api/order-items/payment');
+    return this.http.post<IOrderItem[]>(paymentApi, orderItems, { headers, params });
   }
 
   private setTireBDD(t_tire: ITire, t_count: number): Observable<HttpResponse<boolean>> {

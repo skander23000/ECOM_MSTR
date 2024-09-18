@@ -1,0 +1,14 @@
+<div class="popup-overlay">
+  <div class="popup-content">
+    <h2>{{ title }}</h2>
+    <p>{{ message }}</p>
+
+    <div class="popup-buttons">
+      <!-- Bouton Annuler à gauche -->
+      <button class="button-cancel" *ngIf="cancellable" (click)="cancel()">Annuler</button>
+      <!-- Bouton Ok à droite -->
+      <button class="button-validate" (click)="confirm()">Ok</button>
+    </div>
+  </div>
+</div>
+

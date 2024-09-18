@@ -71,6 +71,12 @@ export class FrontTimerService {
   }
 
   // Reset le minuteur à son état initial
+  setTimer(tmps: number): void {
+    this.remainingTime = tmps;
+    this.timerSubject.next(this.remainingTime);
+  }
+
+  // Reset le minuteur à son état initial
   resetTimer(): void {
     this.remainingTime = this.initialTime;
     this.timerSubject.next(this.remainingTime);

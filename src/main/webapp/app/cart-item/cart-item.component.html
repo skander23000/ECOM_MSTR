@@ -1,3 +1,4 @@
+<jhi-pop-up *ngIf="this.showPopUp" [title]="popUpTitle" [message]="popUpMessage" [cancellable]="isCancellable" (Confirm)="confirmDestroy()" (Cancel)="cancelDestroy()"></jhi-pop-up>
 <div class="card">
   <div class="card-image-container">
     <jhi-image class="image" [tire]="cart_item.tire"></jhi-image>
@@ -36,5 +37,5 @@
       <button (click)="increaseQuantity()" [disabled]="!isAvailable">+</button>
     </div>
   </div>
-  <div class="close-button" (click)="this.onDestroy()">✖</div> <!-- Ajoutez cette ligne -->
+  <div class="close-button" (click)="this.validateDestroy()">✖</div> <!-- Ajoutez cette ligne -->
 </div>

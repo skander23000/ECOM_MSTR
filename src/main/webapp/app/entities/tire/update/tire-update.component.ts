@@ -25,7 +25,7 @@ import { S3Service } from '../../../s3.service';
 })
 export class TireUpdateComponent implements OnInit {
   isSaving = false;
-  tire: ITire | null = null;
+  tire: any = null;
   tireTypeValues = Object.keys(TireType);
   speedIndexValues = Object.keys(SpeedIndex);
   chargeIndexValues = Object.keys(ChargeIndex);
@@ -72,11 +72,13 @@ export class TireUpdateComponent implements OnInit {
       this.file = null;
     }
   }
+
   save(): void {
     this.isSaving = true;
-    const tire = this.tireFormService.getTire(this.editForm);
+    const tire: any = this.tireFormService.getTire(this.editForm);
+    tire.version = this.tire ? this.tire.version : 1;
     if (this.file) {
-      this.s3Service.uploadImage(this.file);
+      this.tireService.publishImage(this.file).subscribe(value => (tire.imageUrl = value));
     }
 
     if (tire.id !== null) {

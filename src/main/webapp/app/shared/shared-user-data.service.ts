@@ -10,18 +10,20 @@ import { v4 as uuidv4 } from 'uuid';
 export class SharedUserDataService {
   // Subjects to manage the data
   successInfoSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
+  successInfoErrorSubject = new BehaviorSubject<boolean | null>(null);
+  errorPaiementSubject = new BehaviorSubject<boolean | null>(null);
   // Observables to expose the data as streams
   successInfo$ = this.successInfoSubject.asObservable();
-  successInfoProductSubject = new BehaviorSubject<boolean | null>(null);
   successInfoProduct$ = this.successInfoProductSubject.asObservable();
-
+  errorInfo$ = this.successInfoErrorSubject.asObservable();
+  errorPaiement = this.errorPaiementSubject.asObservable();
   setUserInfo(userInfo: ICustomer): void {
     localStorage.setItem('userinfo', JSON.stringify(userInfo));
   }
 
   getUserInfo(): ICustomer {
-    const tmp: ICustomer = JSON.parse(localStorage.getItem('userinfo') ?? '');
-    return tmp;
+    return JSON.parse(localStorage.getItem('userinfo') ?? '') as ICustomer;
   }
 
   setPaymentInfo(paymentInfo: PaymentInfo): void {
@@ -29,8 +31,7 @@ export class SharedUserDataService {
   }
 
   getPaymentInfo(): PaymentInfo {
-    const tmp: PaymentInfo = JSON.parse(localStorage.getItem('paymentinfo') ?? '');
-    return tmp;
+    return JSON.parse(localStorage.getItem('paymentinfo') ?? '') as PaymentInfo;
   }
 
   generateUserId(): void {
@@ -45,5 +46,12 @@ export class SharedUserDataService {
   }
   setSuccessMessageProduct(isSuccessMessage: boolean): void {
     this.successInfoProductSubject.next(isSuccessMessage);
+  }
+  setErrorMessage(isErrorMessage: boolean): void {
+    this.successInfoErrorSubject.next(isErrorMessage);
+  }
+
+  setErrorPaiementMessage(isErrorMessage: boolean): void {
+    this.errorPaiementSubject.next(isErrorMessage);
   }
 }

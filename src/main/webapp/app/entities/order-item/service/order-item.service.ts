@@ -44,7 +44,7 @@ export class OrderItemService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  getOrderItemIdentifier(orderItem: Pick<IOrderItem, 'id'>): number {
+  getOrderItemIdentifier(orderItem: Pick<IOrderItem, 'id'>): number | undefined {
     return orderItem.id;
   }
 

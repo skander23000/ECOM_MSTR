@@ -8,22 +8,28 @@ import { PaymentInfo } from '../entities/entity.payment-info';
 import { Router } from '@angular/router';
 import { FrontTimerService } from '../shared/front-timer.service';
 import { BasketService } from '../basket.service';
+import { PopUpComponent } from '../pop-up/pop-up.component';
+import { TireContainer } from '../entities/entity.tire-container';
 
 @Component({
   selector: 'jhi-form-money-bill',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage, DatePipe],
+  imports: [FormsModule, NgIf, NgClass, TranslateDirective, NgOptimizedImage, DatePipe, PopUpComponent],
   templateUrl: './form-money-bill.component.html',
   styleUrl: './form-money-bill.component.scss',
 })
 export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   paymentInfo: PaymentInfo;
   user_infos: ICustomer | null = null;
-
   useDeliveryAddress = false;
   isSubmitted = false;
   endTime: Date | null = null;
+  showValidationPopUp = false;
+  popUpTitle = 'Notification';
+  popUpMessage = 'Voulez-vous vraiment passer la commande ?';
+  total = 0;
   @ViewChild('firstInput') firstInputElement!: ElementRef;
+
   constructor(
     private sharedDataService: SharedUserDataService,
     private router: Router,
@@ -35,10 +41,19 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.user_infos = this.sharedDataService.getUserInfo();
+    this.basketService.getObservableContent().subscribe((content: TireContainer[]) => {
+      this.calculateTotal(content);
+      // eslint-disable-next-line no-console
+      console.log(this.calculateTotal(content));
+    });
     this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
       const currentTime = new Date(); // Heure actuelle
       this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
     });
+  }
+
+  calculateTotal(content: TireContainer[]): void {
+    this.total = content.reduce((sum, item) => sum + (item.count ?? 0) * (item.tire?.price ?? 0), 0);
   }
   ngAfterViewInit(): void {
     this.firstInputElement.nativeElement.focus();
@@ -61,16 +76,25 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   }
 
   validatePostCode(postCode: NgModel): boolean | null {
+    if (!postCode.value) {
+      return false;
+    }
     const postCodePattern = /^\d{5}$/; // Code postal de 5 chiffres
     return postCode.touched && !postCodePattern.test(postCode.value);
   }
 
   validateCardNumber(cardNumber: NgModel): boolean | null {
+    if (!cardNumber.value) {
+      return false;
+    }
     const cardNumberPattern = /^\d{13,19}$/; // Numéro de carte de 13 à 19 chiffres
     return cardNumber.touched && !cardNumberPattern.test(cardNumber.value.replace(/\s+/g, ''));
   }
 
   validateMonth(monthValue: NgModel): boolean | null {
+    if (!monthValue.value) {
+      return false;
+    }
     const monthPattern = /^(0[1-9]|1[0-2])\/\d{2}$/; // Mois au format MM/AA
     return monthValue.touched && !monthPattern.test(monthValue.value);
   }
@@ -92,30 +116,26 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
   }
 
   validateSecurityCode(securityCode: NgModel): boolean | null {
+    if (!securityCode.value) {
+      return false;
+    }
     const securityCodePattern = /^\d{3}$/; // Code postal de 5 chiffres
     return securityCode.touched && !securityCodePattern.test(securityCode.value);
   }
 
+  onDismissPopup(): void {
+    this.showValidationPopUp = false;
+  }
+
+  onConfirmPopup(): void {
+    this.showValidationPopUp = false;
+    this.validateCart();
+  }
+
   onSubmit(form: NgForm): void {
     this.isSubmitted = true;
-
     if (form.valid) {
-      if (!confirm('Êtes-vous sûr de vouloir passer la commande ?')) {
-        return;
-      }
-      this.sharedDataService.setPaymentInfo(this.paymentInfo);
-
-      this.sharedDataService.setSuccessMessage(true);
-      this.timerService.stopTimer();
-
-      // [TODO] Ajouter la logique pour vider le panier lorsque la commande est passée
-      this.basketService.wipe().subscribe();
-
-      this.router.navigate(['/']);
-      // eslint-disable-next-line no-console
-      console.log('Formulaire soumis avec succès');
-
-      // Logique supplémentaire, comme l'envoi des données au serveur
+      this.showValidationPopUp = true;
     } else {
       // Par exemple, ici, tu pourrais faire défiler jusqu'à la première erreur :
       const firstInvalidControl = document.querySelector('.ng-invalid');
@@ -124,11 +144,59 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  validateCart(): void {
+    this.sharedDataService.setPaymentInfo(this.paymentInfo);
+    this.timerService.stopTimer();
+
+    // Logique supplémentaire, comme l'envoi des données au serveur
+    const userUuid = this.sharedDataService.getUserId();
+    let userInfoWithoutId;
+
+    // Vérifier que this.user_infos existe et est un objet avant de le déstructurer
+    if (this.user_infos) {
+      const { id, ...rest } = this.user_infos;
+      userInfoWithoutId = rest; // Stocker les infos utilisateur sans l'id
+    } else {
+      console.warn('Aucune information utilisateur disponible.');
+      return;
+    }
+    const now = new Date().toISOString();
+    const orderItems: any[] = this.basketService.getContent().map(item => ({
+      quantity: item.count,
+      price: item.tire.price,
+      customerOrder: {
+        totalAmount: this.total,
+        paymentDate: now,
+        orderDate: now,
+        status: 'PENDING',
+        paymentMethod: 'CREDIT_CARD',
+        paymentStatus: 'PENDING',
+        customer: { country: 'France', ...userInfoWithoutId },
+      },
+      tire: item.tire,
+    }));
+    // Appeler la méthode createOrderItemsForPayment avec les paramètres nécessaires
+    this.basketService.createOrderItemsForPayment(userUuid, orderItems).subscribe({
+      next: () => {
+        localStorage.setItem('basket', '[]');
+        this.basketService.totalItemsSubject.next(0);
+        this.sharedDataService.setSuccessMessage(true);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.sharedDataService.setErrorPaiementMessage(true);
+        this.router.navigate(['/']);
+      },
+    });
+  }
+
   // Méthode pour retourner au panier
   goBackToCart(): void {
     this.timerService.addActivity();
     this.router.navigate(['/panier']);
   }
+
   onDivClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).tagName !== 'INPUT') {
       const checkbox = (event.currentTarget as HTMLElement).querySelector('input[type="checkbox"]') as HTMLInputElement;

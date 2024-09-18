@@ -34,12 +34,14 @@ public class OrderItemService {
     private final OrderItemRepository orderItemRepository;
 
     private final OrderItemMapper orderItemMapper;
+    private final MailService mailService;
 
-    public OrderItemService(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, ItemListLockService itemListLockService, CustomerOrderService customerOrderService) {
+    public OrderItemService(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, ItemListLockService itemListLockService, CustomerOrderService customerOrderService, MailService mailService) {
         this.orderItemRepository = orderItemRepository;
         this.orderItemMapper = orderItemMapper;
         this.itemListLockService = itemListLockService;
         this.customerOrderService = customerOrderService;
+        this.mailService = mailService;
     }
 
     /**
@@ -48,6 +50,7 @@ public class OrderItemService {
      * @param orderItemsDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public List<OrderItemDTO> saveAll(List<OrderItemDTO> orderItemsDTO, UUID userUuid) {
         LOG.debug("Request to save OrderItem : {}", orderItemsDTO);
         if (orderItemsDTO.isEmpty()) {
@@ -81,12 +84,16 @@ public class OrderItemService {
         List<OrderItem> orderItems = orderItemsDTO.stream().map(this.orderItemMapper::toEntity)
             .collect(Collectors.toList());
 
+        List<OrderItemDTO> Items = this.orderItemRepository.saveAll(orderItems)
+            .stream().map(this.orderItemMapper::toDto).collect(Collectors.toList());
+
         // Delete lock
         this.itemListLockService.deleteAll(reservationIds);
 
-        // TODO: Mail
-        return this.orderItemRepository.saveAll(orderItems)
-            .stream().map(this.orderItemMapper::toDto).collect(Collectors.toList());
+        // Send mail
+        this.mailService.sendInvoicingEmail(Items, customerOrder);
+
+        return Items;
     }
 
     private CustomerOrderDTO getCustomerOrderFromOrderItemList(List<OrderItemDTO> orderItemsDTO) {

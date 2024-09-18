@@ -10,11 +10,11 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { SharedUserDataService } from '../shared/shared-user-data.service';
 import { BasketService } from '../basket.service';
 import { TruncatePipe } from '../pipe/truncate.pipe';
-import { S3Service } from '../s3.service';
 import { TireImageComponent } from 'app/image/image.component';
 import { GetIconsService } from '../shared/get-icons.service';
 import { FrontTimerService } from '../shared/front-timer.service';
 import TranslateDirective from '../shared/language/translate.directive';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 
 @Component({
   selector: 'jhi-catalogue',
@@ -28,6 +28,7 @@ import TranslateDirective from '../shared/language/translate.directive';
     TruncatePipe,
     TireImageComponent,
     TranslateDirective,
+    PopUpComponent,
   ],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss',
@@ -56,6 +57,12 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   // Variable d'affichage du message de succès
   showSuccessMessage: boolean | null = false;
   showSuccessProductMessage: boolean | null = false;
+  showErrorProductMessage: boolean | null = false;
+  showErrorPaiementMessage: boolean | null = false;
+  lotOfTires = false;
+  isPopupVisible = false;
+  errorMessage = '';
+  errorTitle = 'Erreur';
 
   sliderOptions: Options = {
     floor: 0,
@@ -71,7 +78,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private sharedDataService: SharedUserDataService,
     private viewportScroller: ViewportScroller,
     private basketService: BasketService,
-    private s3: S3Service,
     private iconService: GetIconsService,
     protected timerService: FrontTimerService,
   ) {}
@@ -84,6 +90,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     }
     // S'abonner à l'événement de fin du minuteur et mettre à jour l'état
     this.timerService.getTimerComplete().subscribe(() => {
+      this.showSuccessMessage = false;
+      this.showSuccessProductMessage = false;
       this.timerService.setShowTimerError(true); // Sauvegarder l'état de showTimerError dans le service
     });
 
@@ -99,6 +107,16 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.sharedDataService.successInfoProduct$.subscribe(data => {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.showSuccessProductMessage = data;
+    });
+    // S'abonner à la variable showErrorProductMessage pour afficher un message de succès produit
+    this.sharedDataService.errorInfo$.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showErrorProductMessage = data;
+    });
+
+    this.sharedDataService.errorPaiementSubject.subscribe(data => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.showErrorPaiementMessage = data;
     });
   }
 
@@ -171,18 +189,47 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
   closeSuccessMessage(): void {
     this.showSuccessMessage = false;
-    this.showSuccessMessage = false;
     this.sharedDataService.setSuccessMessage(false);
   }
   closeSuccessProductMessage(): void {
     this.showSuccessProductMessage = false;
     this.sharedDataService.setSuccessMessageProduct(false);
   }
+  closePopup(): void {
+    this.isPopupVisible = false;
+  }
 
   onAddToCart(tire: ITire): void {
-    this.showSuccessProductMessage = true;
+    if (this.basketService.getNumberOfATire(tire) > 9) {
+      this.lotOfTires = true;
+      return;
+    }
     this.timerService.addActivity();
-    this.basketService.addTire(tire).subscribe();
+    this.basketService.addTire(tire).subscribe({
+      next: () => {
+        this.showSuccessProductMessage = true;
+      },
+      error: (err: string) => {
+        const err_split = err.split('|');
+        if (err_split[0] === '102') {
+          this.timerService.setTimer(1);
+        } else {
+          this.errorMessage = 'Pas assez de pneu en stock';
+          this.isPopupVisible = true;
+        }
+      },
+    });
+  }
+  closeLotOfTires(): void {
+    this.lotOfTires = false;
+    this.sharedDataService.setErrorMessage(false);
+  }
+  closePaiementError(): void {
+    this.sharedDataService.setErrorPaiementMessage(false);
+  }
+  treatError(err: string): void {
+    this.errorMessage = err;
+    this.isPopupVisible = true;
   }
   stopPropagation(event: Event): void {
     event.stopPropagation();

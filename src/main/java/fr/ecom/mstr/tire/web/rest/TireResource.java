@@ -1,6 +1,7 @@
 package fr.ecom.mstr.tire.web.rest;
 
 import fr.ecom.mstr.tire.repository.TireRepository;
+import fr.ecom.mstr.tire.security.AuthoritiesConstants;
 import fr.ecom.mstr.tire.security.SecurityUtils;
 import fr.ecom.mstr.tire.service.TireQueryService;
 import fr.ecom.mstr.tire.service.TireService;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -61,6 +63,7 @@ public class TireResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<TireDTO> createTire(@Valid @RequestBody TireDTO tireDTO) throws URISyntaxException {
         LOG.debug("REST request to save Tire : {}", tireDTO);
         if (tireDTO.getId() != null) {
@@ -83,6 +86,7 @@ public class TireResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<TireDTO> updateTire(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody TireDTO tireDTO
@@ -117,6 +121,7 @@ public class TireResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<TireDTO> partialUpdateTire(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody TireDTO tireDTO
@@ -189,6 +194,7 @@ public class TireResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteTire(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Tire : {}", id);
         tireService.delete(id);

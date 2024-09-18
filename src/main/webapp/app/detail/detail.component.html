@@ -1,3 +1,4 @@
+<jhi-pop-up style="z-index:1000;" *ngIf="showPopUpError" [cancellable]="false" [title]="this.popUpTitle" [message]="popUpMessage" (Confirm)="onDismissPopUp()"></jhi-pop-up>
 <div class="modal-background" (click)="close()">
   <div class="modal-container" (click)="$event.stopPropagation()"> <!-- Empêche la fermeture quand on clique sur la fenêtre -->
     <div style="display: flex; justify-content: flex-end;">
@@ -24,27 +25,29 @@
             </thead>
             <tbody>
             <tr >
-              <td>Largeur</td>
+              <td>Largeur (cm)</td>
               <td>{{ tire?.tireWidth }}</td>
-
             </tr>
             <tr >
-              <td>Hauteur </td>
+              <td>Hauteur (cm)</td>
               <td>{{ tire?.tireHeight }}</td>
             </tr>
             <tr >
-              <td>Diamètre</td>
+              <td>Diamètre (cm)</td>
               <td>{{ tire?.tireDiameter }}</td>
             </tr>
             <tr >
-              <td>Index de vitesse</td>
-              <td>{{ tire?.speedIndex }}</td>
+              <td>Indice de vitesse</td>
+              <td>{{
+                { null: '', A_ONE: '5', A_EIGHT: '40', N: '140', Y: '300' }[tire?.speedIndex ?? 'null']
+              }}</td>
             </tr>
             <tr >
-              <td>Index de poids</td>
-              <td>{{ tire?.weightIndex }}</td>
+              <td>Indice de poids</td>
+              <td>{{
+                { null: '', TWENTY: '80', SIXTY: '250', NINETY: '600', ONE_HUNDRED_TWENTY: '1400' }[tire?.weightIndex ?? 'null']
+              }}</td>
             </tr>
-
             </tbody>
           </table>
         </div>

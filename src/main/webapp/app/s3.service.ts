@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { GetObjectCommand, PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { environment } from './environment/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -8,16 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class S3Service {
-  private s3: S3Client;
-  public constructor(private http: HttpClient) {
-    this.s3 = new S3Client({
-      credentials: {
-        accessKeyId: environment.ACCESS_KEY,
-        secretAccessKey: environment.SECRET_ACCESS_KEY,
-      },
-      region: environment.BUCKET_REGION,
-    });
-  }
+  public constructor(private http: HttpClient) {}
   extractFileName(filePath: string | undefined): string {
     return filePath?.split('\\').pop() ?? '';
   }
@@ -34,17 +23,5 @@ export class S3Service {
     } catch (e: any) {
       return './content/imgages/website_icon_pack/icon_pack/image_not_found.jpg';
     }
-  }
-
-  public async uploadImage(file: File): Promise<PutObjectCommandOutput> {
-    const contentType = file.type;
-    return await this.s3.send(
-      new PutObjectCommand({
-        Body: file,
-        Bucket: environment.BUCKET_NAME,
-        Key: file.name,
-        ContentType: contentType,
-      }),
-    );
   }
 }

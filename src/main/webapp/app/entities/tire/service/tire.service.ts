@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -42,6 +42,12 @@ export class TireService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  publishImage(inputFile: File): Observable<string> {
+    const file: FormData = new FormData();
+    file.append('file', inputFile);
+    return this.http.post<string>(this.applicationConfigService.getEndpointFor('api/aws'), file);
   }
 
   getTireIdentifier(tire: Pick<ITire, 'id'>): number {

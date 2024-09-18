@@ -1,3 +1,4 @@
+<jhi-pop-up *ngIf="showValidationPopUp" [title]="this.popUpTitle" [message]="this.popUpMessage" [cancellable]="true" (Confirm)="onConfirmPopup()" (Cancel)="onDismissPopup()"></jhi-pop-up>
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="head-title" jhiTranslate="form_header.payment_form.main_title"></div>
   <div class="timer">Les produits sont réservé jusqu'à {{ this.endTime | date:'HH:mm'}}</div>
