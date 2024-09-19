@@ -63,6 +63,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   isPopupVisible = false;
   errorMessage = '';
   errorTitle = 'Erreur';
+  processing = false;
 
   sliderOptions: Options = {
     floor: 0,
@@ -199,7 +200,18 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.isPopupVisible = false;
   }
 
+  computeQuantity(quantity: number | null | undefined): string {
+    if (!quantity) {
+      return 'Out of stock';
+    }
+    return quantity < 100 ? quantity.toString() : '+99';
+  }
+
   onAddToCart(tire: ITire): void {
+    if (this.processing) {
+      return;
+    }
+    this.processing = true;
     if (this.basketService.getNumberOfATire(tire) > 9) {
       this.lotOfTires = true;
       return;
@@ -208,9 +220,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.basketService.addTire(tire).subscribe({
       next: () => {
         this.showSuccessProductMessage = true;
+        this.processing = false;
       },
       error: (err: string) => {
         const err_split = err.split('|');
+        this.processing = false;
         if (err_split[0] === '102') {
           this.timerService.setTimer(1);
         } else {

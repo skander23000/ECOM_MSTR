@@ -126,7 +126,7 @@ public class MailService {
             multipart.addBodyPart(messageBodyPart);
             messageBodyPart = new MimeBodyPart();
             FileDataSource fds = new FileDataSource(
-                "src/main/webapp/content/images/website_icon_pack/icon_pack/favicon.ico");
+                "src/main/webapp/content/images/website_icon_pack/icon_pack/logo.png");
             messageBodyPart.setDataHandler(new DataHandler(fds));
             messageBodyPart.setHeader("Content-ID", "<image>");
             multipart.addBodyPart(messageBodyPart);
