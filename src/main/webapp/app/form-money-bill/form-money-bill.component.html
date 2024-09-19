@@ -1,4 +1,5 @@
 <jhi-pop-up *ngIf="showValidationPopUp" [title]="this.popUpTitle" [message]="this.popUpMessage" [cancellable]="true" (Confirm)="onConfirmPopup()" (Cancel)="onDismissPopup()"></jhi-pop-up>
+
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="head-title" jhiTranslate="form_header.payment_form.main_title"></div>
   <div class="timer">Les produits sont réservé jusqu'à {{ this.endTime | date:'HH:mm'}}</div>
@@ -182,10 +183,13 @@
     </div>
   </div>
 
+
   <!-- Boutons -->
   <div class="button-container">
     <div class="button-row">
+
       <button type="button" class="btn btn-back" (click)="goBackToCart()" >Retourner au panier</button>
+      <button type="button" class="btn btn-back btn-test" (click)="retour()">Retour</button>
       <button type="submit" class="btn btn-primary">
         <span>Valider et payer la commande</span>
         <img src="../../content/images/website_icon_pack/icon_pack/down_arrow_icon.png" alt="Icône" class="icon" height="1600" width="1600" />

@@ -43,8 +43,6 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     this.user_infos = this.sharedDataService.getUserInfo();
     this.basketService.getObservableContent().subscribe((content: TireContainer[]) => {
       this.calculateTotal(content);
-      // eslint-disable-next-line no-console
-      console.log(this.calculateTotal(content));
     });
     this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
       const currentTime = new Date(); // Heure actuelle
@@ -191,6 +189,10 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/']);
       },
     });
+  }
+
+  retour(): void {
+    this.router.navigate(['/informations']);
   }
 
   // Méthode pour retourner au panier
