@@ -44,7 +44,7 @@ export class DetailComponent {
     if (tire === null) {
       return;
     }
-    if (this.quantity + this.basketService.getNumberOfATire(tire) > 9) {
+    if (this.quantity + this.basketService.getNumberOfATire(tire) > 10) {
       this.showPopUpError = true;
       return;
     }
