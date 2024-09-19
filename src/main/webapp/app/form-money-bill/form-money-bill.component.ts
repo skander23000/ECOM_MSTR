@@ -193,6 +193,10 @@ export class FormMoneyBillComponent implements OnInit, AfterViewInit {
     });
   }
 
+  retour(): void {
+    this.router.navigate(['/informations']);
+  }
+
   // Méthode pour retourner au panier
   goBackToCart(): void {
     this.timerService.addActivity();

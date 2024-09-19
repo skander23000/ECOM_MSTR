@@ -214,6 +214,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.processing = true;
     if (this.basketService.getNumberOfATire(tire) > 9) {
       this.lotOfTires = true;
+      this.viewportScroller.scrollToPosition([0, 0]);
       return;
     }
     this.timerService.addActivity();
