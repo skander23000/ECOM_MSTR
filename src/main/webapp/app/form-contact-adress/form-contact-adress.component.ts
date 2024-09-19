@@ -30,6 +30,10 @@ export class FormContactAdressComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    const tmp = this.sharedDataService.getUserInfo();
+    if (tmp.city) {
+      this.user_info = tmp;
+    }
     this.timerService.getTimerState().subscribe(remainingTimeInSeconds => {
       const currentTime = new Date(); // Heure actuelle
       this.endTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);

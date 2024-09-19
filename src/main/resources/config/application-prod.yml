@@ -50,13 +50,6 @@ spring:
   thymeleaf:
     cache: true
 
-aws:
-  s3:
-    access-key: 'AKIAZVMTU2KRILEX4RIX'
-    secret-key: '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'
-    region: 'eu-west-3'
-    bucket: 'image-upload-skander'
-
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
 # keytool -genkey -alias mstrtire -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650

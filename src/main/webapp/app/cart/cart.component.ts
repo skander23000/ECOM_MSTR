@@ -35,10 +35,21 @@ export class CartComponent implements OnInit {
     // On relance le timer
     this.timerService.addActivity();
 
-    this.subscription = this.basketService.getObservableContent().subscribe({
-      next: (content: TireContainer[]) => {
-        this.cart_items = content;
-        this.updateTotalPrice();
+    this.basketService.checkAccountValidity().subscribe({
+      next: check => {
+        if (check.body) {
+          this.subscription = this.basketService.getObservableContent().subscribe({
+            next: (content: TireContainer[]) => {
+              this.cart_items = content;
+              this.updateTotalPrice();
+            },
+          });
+        } else {
+          this.timerService.setTimer(1);
+        }
+      },
+      error: () => {
+        this.timerService.setTimer(1);
       },
     });
   }
